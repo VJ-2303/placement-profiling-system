@@ -1,6 +1,6 @@
 function login() {
   // Backend login URL (given by your teammate)
-  const loginUrl = "http://localhost:5000/login";  
+  const loginUrl = "http://localhost:4000/auth/login";  
   window.location.href = loginUrl;
 }
 
