@@ -43,10 +43,13 @@ type application struct {
 func main() {
 	var cfg config
 
-	// Load environment variables
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
+	// Load environment variables only in development
+	// In production (Railway), environment variables are already set
+	if os.Getenv("ENV") != "production" {
+		err := godotenv.Load()
+		if err != nil {
+			log.Println("Warning: .env file not found, using environment variables")
+		}
 	}
 
 	cfg.port = getEnvWithDefault("PORT", "4000")
@@ -56,9 +59,30 @@ func main() {
 	cfg.db.dsn = os.Getenv("DB_DSN")
 	cfg.oauth.clientID = os.Getenv("CLIENT_ID")
 	cfg.oauth.clientSecret = os.Getenv("CLIENT_SECRET")
-	cfg.oauth.redirectURL = "https://placement-profiling-system-production.up.railway.app/auth/callback"
+
+	// Set redirect URL based on environment
+	if cfg.env == "production" {
+		cfg.oauth.redirectURL = "https://placement-profiling-system-production.up.railway.app/auth/callback"
+	} else {
+		cfg.oauth.redirectURL = "http://localhost:4000/auth/callback"
+	}
+
 	cfg.jwt.secret = os.Getenv("JWT_SECRET")
-	cfg.frontend.successURL = getEnvWithDefault("FRONTEND_SUCCESS_URL", "")
+	cfg.frontend.successURL = getEnvWithDefault("FRONTEND_SUCCESS_URL", "http://localhost:3000/profile.html")
+
+	// Validate required environment variables
+	if cfg.db.dsn == "" {
+		log.Fatal("DB_DSN environment variable is required")
+	}
+	if cfg.oauth.clientID == "" {
+		log.Fatal("CLIENT_ID environment variable is required")
+	}
+	if cfg.oauth.clientSecret == "" {
+		log.Fatal("CLIENT_SECRET environment variable is required")
+	}
+	if cfg.jwt.secret == "" {
+		log.Fatal("JWT_SECRET environment variable is required")
+	}
 
 	// Initialize logger
 	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
