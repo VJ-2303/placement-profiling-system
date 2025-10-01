@@ -10,7 +10,6 @@ import (
 	"github.com/VJ-2303/placement-profiling-system/internal/auth"
 	"github.com/VJ-2303/placement-profiling-system/internal/data"
 	"github.com/VJ-2303/placement-profiling-system/internal/models"
-	"github.com/joho/godotenv"
 )
 
 type config struct {
@@ -43,17 +42,8 @@ type application struct {
 func main() {
 	var cfg config
 
-	// Load environment variables only in development
-	// In production (Railway), environment variables are already set
-	if os.Getenv("ENV") != "production" {
-		err := godotenv.Load()
-		if err != nil {
-			log.Println("Warning: .env file not found, using environment variables")
-		}
-	}
-
 	cfg.port = getEnvWithDefault("PORT", "4000")
-	cfg.env = getEnvWithDefault("ENV", "development")
+	cfg.env = getEnvWithDefault("ENV", "production")
 
 	// Load config from environment variables
 	cfg.db.dsn = os.Getenv("DB_DSN")
@@ -68,7 +58,7 @@ func main() {
 	}
 
 	cfg.jwt.secret = os.Getenv("JWT_SECRET")
-	cfg.frontend.successURL = getEnvWithDefault("FRONTEND_SUCCESS_URL", "http://localhost:3000/profile.html")
+	cfg.frontend.successURL = getEnvWithDefault("FRONTEND_SUCCESS_URL", "")
 
 	// Validate required environment variables
 	if cfg.db.dsn == "" {
@@ -83,9 +73,18 @@ func main() {
 	if cfg.jwt.secret == "" {
 		log.Fatal("JWT_SECRET environment variable is required")
 	}
+	if cfg.frontend.successURL == "" {
+		log.Fatal("FRONTEND_SUCCESS_URL environment variable is required")
+	}
 
 	// Initialize logger
 	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
+
+	logger.Printf("Starting server with config:")
+	logger.Printf("- Port: %s", cfg.port)
+	logger.Printf("- Environment: %s", cfg.env)
+	logger.Printf("- Frontend URL: %s", cfg.frontend.successURL)
+	logger.Printf("- OAuth Redirect: %s", cfg.oauth.redirectURL)
 
 	// Open database connection
 	db, err := data.OpenDB(cfg.db.dsn)
