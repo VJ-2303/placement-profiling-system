@@ -15,7 +15,7 @@ window.onload = function() {
     return;
   }
 
-  fetch("http://localhost:4000/profile", {
+  fetch("https://placement-profiling-system-production.up.railway.app/profile", {
     method: "GET",
     headers: {
       "Authorization": "Bearer " + token
