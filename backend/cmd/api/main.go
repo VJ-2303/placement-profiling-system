@@ -86,7 +86,7 @@ func main() {
 	logger.Printf("- Frontend URL: %s", cfg.frontend.successURL)
 	logger.Printf("- OAuth Redirect: %s", cfg.oauth.redirectURL)
 
-	// Open database connection
+	// Open database connection, defined under internal/data/data.go
 	db, err := data.OpenDB(cfg.db.dsn)
 	if err != nil {
 		logger.Fatal(err)
@@ -95,7 +95,7 @@ func main() {
 
 	logger.Printf("database connection pool established")
 
-	// Initialize application
+	// Initialize application struct
 	app := &application{
 		config:     cfg,
 		logger:     logger,

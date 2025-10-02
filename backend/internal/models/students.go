@@ -31,7 +31,7 @@ func (m StudentModel) Insert(student *Student) error {
 		VALUES ($1, $2, $3)
 		RETURNING id, created_at, version`
 
-	args := []interface{}{student.Name, student.OfficialEmail, student.ProfileImageURL}
+	args := []any{student.Name, student.OfficialEmail, student.ProfileImageURL}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
