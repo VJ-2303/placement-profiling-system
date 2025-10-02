@@ -1,0 +1,222 @@
+package main
+
+import (
+	"fmt"
+	"net/http"
+	"time"
+
+	"github.com/VJ-2303/placement-profiling-system/internal/models"
+)
+
+func (app *application) createStudentProfileHandler(w http.ResponseWriter, r *http.Request) {
+	// Authenticate the request
+	claims, err := app.authenticateRequest(r)
+	app.logger.Print(claims)
+	if err != nil {
+		app.unauthorizedResponse(w, r)
+		return
+	}
+	studentID := claims.StudentID
+
+	// Parse the input
+	var input FlatProfileRequest
+	err = app.readJSON(w, r, &input)
+	if err != nil {
+		app.badRequestResponse(w, r, err)
+		return
+	}
+
+	// Start transaction
+	tx, err := app.models.DB.Begin()
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+		return
+	}
+	defer tx.Rollback()
+
+	// Update students table with roll_no and name
+	_, err = tx.Exec("UPDATE students SET roll_no = $1, name = $2 WHERE id = $3",
+		input.RollNo, input.Name, studentID)
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+		return
+	}
+
+	// Parse date of birth
+	dob, err := time.Parse("2006-01-02", input.DateOfBirth)
+	if err != nil {
+		app.badRequestResponse(w, r, fmt.Errorf("invalid date format for date_of_birth: %v", err))
+		return
+	}
+
+	// Insert into student_details
+	details := models.StudentDetails{
+		StudentID:             studentID,
+		DateOfBirth:           dob,
+		MobileNumber:          input.MobileNumber,
+		AlternateMobileNumber: input.AltMobileNumber,
+		PersonalEmail:         input.PersonalEmail,
+		LinkedinProfile:       input.LinkedInUrl,
+		Address:               input.Address,
+		City:                  input.City,
+		Pincode:               input.Pincode,
+		AdhaarNo:              input.AdhaarNo,
+		ResidenceType:         input.ResidenceType,
+		Strength:              input.Strength,
+		Weakness:              input.Weakness,
+		Remarks:               input.Remarks,
+	}
+	err = app.models.StudentDetails.Insert(tx, &details)
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+		return
+	}
+
+	// Insert into student_parents
+	parents := models.StudentParents{
+		StudentID:            studentID,
+		FatherName:           input.FatherName,
+		FatherMobile:         input.FatherMobile,
+		FatherOccupation:     input.FatherOccupation,
+		FatherCompanyDetails: input.FatherCompanyDetails,
+		FatherEmail:          input.FatherEmail,
+		MotherName:           input.MotherName,
+		MotherMobile:         input.MotherMobile,
+		MotherOccupation:     input.MotherOccupation,
+		MotherEmail:          input.MotherEmail,
+	}
+	err = app.models.StudentParents.Insert(tx, &parents)
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+		return
+	}
+
+	// Insert into student_academics
+	academics := models.StudentAcademics{
+		StudentID:         studentID,
+		TenthPercentage:   input.TenthPercentage,
+		TwelthPercentage:  input.TwelthPercentage,
+		CgpaSem1:          input.CgpaSem1,
+		CgpaSem2:          input.CgpaSem2,
+		CgpaSem3:          input.CgpaSem3,
+		CgpaSem4:          input.CgpaSem4,
+		CgpaOverall:       input.CgpaOverall,
+		CurrentBacklogs:   input.CurrentBacklogs,
+		HasBacklogHistory: input.HasBacklogHistory,
+	}
+	err = app.models.StudentAcademics.Insert(tx, &academics)
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+		return
+	}
+
+	// Insert into student_aspirations
+	aspirations := models.StudentAspirations{
+		StudentID:           studentID,
+		CompanyAim:          input.CompanyAim,
+		TargetPackage:       input.TargetPackage,
+		Certifications:      input.Certifications,
+		Awards:              input.Awards,
+		Workshops:           input.Workshops,
+		Internships:         input.Internships,
+		HackathonsAttended:  input.HackathonsAttended,
+		Extracurriculars:    input.Extracurriculars,
+		ClubParticipation:   input.ClubParticipation,
+		FuturePath:          input.FuturePath,
+		CommunicationSkills: input.CommunicationSkills,
+	}
+	err = app.models.StudentAspirations.Insert(tx, &aspirations)
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+		return
+	}
+
+	// Handle skills - get skill mapping
+	skillMap, err := app.models.Skills.GetAllAsMap(tx)
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+		return
+	}
+
+	// Map all skill inputs to their database IDs and proficiency levels
+	skillsToInsert := map[string]string{
+		// Programming Skills
+		"C":                              input.SkillC,
+		"C++":                            input.SkillCpp,
+		"JAVA":                           input.SkillJava,
+		"PYTHON":                         input.SkillPython,
+		"Node.js":                        input.SkillNodeJs,
+		"SQL Database":                   input.SkillSql,
+		"NoSQL Database":                 input.SkillNoSql,
+		"Web Developement":               input.SkillWebDev,
+		"PHP":                            input.SkillPhp,
+		"Mobile App development-flutter": input.SkillFlutter,
+		"Aptitude level":                 input.SkillAptitude,
+		"logical and verbal Reasoning":   input.SkillReasoning,
+		// Core Concepts
+		"DataStructure":                    input.ConceptDataStructures,
+		"DBMS":                             input.ConceptDbms,
+		"OOPS":                             input.ConceptOops,
+		"Problem Solving/Coding Tests":     input.ConceptProblemSolving,
+		"Computer Networks":                input.ConceptNetworks,
+		"Operating System":                 input.ConceptOs,
+		"Design and Analysis of Algorithm": input.ConceptAlgos,
+		// Tools
+		"Git/Github":                   input.ToolGit,
+		"Linux/Unix":                   input.ToolLinux,
+		"Cloud Basics (AWS/Azure/GCP)": input.ToolCloud,
+		"Competitive Coding (Codeforces/LeetCode/Hackerrank)": input.ToolCompCoding,
+		"Hacker Rank":  input.ToolHackerRank,
+		"Hacker Earth": input.ToolHackerEarth,
+	}
+
+	// Insert skills for this student
+	for skillName, proficiency := range skillsToInsert {
+		if skillID, ok := skillMap[skillName]; ok && proficiency != "" {
+			err = app.models.StudentSkills.Insert(tx, studentID, skillID, proficiency)
+			if err != nil {
+				app.serverErrorResponse(w, r, err)
+				return
+			}
+		}
+	}
+
+	// Commit the transaction
+	if err := tx.Commit(); err != nil {
+		app.serverErrorResponse(w, r, err)
+		return
+	}
+
+	// Return success response
+	app.writeJSON(w, http.StatusCreated, envelope{"message": "Profile created successfully"}, nil)
+}
+
+func (app *application) getStudentProfileHandler(w http.ResponseWriter, r *http.Request) {
+	// Authenticate the request
+	claims, err := app.authenticateRequest(r)
+	if err != nil {
+		app.unauthorizedResponse(w, r)
+		return
+	}
+	studentID := claims.StudentID
+
+	// Get the full profile
+	profile, err := app.models.Students.GetFullProfile(studentID)
+	if err != nil {
+		switch err {
+		case models.ErrRecordNotFound:
+			app.notFoundResponse(w, r)
+		default:
+			app.serverErrorResponse(w, r, err)
+		}
+		return
+	}
+
+	// Return the profile
+	app.writeJSON(w, http.StatusOK, envelope{"profile": profile}, nil)
+}
+
+func (app *application) updateStudentProfileHandler(w http.ResponseWriter, r *http.Request) {
+	// This would be the same as createStudentProfileHandler since we're using UPSERT
+	app.createStudentProfileHandler(w, r)
+}
