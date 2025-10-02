@@ -1,4 +1,13 @@
 window.onload = function() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const tokenFromUrl = urlParams.get('token');
+  
+  if (tokenFromUrl) {
+    localStorage.setItem("authToken", tokenFromUrl);
+    window.history.replaceState({}, document.title, window.location.pathname);
+  }
+  
+  // Now check for token in localStorage
   const token = localStorage.getItem("authToken");
   if (!token) {
     alert("Not logged in. Redirecting...");
@@ -6,7 +15,7 @@ window.onload = function() {
     return;
   }
 
-  fetch("http://localhost:5000/userinfo", {
+  fetch("https://placement-profiling-system-production.up.railway.app/profile", {
     method: "GET",
     headers: {
       "Authorization": "Bearer " + token
@@ -19,13 +28,16 @@ window.onload = function() {
     return res.json();
   })
   .then(data => {
+    // Access the student object from the response
+    const student = data.student;
+    
     // Fill in profile details
-    document.getElementById("userName").innerText = data.name || "Unknown User";
-    document.getElementById("userEmail").innerText = data.email || "No email found";
-    document.getElementById("userRoll").innerText = data.rollNumber || "N/A";
+    document.getElementById("userName").innerText = student.name || "Unknown User";
+    document.getElementById("userEmail").innerText = student.official_email || "No email found";
+    document.getElementById("userRoll").innerText = student.id || "N/A"; // Using ID as roll number for now
 
-    // If photo is available, use it; otherwise fallback image
-    document.getElementById("userPhoto").src = data.photo || "https://via.placeholder.com/120";
+    // Use the profile image URL from the student data
+    document.getElementById("userPhoto").src = student.profile_image_url || "https://via.placeholder.com/120";
   })
   .catch(err => {
     console.error("Error fetching user info:", err);

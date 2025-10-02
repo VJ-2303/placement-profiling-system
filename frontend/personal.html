@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Placement Portfolio - Personal Details</title>
+  <link rel="stylesheet" href="css/styles.css">
+  
+</head>
+<body>
+
+  <div>
+
+    <!-- Header -->
+    <header>
+      <h1>Placement Portfolio</h1>
+      <h2>Personal Details (Page 1 of 3)</h2>
+      <p>Please fill in all mandatory fields accurately.</p>
+    </header>
+
+    <!-- Added form id -->
+    <form id="personalForm">
+
+      <!-- 1. Student & Identity Information -->
+      <section>
+        <h3>1. Student & Identity Information</h3>
+
+        <div>
+          <label for="name">Full Name *</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+
+        <div>
+          <label for="roll_no">Roll Number *</label>
+          <input type="text" id="roll_no" name="roll_no" required>
+        </div>
+
+        <div>
+          <label for="date_of_birth">Date of Birth *</label>
+          <input type="date" id="date_of_birth" name="date_of_birth" required>
+        </div>
+
+        <div>
+          <label for="adhaar_no">Aadhar Number (12 Digits) *</label>
+          <input type="text" id="adhaar_no" name="adhaar_no" required pattern="[\d\s]{12,}" title="Aadhar number must contain 12 digits" maxlength="14">
+        </div>
+
+      </section>
+
+      <!-- 2. Contact & Residential Details -->
+      <section>
+        <h3>2. Contact & Residential Details</h3>
+
+        <div>
+          <label for="mobile_number">Mobile Number *</label>
+          <input type="tel" id="mobile_number" name="mobile_number" required pattern="[0-9]{10}" title="Must be a 10-digit number">
+        </div>
+
+        <div>
+          <label for="alt_mobile_number">Alternate Mobile Number</label>
+          <input type="tel" id="alt_mobile_number" name="alt_mobile_number" pattern="[0-9]{10}" title="Must be a 10-digit number">
+        </div>
+
+        <div>
+          <label for="official_email">Official Email ID</label>
+          <input type="email" id="official_email" name="official_email">
+        </div>
+
+        <div>
+          <label for="personal_email">Personal Email ID *</label>
+          <input type="email" id="personal_email" name="personal_email" required>
+        </div>
+
+        <div>
+          <label for="linkedin_url">LinkedIn Profile URL</label>
+          <input type="url" id="linkedin_url" name="linkedin_url" placeholder="e.g., https://www.linkedin.com/in/yourprofile">
+        </div>
+
+        <div class="radio-group">
+          <label>
+            <input type="radio" name="residence_type" value="Hostellor" required>
+            Hostellor
+          </label>
+          <label>
+            <input type="radio" name="residence_type" value="Dayscholar">
+            Dayscholar
+          </label>
+        </div>
+
+        <div>
+          <label for="address">Full Address *</label>
+          <textarea id="address" name="address" rows="3" required></textarea>
+        </div>
+
+        <div>
+          <label for="city">City *</label>
+          <input type="text" id="city" name="city" required>
+        </div>
+
+        <div>
+          <label for="pincode">Pincode *</label>
+          <input type="number" id="pincode" name="pincode" required pattern="\d{6}" title="Must be a 6-digit pincode">
+        </div>
+
+      </section>
+
+      <!-- 3. Parent/Guardian Details -->
+      <section>
+        <h3>3. Parent/Guardian Details</h3>
+
+        <h4>Father's Details</h4>
+        <div>
+          <label for="father_name">Father's Name *</label>
+          <input type="text" id="father_name" name="father_name" required>
+        </div>
+
+        <div>
+          <label for="father_mobile">Father's Mobile Number *</label>
+          <input type="tel" id="father_mobile" name="father_mobile" required pattern="[0-9]{10}" title="Must be a 10-digit number">
+        </div>
+
+        <div>
+          <label for="father_occupation">Father's Occupation *</label>
+          <input type="text" id="father_occupation" name="father_occupation" required>
+        </div>
+
+        <div>
+          <label for="father_company_details">Father's Company/Occupation Details</label>
+          <input type="text" id="father_company_details" name="father_company_details">
+        </div>
+
+        <div>
+          <label for="father_email">Father's Email ID</label>
+          <input type="email" id="father_email" name="father_email">
+        </div>
+
+        <h4>Mother's Details</h4>
+        <div>
+          <label for="mother_name">Mother's Name *</label>
+          <input type="text" id="mother_name" name="mother_name" required>
+        </div>
+
+        <div>
+          <label for="mother_mobile">Mother's Mobile Number</label>
+          <input type="tel" id="mother_mobile" name="mother_mobile" pattern="[0-9]{10}" title="Must be a 10-digit number">
+        </div>
+
+        <div>
+          <label for="mother_occupation">Mother's Occupation *</label>
+          <input type="text" id="mother_occupation" name="mother_occupation" required>
+        </div>
+
+        <div>
+          <label for="mother_email">Mother's Email ID</label>
+          <input type="email" id="mother_email" name="mother_email">
+        </div>
+
+      </section>
+
+      <!-- 4. Placement Goals -->
+      <section>
+        <h3>4. Placement Goals</h3>
+
+        <div>
+          <label for="company_aim">Target Company/Sector *</label>
+          <input type="text" id="company_aim" name="company_aim" placeholder="e.g., Service-based, Product-based, Core Tech" required>
+        </div>
+
+        <div>
+          <label for="target_package">Target Placement Package (CTC) *</label>
+          <select id="target_package" name="target_package" required>
+            <option value="">Select a range</option>
+            <option value="4-6 Lakhs">₹4 - ₹6 Lakhs</option>
+            <option value="6-8 Lakhs">₹6 - ₹8 Lakhs</option>
+            <option value="8-12 Lakhs">₹8 - ₹12 Lakhs</option>
+            <option value="12-20 Lakhs">₹12 - ₹20 Lakhs</option>
+            <option value="20-40 Lakhs">₹20 - ₹40 Lakhs</option>
+            <option value="40 Lakh and above">₹40 Lakh and above</option>
+          </select>
+        </div>
+
+      </section>
+
+      <!-- Navigation -->
+      <div>
+        <!-- Call app.js function instead of simple href -->
+        <button type="button" onclick="saveAndNavigateToAcademic()">
+          Save & Continue to Academic Details →
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+
+  <script>
+    // Initialize form with saved data if any
+    window.onload = () => initializePage('personalForm');
+  </script>
+
+<script src="js/app.js" defer></script> <!-- include app.js -->
+
+</body>
+</html>
