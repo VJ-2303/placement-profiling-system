@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Placement Portfolio - Program Details & Skills</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Configure Tailwind for custom theme -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-blue': '#3B82F6', // Tailwind blue-500
+                        'light-blue-bg': '#F0F8FF', // Light background for contrast
+                    },
+                }
+            }
+        }
+    </script>
+
+    <!-- Link to the separate custom CSS file (assumed to be available) -->
+    <link rel="stylesheet" href="academic_details.css">
+</head>
+<body class="min-h-screen p-4 sm:p-8 bg-light-blue-bg" onload="initializePage('skillsForm')">
+
+    <div class="max-w-4xl mx-auto bg-white shadow-2xl rounded-xl p-6 md:p-10 border border-blue-100">
+
+        <!-- Header -->
+        <header class="mb-8 text-center">
+            <h1 class="text-3xl font-extrabold text-primary-blue sm:text-4xl">Placement Portfolio</h1>
+            <h2 class="text-xl font-semibold text-gray-700 mt-2 border-b-2 pb-3 border-blue-200">Program Details & Skills (Page 3 of 3)</h2>
+            <p class="text-gray-500 mt-2">Detail your experience, core concepts, and skill proficiency.</p>
+        </header>
+
+        <!-- Main Form Container -->
+        <div id="mainFormContainer">
+            <form id="skillsForm" onsubmit="event.preventDefault(); finalSubmission();" class="space-y-10">
+
+                <!-- 1. Experience & Achievements Section -->
+                <section class="border border-blue-300 rounded-lg p-6 bg-blue-50/50">
+                    <h3 class="text-2xl font-bold mb-6 text-blue-700">1. Certifications & Experience</h3>
+
+                    <div class="space-y-6">
+                        <!-- Certifications Done (Key: certifications) -->
+                        <div>
+                            <label for="certifications" class="block text-sm font-medium text-gray-700">Certifications Completed</label>
+                            <textarea id="certifications" name="certifications" rows="2" placeholder="List all relevant courses/certifications" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-blue sm:text-sm"></textarea>
+                        </div>
+
+                        <!-- Internship Details (Key: internships) -->
+                        <div>
+                            <label for="internships" class="block text-sm font-medium text-gray-700">Internship Details</label>
+                            <textarea id="internships" name="internships" rows="2" placeholder="Provide details of any internships completed" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-blue sm:text-sm"></textarea>
+                        </div>
+
+                        <!-- Workshop Attended (Key: workshops) -->
+                        <div>
+                            <label for="workshops" class="block text-sm font-medium text-gray-700">Workshops/Seminars Attended</label>
+                            <textarea id="workshops" name="workshops" rows="2" placeholder="List relevant workshops" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-blue sm:text-sm"></textarea>
+                        </div>
+
+                        <!-- Awards (Key: awards) -->
+                        <div>
+                            <label for="awards" class="block text-sm font-medium text-gray-700">Awards/Honors Received</label>
+                            <input type="text" id="awards" name="awards" placeholder="List any academic, project, or extra-curricular awards" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-blue sm:text-sm">
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- 2. Technical Skills Section (Mapped to JSON keys) -->
+                <section class="border border-blue-300 rounded-lg p-6 bg-blue-50/50">
+                    <h3 class="text-2xl font-bold mb-6 text-blue-700">2. Technical & Core Concepts Proficiency</h3>
+
+                    <h4 class="text-lg font-semibold text-gray-700 mb-4">Programming & Database</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-6 gap-x-4">
+                        
+                        <!-- C (Key: skill_c) -->
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">C</label><div class="flex flex-wrap gap-4">
+                            <label class="inline-flex items-center"><input type="radio" name="skill_c" value="Beginner" required class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Beginner</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="skill_c" value="Intermediate" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Intermediate</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="skill_c" value="Advanced" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Advanced</span></label>
+                        </div></div>
+
+                        <!-- C++ (Key: skill_cpp) -->
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">C++</label><div class="flex flex-wrap gap-4">
+                            <label class="inline-flex items-center"><input type="radio" name="skill_cpp" value="Beginner" required class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Beginner</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="skill_cpp" value="Intermediate" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Intermediate</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="skill_cpp" value="Advanced" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Advanced</span></label>
+                        </div></div>
+                        
+                        <!-- JAVA (Key: skill_java) -->
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">JAVA</label><div class="flex flex-wrap gap-4">
+                            <label class="inline-flex items-center"><input type="radio" name="skill_java" value="Beginner" required class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Beginner</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="skill_java" value="Intermediate" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Intermediate</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="skill_java" value="Advanced" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Advanced</span></label>
+                        </div></div>
+
+                        <!-- PYTHON (Key: skill_python) -->
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">PYTHON</label><div class="flex flex-wrap gap-4">
+                            <label class="inline-flex items-center"><input type="radio" name="skill_python" value="Beginner" required class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Beginner</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="skill_python" value="Intermediate" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Intermediate</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="skill_python" value="Advanced" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Advanced</span></label>
+                        </div></div>
+                        
+                        <!-- Node.js (Key: skill_node_js) -->
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Node.js</label><div class="flex flex-wrap gap-4">
+                            <label class="inline-flex items-center"><input type="radio" name="skill_node_js" value="Beginner" required class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Beginner</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="skill_node_js" value="Intermediate" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Intermediate</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="skill_node_js" value="Advanced" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Advanced</span></label>
+                        </div></div>
+                        
+                        <!-- PHP (Key: skill_php) -->
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">PHP</label><div class="flex flex-wrap gap-4">
+                            <label class="inline-flex items-center"><input type="radio" name="skill_php" value="Beginner" required class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Beginner</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="skill_php" value="Intermediate" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Intermediate</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="skill_php" value="Advanced" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Advanced</span></label>
+                        </div></div>
+
+                        <!-- Web Development (Key: skill_web_dev) -->
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Web Development (HTML/CSS/JS)</label><div class="flex flex-wrap gap-4">
+                            <label class="inline-flex items-center"><input type="radio" name="skill_web_dev" value="Beginner" required class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Beginner</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="skill_web_dev" value="Intermediate" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Intermediate</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="skill_web_dev" value="Advanced" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Advanced</span></label>
+                        </div></div>
+                        
+                        <!-- Mobile App development-flutter (Key: skill_flutter) -->
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Mobile App development (Flutter/Native)</label><div class="flex flex-wrap gap-4">
+                            <label class="inline-flex items-center"><input type="radio" name="skill_flutter" value="Beginner" required class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Beginner</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="skill_flutter" value="Intermediate" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Intermediate</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="skill_flutter" value="Advanced" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Advanced</span></label>
+                        </div></div>
+                        
+                        <!-- SQL Database (Key: skill_sql) -->
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">SQL Database</label><div class="flex flex-wrap gap-4">
+                            <label class="inline-flex items-center"><input type="radio" name="skill_sql" value="Beginner" required class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Beginner</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="skill_sql" value="Intermediate" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Intermediate</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="skill_sql" value="Advanced" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Advanced</span></label>
+                        </div></div>
+
+                        <!-- NoSQL Database (Key: skill_no_sql) -->
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">NoSQL Database</label><div class="flex flex-wrap gap-4">
+                            <label class="inline-flex items-center"><input type="radio" name="skill_no_sql" value="Beginner" required class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Beginner</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="skill_no_sql" value="Intermediate" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Intermediate</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="skill_no_sql" value="Advanced" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Advanced</span></label>
+                        </div></div>
+                    </div>
+                    
+                    <h4 class="text-lg font-semibold text-gray-700 mt-8 mb-4 border-t pt-4 border-blue-100">Core CS Concepts</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-6 gap-x-4">
+                        
+                        <!-- Concept: Data Structures (Key: concept_data_structures) -->
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Data Structures (DS)</label><div class="flex flex-wrap gap-4">
+                            <label class="inline-flex items-center"><input type="radio" name="concept_data_structures" value="Beginner" required class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Beginner</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="concept_data_structures" value="Intermediate" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Intermediate</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="concept_data_structures" value="Advanced" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Advanced</span></label>
+                        </div></div>
+                        
+                        <!-- Concept: Algorithms (Key: concept_algos) -->
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Algorithms (ALGO)</label><div class="flex flex-wrap gap-4">
+                            <label class="inline-flex items-center"><input type="radio" name="concept_algos" value="Beginner" required class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Beginner</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="concept_algos" value="Intermediate" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Intermediate</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="concept_algos" value="Advanced" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Advanced</span></label>
+                        </div></div>
+                        
+                        <!-- Concept: DBMS (Key: concept_dbms) -->
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">DBMS</label><div class="flex flex-wrap gap-4">
+                            <label class="inline-flex items-center"><input type="radio" name="concept_dbms" value="Beginner" required class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Beginner</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="concept_dbms" value="Intermediate" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Intermediate</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="concept_dbms" value="Advanced" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Advanced</span></label>
+                        </div></div>
+
+                        <!-- Concept: OOPs (Key: concept_oops) -->
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Object-Oriented Programming (OOPs)</label><div class="flex flex-wrap gap-4">
+                            <label class="inline-flex items-center"><input type="radio" name="concept_oops" value="Beginner" required class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Beginner</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="concept_oops" value="Intermediate" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Intermediate</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="concept_oops" value="Advanced" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Advanced</span></label>
+                        </div></div>
+                        
+                        <!-- Concept: OS (Key: concept_os) -->
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Operating Systems (OS)</label><div class="flex flex-wrap gap-4">
+                            <label class="inline-flex items-center"><input type="radio" name="concept_os" value="Beginner" required class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Beginner</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="concept_os" value="Intermediate" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Intermediate</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="concept_os" value="Advanced" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Advanced</span></label>
+                        </div></div>
+
+                        <!-- Concept: Networks (Key: concept_networks) -->
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Computer Networks</label><div class="flex flex-wrap gap-4">
+                            <label class="inline-flex items-center"><input type="radio" name="concept_networks" value="Beginner" required class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Beginner</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="concept_networks" value="Intermediate" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Intermediate</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="concept_networks" value="Advanced" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Advanced</span></label>
+                        </div></div>
+                        
+                    </div>
+                    
+                    <h4 class="text-lg font-semibold text-gray-700 mt-8 mb-4 border-t pt-4 border-blue-100">Tools & Competitive Programming</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-6 gap-x-4">
+                        
+                        <!-- Tool: Git (Key: tool_git) -->
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Git / Version Control</label><div class="flex flex-wrap gap-4">
+                            <label class="inline-flex items-center"><input type="radio" name="tool_git" value="Beginner" required class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Beginner</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="tool_git" value="Intermediate" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Intermediate</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="tool_git" value="Advanced" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Advanced</span></label>
+                        </div></div>
+                        
+                        <!-- Tool: Linux (Key: tool_linux) -->
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Linux / Shell Commands</label><div class="flex flex-wrap gap-4">
+                            <label class="inline-flex items-center"><input type="radio" name="tool_linux" value="Beginner" required class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Beginner</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="tool_linux" value="Intermediate" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Intermediate</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="tool_linux" value="Advanced" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Advanced</span></label>
+                        </div></div>
+
+                        <!-- Tool: Cloud (Key: tool_cloud) -->
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Cloud Computing (AWS/GCP/Azure)</label><div class="flex flex-wrap gap-4">
+                            <label class="inline-flex items-center"><input type="radio" name="tool_cloud" value="Beginner" required class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Beginner</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="tool_cloud" value="Intermediate" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Intermediate</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="tool_cloud" value="Advanced" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Advanced</span></label>
+                        </div></div>
+                        
+                        <!-- Concept: Problem Solving (Key: concept_problem_solving) -->
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Problem Solving / Logic</label><div class="flex flex-wrap gap-4">
+                            <label class="inline-flex items-center"><input type="radio" name="concept_problem_solving" value="Intermediate" required class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Intermediate</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="concept_problem_solving" value="Beginner" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Beginner</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="concept_problem_solving" value="Advanced" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Advanced</span></label>
+                        </div></div>
+
+                        <!-- Tool: HackerRank (Key: tool_hacker_rank) -->
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">HackerRank Rating</label><div class="flex flex-wrap gap-4">
+                            <label class="inline-flex items-center"><input type="radio" name="tool_hacker_rank" value="Beginner" required class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Beginner</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="tool_hacker_rank" value="Intermediate" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Intermediate</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="tool_hacker_rank" value="Advanced" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Advanced</span></label>
+                        </div></div>
+
+                        <!-- Tool: HackerEarth (Key: tool_hacker_earth) -->
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">HackerEarth Rating</label><div class="flex flex-wrap gap-4">
+                            <label class="inline-flex items-center"><input type="radio" name="tool_hacker_earth" value="Beginner" required class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Beginner</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="tool_hacker_earth" value="Intermediate" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Intermediate</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="tool_hacker_earth" value="Advanced" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Advanced</span></label>
+                        </div></div>
+                    </div>
+                </section>
+
+                <!-- 3. Soft Skills & Personal Details -->
+                <section class="border border-blue-300 rounded-lg p-6 bg-blue-50/50">
+                    <h3 class="text-2xl font-bold mb-6 text-blue-700">3. Aptitude & Personal Attributes</h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        
+                        <!-- Aptitude Level (Key: skill_aptitude) -->
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Quantitative Aptitude Level</label><div class="flex flex-wrap gap-4">
+                            <label class="inline-flex items-center"><input type="radio" name="skill_aptitude" value="Beginner" required class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Beginner</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="skill_aptitude" value="Intermediate" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Intermediate</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="skill_aptitude" value="Advanced" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Advanced</span></label>
+                        </div></div>
+
+                        <!-- Reasoning (Key: skill_reasoning) -->
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Logical/Verbal Reasoning Level</label><div class="flex flex-wrap gap-4">
+                            <label class="inline-flex items-center"><input type="radio" name="skill_reasoning" value="Beginner" required class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Beginner</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="skill_reasoning" value="Intermediate" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Intermediate</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="skill_reasoning" value="Advanced" class="form-radio h-4 w-4 text-primary-blue"><span class="ml-2 text-gray-700 text-sm">Advanced</span></label>
+                        </div></div>
+                        
+                        <!-- Communication Skills (Key: communication_skills) -->
+                        <div class="md:col-span-2">
+                            <label for="communication_skills" class="block text-sm font-medium text-gray-700">Communication Skills Assessment</label>
+                            <select id="communication_skills" name="communication_skills" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-blue sm:text-sm">
+                                <option value="">Select your level</option>
+                                <option value="Basic – I can communicate simple ideas but with limited confidence.">Basic – I can communicate simple ideas but with limited confidence.</option>
+                                <option value="Intermediate – I can articulate complex ideas with reasonable fluency.">Intermediate – I can articulate complex ideas with reasonable fluency.</option>
+                                <option value="Advanced – I am highly articulate, persuasive, and confident in public speaking.">Advanced – I am highly articulate, persuasive, and confident in public speaking.</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Strength (Key: strength) -->
+                        <div class="md:col-span-2">
+                            <label for="strength" class="block text-sm font-medium text-gray-700">Strength</label>
+                            <textarea id="strength" name="strength" rows="2" placeholder="e.g., Hardworking and committed..." class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-blue sm:text-sm"></textarea>
+                        </div>
+
+                        <!-- Weakness (Key: weakness) -->
+                        <div class="md:col-span-2">
+                            <label for="weakness" class="block text-sm font-medium text-gray-700">Weakness</label>
+                            <textarea id="weakness" name="weakness" rows="2" placeholder="e.g., Sometimes I focus too much on getting things perfect..." class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-blue sm:text-sm"></textarea>
+                        </div>
+                        
+                        <!-- Hackathons Attended (Key: hackathons_attended) -->
+                        <div>
+                            <label for="hackathons_attended" class="block text-sm font-medium text-gray-700">Hackathons Attended</label>
+                            <input type="text" id="hackathons_attended" name="hackathons_attended" placeholder="e.g., CodeFest 2024" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-blue sm:text-sm">
+                        </div>
+
+                        <!-- Extracurriculars (Key: extracurriculars) -->
+                        <div>
+                            <label for="extracurriculars" class="block text-sm font-medium text-gray-700">Extracurriculars / Sports</label>
+                            <input type="text" id="extracurriculars" name="extracurriculars" placeholder="e.g., Basketball Captain" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-blue sm:text-sm">
+                        </div>
+
+                        <!-- Club Participation (Key: club_participation) -->
+                        <div>
+                            <label for="club_participation" class="block text-sm font-medium text-gray-700">Club Participation / Roles</label>
+                            <input type="text" id="club_participation" name="club_participation" placeholder="e.g., GDG Member, IEEE Volunteer" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-blue sm:text-sm">
+                        </div>
+                        
+                        <!-- Future Path (Key: future_path) -->
+                        <div>
+                            <label for="future_path" class="block text-sm font-medium text-gray-700">Future Career Path</label>
+                            <select id="future_path" name="future_path" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-blue sm:text-sm">
+                                <option value="">Select path</option>
+                                <option value="Placement">Placement</option>
+                                <option value="Higher Studies">Higher Studies</option>
+                                <option value="Entrepreneurship">Entrepreneurship</option>
+                            </select>
+                        </div>
+
+                        <!-- Remarks (Key: remarks) -->
+                        <div class="md:col-span-2">
+                            <label for="remarks" class="block text-sm font-medium text-gray-700">Remarks / Additional Notes</label>
+                            <textarea id="remarks" name="remarks" rows="2" placeholder="Any final comments or special requests" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-blue sm:text-sm"></textarea>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Navigation Buttons -->
+                <div class="pt-6 border-t border-blue-200 flex justify-between">
+                    <!-- Back Button -->
+                    <button type="button" onclick="saveAndNavigateToAcademicFromSkills()" class="px-6 py-3 border border-blue-300 text-primary-blue font-semibold rounded-lg hover:bg-blue-50 transition duration-300 ease-in-out">
+                        &larr; Back to Academic Details
+                    </button>
+
+                    <!-- Final Submit Button -->
+                    <button type="button" onclick="finalSubmission()" class="w-auto px-8 py-3 bg-green-600 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 transition duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-green-300">
+                        Generate Final JSON
+                    </button>
+                </div>
+                
+            </form>
+        </div>
+
+        <!-- Output Container (Hidden initially) -->
+        <div id="outputContainer" class="hidden mt-8">
+            <h3 class="text-2xl font-bold mb-4 text-green-700">✅ Final Consolidated JSON Output</h3>
+            <p class="text-gray-600 mb-4">This object contains data merged from all three pages, ready for your system.</p>
+            <div class="relative bg-gray-900 p-4 rounded-lg shadow-xl">
+                <pre id="resultArea" class="text-white text-sm overflow-x-auto whitespace-pre-wrap"></pre>
+                <div class="flex justify-between items-center mt-4">
+                    <button id="copyButton" class="px-4 py-2 bg-yellow-500 text-gray-900 font-semibold rounded-lg hover:bg-yellow-400 transition duration-300">
+                        Copy to Clipboard
+                    </button>
+                    <span id="copyMessage" class="hidden text-sm text-green-400 font-semibold">Copied!</span>
+                </div>
+            </div>
+            <button onclick="document.getElementById('outputContainer').classList.add('hidden'); document.getElementById('mainFormContainer').classList.remove('hidden');" 
+                    class="mt-4 px-6 py-3 border border-blue-300 text-primary-blue font-semibold rounded-lg hover:bg-blue-50 transition duration-300 ease-in-out">
+                &larr; Back to Edit Form
+            </button>
+        </div>
+
+    </div>
+
+    <!-- Single JS script for all pages -->
+    <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Placement Portfolio - Personal Details</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Configure Tailwind for custom theme (MUST remain in script tag) -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-blue': '#3B82F6', // Tailwind blue-500
+                        'light-blue-bg': '#F0F8FF', // Light background for contrast
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <!-- Link to the separate custom CSS file (assumed to be available) -->
+    <link rel="stylesheet" href="personal_details.css">
+</head>
+<body class="min-h-screen p-4 sm:p-8 bg-light-blue-bg" onload="initializePage('personalForm')">
+
+    <div class="max-w-4xl mx-auto bg-white shadow-2xl rounded-xl p-6 md:p-10 border border-blue-100">
+
+        <!-- Header -->
+        <header class="mb-8 text-center">
+            <h1 class="text-3xl font-extrabold text-primary-blue sm:text-4xl">Placement Portfolio</h1>
+            <h2 class="text-xl font-semibold text-gray-700 mt-2 border-b-2 pb-3 border-blue-200">Personal Details (Page 1 of 3)</h2>
+            <p class="text-gray-500 mt-2">Please fill in all mandatory fields accurately.</p>
+        </header>
+
+        <form id="personalForm" onsubmit="event.preventDefault();" class="space-y-8">
+
+            <!-- 1. Student Information Section -->
+            <section class="border border-blue-300 rounded-lg p-6 bg-blue-50/50">
+                <h3 class="text-2xl font-bold mb-6 text-blue-700">1. Student & Identity Information</h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                    <!-- NAME (Key: name) -->
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-700">Full Name <span class="text-red-500">*</span></label>
+                        <input type="text" id="name" name="name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-blue sm:text-sm">
+                    </div>
+                    
+                    <!-- ROLL NO (Key: roll_no) -->
+                    <div>
+                        <label for="roll_no" class="block text-sm font-medium text-gray-700">Roll Number <span class="text-red-500">*</span></label>
+                        <input type="text" id="roll_no" name="roll_no" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-blue sm:text-sm">
+                    </div>
+
+                    <!-- DATE OF BIRTH (Key: date_of_birth) -->
+                    <div>
+                        <label for="date_of_birth" class="block text-sm font-medium text-gray-700">Date of Birth <span class="text-red-500">*</span></label>
+                        <input type="date" id="date_of_birth" name="date_of_birth" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-blue sm:text-sm">
+                    </div>
+
+                    <!-- Adhaar No (Key: adhaar_no) -->
+                    <div>
+                        <label for="adhaar_no" class="block text-sm font-medium text-gray-700">Aadhar Number (12 Digits) <span class="text-red-500">*</span></label>
+                        <input type="text" id="adhaar_no" name="adhaar_no" required pattern="[\d\s]{12,}" title="Aadhar number must contain 12 digits" maxlength="14" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-blue sm:text-sm">
+                    </div>
+
+                </div>
+            </section>
+            
+            <!-- 2. Contact & Residential Section -->
+            <section class="border border-blue-300 rounded-lg p-6 bg-blue-50/50">
+                <h3 class="text-2xl font-bold mb-6 text-blue-700">2. Contact & Residential Details</h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    <!-- Mobile Number (Key: mobile_number) -->
+                    <div>
+                        <label for="mobile_number" class="block text-sm font-medium text-gray-700">Mobile Number <span class="text-red-500">*</span></label>
+                        <input type="tel" id="mobile_number" name="mobile_number" required pattern="[0-9]{10}" title="Must be a 10-digit number" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-blue sm:text-sm">
+                    </div>
+
+                    <!-- Alternate Mobile Number (Key: alt_mobile_number) -->
+                    <div>
+                        <label for="alt_mobile_number" class="block text-sm font-medium text-gray-700">Alternate Mobile Number</label>
+                        <input type="tel" id="alt_mobile_number" name="alt_mobile_number" pattern="[0-9]{10}" title="Must be a 10-digit number" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-blue sm:text-sm">
+                    </div>
+
+                    <!-- Official Email ID (Placeholder) -->
+                    <div>
+                        <label for="official_email" class="block text-sm font-medium text-gray-700">Official Email ID</label>
+                        <input type="email" id="official_email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-blue sm:text-sm">
+                        <p class="mt-1 text-xs text-gray-500">This field will not be included in the final JSON.</p>
+                    </div>
+
+                    <!-- Personal Emailid (Key: personal_email) -->
+                    <div>
+                        <label for="personal_email" class="block text-sm font-medium text-gray-700">Personal Email ID <span class="text-red-500">*</span></label>
+                        <input type="email" id="personal_email" name="personal_email" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-blue sm:text-sm">
+                    </div>
+
+                    <!-- Linked In profile ID (Key: linkedin_url) -->
+                    <div class="md:col-span-2">
+                        <label for="linkedin_url" class="block text-sm font-medium text-gray-700">LinkedIn Profile URL</label>
+                        <input type="url" id="linkedin_url" name="linkedin_url" placeholder="e.g., https://www.linkedin.com/in/yourprofile" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-blue sm:text-sm">
+                    </div>
+                    
+                    <!-- Hostellor /Dayscholar (Key: residence_type) -->
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Accommodation Status <span class="text-red-500">*</span></label>
+                        <div class="flex flex-wrap gap-4">
+                            <label class="inline-flex items-center">
+                                <input type="radio" name="residence_type" value="Hostellor" required class="form-radio h-4 w-4 text-primary-blue border-gray-300">
+                                <span class="ml-2 text-gray-700">Hostellor</span>
+                            </label>
+                            <label class="inline-flex items-center">
+                                <input type="radio" name="residence_type" value="Dayscholar" class="form-radio h-4 w-4 text-primary-blue border-gray-300">
+                                <span class="ml-2 text-gray-700">Dayscholar</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Address (Key: address) -->
+                    <div class="md:col-span-2">
+                        <label for="address" class="block text-sm font-medium text-gray-700">Full Address <span class="text-red-500">*</span></label>
+                        <textarea id="address" name="address" rows="3" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-blue sm:text-sm"></textarea>
+                    </div>
+
+                    <!-- City (Key: city) -->
+                    <div>
+                        <label for="city" class="block text-sm font-medium text-gray-700">City <span class="text-red-500">*</span></label>
+                        <input type="text" id="city" name="city" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-blue sm:text-sm">
+                    </div>
+
+                    <!-- Pincode (Key: pincode) -->
+                    <div>
+                        <label for="pincode" class="block text-sm font-medium text-gray-700">Pincode <span class="text-red-500">*</span></label>
+                        <input type="number" id="pincode" name="pincode" required pattern="\d{6}" title="Must be a 6-digit pincode" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-blue sm:text-sm">
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- 3. Parent/Guardian Details Section -->
+            <section class="border border-blue-300 rounded-lg p-6 bg-blue-50/50">
+                <h3 class="text-2xl font-bold mb-6 text-blue-700">3. Parent/Guardian Details</h3>
+
+                <h4 class="text-lg font-semibold text-gray-700 mb-4">Father's Details</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <!-- Father Name (Key: father_name) -->
+                    <div>
+                        <label for="father_name" class="block text-sm font-medium text-gray-700">Father's Name <span class="text-red-500">*</span></label>
+                        <input type="text" id="father_name" name="father_name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-blue sm:text-sm">
+                    </div>
+                    
+                    <!-- Father Mobile Number (Key: father_mobile) -->
+                    <div>
+                        <label for="father_mobile" class="block text-sm font-medium text-gray-700">Father's Mobile Number <span class="text-red-500">*</span></label>
+                        <input type="tel" id="father_mobile" name="father_mobile" required pattern="[0-9]{10}" title="Must be a 10-digit number" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-blue sm:text-sm">
+                    </div>
+                    
+                    <!-- Father Occupation (Key: father_occupation) -->
+                    <div>
+                        <label for="father_occupation" class="block text-sm font-medium text-gray-700">Father's Occupation <span class="text-red-500">*</span></label>
+                        <input type="text" id="father_occupation" name="father_occupation" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-blue sm:text-sm">
+                    </div>
+                    
+                    <!-- Company/Occupation details (Key: father_company_details) -->
+                    <div>
+                        <label for="father_company_details" class="block text-sm font-medium text-gray-700">Father's Company/Occupation Details</label>
+                        <input type="text" id="father_company_details" name="father_company_details" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-blue sm:text-sm">
+                    </div>
+                    
+                    <!-- Father Emailid (Key: father_email) -->
+                    <div class="md:col-span-2">
+                        <label for="father_email" class="block text-sm font-medium text-gray-700">Father's Email ID</label>
+                        <input type="email" id="father_email" name="father_email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-blue sm:text-sm">
+                    </div>
+                </div>
+
+                <h4 class="text-lg font-semibold text-gray-700 mb-4">Mother's Details</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Mother Name (Key: mother_name) -->
+                    <div>
+                        <label for="mother_name" class="block text-sm font-medium text-gray-700">Mother's Name <span class="text-red-500">*</span></label>
+                        <input type="text" id="mother_name" name="mother_name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-blue sm:text-sm">
+                    </div>
+                    
+                    <!-- Mother Mobile Number (Key: mother_mobile) -->
+                    <div>
+                        <label for="mother_mobile" class="block text-sm font-medium text-gray-700">Mother's Mobile Number</label>
+                        <input type="tel" id="mother_mobile" name="mother_mobile" pattern="[0-9]{10}" title="Must be a 10-digit number" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-blue sm:text-sm">
+                    </div>
+                    
+                    <!-- Mother Occupation (Key: mother_occupation) -->
+                    <div>
+                        <label for="mother_occupation" class="block text-sm font-medium text-gray-700">Mother's Occupation <span class="text-red-500">*</span></label>
+                        <input type="text" id="mother_occupation" name="mother_occupation" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-blue sm:text-sm">
+                    </div>
+                    
+                    <!-- Mother Emailid (Key: mother_email) -->
+                    <div>
+                        <label for="mother_email" class="block text-sm font-medium text-gray-700">Mother's Email ID</label>
+                        <input type="email" id="mother_email" name="mother_email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-blue sm:text-sm">
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. Placement Goal Section -->
+            <section class="border border-blue-300 rounded-lg p-6 bg-blue-50/50">
+                <h3 class="text-2xl font-bold mb-6 text-blue-700">4. Placement Goals</h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    <!-- Which type of company or sector are you aiming for? (Key: company_aim) -->
+                    <div>
+                        <label for="company_aim" class="block text-sm font-medium text-gray-700">Target Company/Sector <span class="text-red-500">*</span></label>
+                        <input type="text" id="company_aim" name="company_aim" required placeholder="e.g., Service-based, Product-based, Core Tech" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-blue sm:text-sm">
+                    </div>
+
+                    <!-- What is your target package for placement? (Key: target_package) -->
+                    <div>
+                        <label for="target_package" class="block text-sm font-medium text-gray-700">Target Placement Package (CTC) <span class="text-red-500">*</span></label>
+                        <select id="target_package" name="target_package" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-blue sm:text-sm">
+                            <option value="">Select a range</option>
+                            <option value="4-6 Lakhs">₹4 - ₹6 Lakhs</option>
+                            <option value="6-8 Lakhs">₹6 - ₹8 Lakhs</option>
+                            <option value="8-12 Lakhs">₹8 - ₹12 Lakhs</option>
+                            <option value="12-20 Lakhs">₹12 - ₹20 Lakhs</option>
+                            <option value="20-40 Lakhs">₹20 - ₹40 Lakhs</option>
+                            <option value="40 Lakh and above">₹40 Lakh and above</option>
+                        </select>
+                    </div>
+
+                </div>
+            </section>
+
+
+            <!-- Navigation -->
+            <div class="pt-6 border-t border-blue-200 flex justify-end">
+                <button type="button" onclick="saveAndNavigateToAcademic()" class="w-full md:w-auto px-8 py-3 bg-primary-blue text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-blue-300">
+                    Save & Continue to Academic Details &rarr;
+                </button>
+            </div>
+            
+            
+        </form>
+
+    </div>
+
+    <!-- Single JS script for all pages -->
+    <script src="js/app.js"></script>
+</body>
+</html>
