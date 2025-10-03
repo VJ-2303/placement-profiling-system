@@ -1,102 +1,37 @@
-/* Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: "Segoe UI", Tahoma, sans-serif;
-  background: #f5f6fa;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-}
-
-/* Centered container */
 .container {
-  background: #fff;
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
-  max-width: 500px;
-  width: 90%;
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+header {
   text-align: center;
-}
-
-h2 {
-  margin-bottom: 15px;
-  color: #333;
-}
-
-.card {
-  background: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 15px;
   margin-bottom: 20px;
-  text-align: left;
 }
 
-.card p {
-  margin: 8px 0;
-  font-size: 15px;
-  color: #444;
+section {
+  margin: 15px 0;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: #f9f9f9;
 }
 
 button {
-  background: #4a90e2;
-  color: #fff;
-  padding: 12px 18px;
-  border: none;
-  border-radius: 8px;
+  margin: 10px 0;
+  padding: 10px 20px;
   cursor: pointer;
-  transition: 0.3s;
-  margin-top: 10px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
 }
 
 button:hover {
-  background: #357ABD;
+  background: #0056b3;
 }
 
-.more-info.hidden {
+.hidden {
   display: none;
-}
-
-/* Hamburger menu */
-.hamburger {
-  font-size: 28px;
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  cursor: pointer;
-  z-index: 1000;
-}
-
-.side-menu {
-  position: fixed;
-  top: 0;
-  left: -250px;
-  width: 220px;
-  height: 100%;
-  background: #2c3e50;
-  padding-top: 60px;
-  transition: left 0.3s ease;
-  z-index: 999;
-}
-
-.side-menu a {
-  display: block;
-  padding: 12px 20px;
-  color: white;
-  text-decoration: none;
-}
-
-.side-menu a:hover {
-  background: #34495e;
-}
-
-.side-menu.active {
-  left: 0;
 }
