@@ -8,12 +8,18 @@
 </head>
 <body>
 
+  <!-- Hamburger Menu -->
+  <div class="hamburger" id="hamburger">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+
   <!-- Sidebar Menu -->
-  <div class="side-menu" id="sideMenu">
+  <nav class="sidebar" id="sidebar">
     <h2>Placement Portfolio</h2>
     <button id="btnDashboard">Dashboard</button>
 
-    <!-- Collapsible Menu -->
     <button class="collapsible">My Details</button>
     <div class="submenu">
       <button id="btnPersonal">Personal Details</button>
@@ -25,10 +31,10 @@
     <button id="btnViewPortfolio">View Portfolio</button>
     <button id="btnDownloadPortfolio">Download Portfolio</button>
     <button id="btnLogout">Logout</button>
-  </div>
+  </nav>
 
   <!-- Main Content -->
-  <div class="profile-content">
+  <main class="main-content">
     <div class="profile-card">
       <img id="userPhoto" alt="User Photo">
       <h3 id="userName"></h3>
@@ -38,9 +44,9 @@
 
     <div class="dashboard-message">
       <h2>Welcome to Your Placement Portfolio Dashboard</h2>
-      <p>Use the sidebar menu to view and edit your details, check your skills, or view your portfolio.</p>
+      <p>Use the hamburger menu to view and edit your details, check your skills, or view your portfolio.</p>
     </div>
-  </div>
+  </main>
 
   <script src="js/profile.js"></script>
 </body>

@@ -9,11 +9,10 @@
 /* ---------------- Body ---------------- */
 body {
   min-height: 100vh;
-  display: flex;                /* Enable flex */
+  display: flex;                /* Flex layout */
   justify-content: center;      /* Center horizontally */
   align-items: center;          /* Center vertically */
   background: linear-gradient(135deg, #4a90e2, #1c3c88);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
 }
 
@@ -24,13 +23,13 @@ body {
   padding: 40px 30px;
   border-radius: 20px;
   text-align: center;
-  box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
   transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .container:hover {
   transform: translateY(-5px);
-  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
 }
 
 .container h1 {
@@ -59,7 +58,7 @@ body {
 .side-menu {
   width: 220px;
   background-color: #1c3c88;
-  color: white;
+  color: #fff;
   display: flex;
   flex-direction: column;
   padding: 20px;
@@ -69,12 +68,13 @@ body {
 .side-menu h2 {
   text-align: center;
   margin-bottom: 20px;
+  font-size: 20px;
 }
 
 .side-menu button {
   background-color: #1c3c88;
   border: none;
-  color: white;
+  color: #fff;
   padding: 12px;
   margin: 5px 0;
   text-align: left;
@@ -91,6 +91,7 @@ body {
 /* Collapsible Submenu */
 .collapsible {
   font-weight: bold;
+  cursor: pointer;
 }
 
 .submenu {
@@ -103,6 +104,7 @@ body {
   background-color: #2a4a99;
   font-size: 13px;
   padding-left: 20px;
+  margin: 3px 0;
 }
 
 /* ---------------- Profile Content ---------------- */
@@ -118,7 +120,7 @@ body {
   padding: 25px 30px;
   border-radius: 15px;
   width: 350px;
-  box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
   margin-bottom: 30px;
   text-align: center;
 }
@@ -129,7 +131,7 @@ body {
   border-radius: 50%;
   margin-bottom: 15px;
   object-fit: cover;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 }
 
 .profile-card h3 {
@@ -146,7 +148,8 @@ body {
 }
 
 /* ---------------- Flex Layout ---------------- */
-body > .side-menu, .profile-content {
+body > .side-menu,
+.profile-content {
   display: flex;
 }
 
@@ -159,6 +162,7 @@ body > .side-menu, .profile-content {
 @media (max-width: 768px) {
   body {
     flex-direction: column;
+    align-items: stretch;
   }
 
   .side-menu {
@@ -166,11 +170,14 @@ body > .side-menu, .profile-content {
     flex-direction: row;
     overflow-x: auto;
     min-height: auto;
+    padding: 10px;
   }
 
   .side-menu button {
     flex: 1;
     margin: 5px;
+    font-size: 13px;
+    padding: 10px;
   }
 
   .profile-content {

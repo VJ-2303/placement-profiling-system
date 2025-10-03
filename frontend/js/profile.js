@@ -1,6 +1,7 @@
-// Check token and fetch student info
+// ---------------- Check Token and Fetch Student Info ----------------
 window.onload = function() {
   const token = localStorage.getItem("authToken");
+
   if (!token) {
     alert("Not logged in. Redirecting...");
     window.location.href = "index.html";
@@ -17,6 +18,8 @@ window.onload = function() {
   })
   .then(data => {
     const student = data.student;
+
+    // Fill in profile details
     document.getElementById("userName").innerText = student.name || "Unknown User";
     document.getElementById("userEmail").innerText = student.official_email || "No email found";
     document.getElementById("userRoll").innerText = student.id || "N/A";
@@ -29,7 +32,7 @@ window.onload = function() {
     window.location.href = "index.html";
   });
 
-  // Collapsible submenu
+  // ---------------- Collapsible Submenu ----------------
   const collapsibles = document.getElementsByClassName("collapsible");
   for (let i = 0; i < collapsibles.length; i++) {
     collapsibles[i].addEventListener("click", function() {
@@ -38,15 +41,37 @@ window.onload = function() {
     });
   }
 
-  // Button navigation
-  document.getElementById("btnPersonal").onclick = () => { window.location.href = "personal.html"; };
-  document.getElementById("btnAcademic").onclick = () => { window.location.href = "academic.html"; };
-  document.getElementById("btnSkills").onclick = () => { window.location.href = "skills.html"; };
-  document.getElementById("btnAdditional").onclick = () => { window.location.href = "additional.html"; };
-  document.getElementById("btnViewPortfolio").onclick = () => { window.location.href = "portfolio-view.html"; };
-  document.getElementById("btnDownloadPortfolio").onclick = () => { alert("Download feature to be implemented"); };
-  document.getElementById("btnLogout").onclick = () => { 
-    localStorage.removeItem("authToken"); 
-    window.location.href = "index.html"; 
+  // ---------------- Button Navigation ----------------
+  const navMap = {
+    btnPersonal: "personal.html",
+    btnAcademic: "acadamic.html",
+    btnSkills: "skills.html",
+    btnAdditional: "additional.html",
+    btnViewPortfolio: "portfolio-view.html"
   };
+
+  Object.keys(navMap).forEach(btnId => {
+    const btn = document.getElementById(btnId);
+    if (btn) {
+      btn.onclick = () => { window.location.href = navMap[btnId]; };
+    }
+  });
+
+  // ---------------- Download Portfolio Placeholder ----------------
+  const btnDownload = document.getElementById("btnDownloadPortfolio");
+  if (btnDownload) {
+    btnDownload.onclick = () => {
+      alert("Download feature to be implemented");
+      // TODO: Implement API call for PDF download
+    };
+  }
+
+  // ---------------- Logout ----------------
+  const btnLogout = document.getElementById("btnLogout");
+  if (btnLogout) {
+    btnLogout.onclick = () => {
+      localStorage.removeItem("authToken");
+      window.location.href = "index.html";
+    };
+  }
 };
