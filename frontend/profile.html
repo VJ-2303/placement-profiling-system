@@ -2,23 +2,52 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>User Profile</title>
-  <link rel="stylesheet" href="css/style.css?v=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard</title>
+  <link rel="stylesheet" href="css/style.css?v=3">
 </head>
 <body>
-  <div class="profile-container">
-    <h2>User Profile</h2>
-    <img id="userPhoto" alt="User Photo" width="120">
-    <h3 id="userName"></h3> 
-    <p>Email: <span id="userEmail"></span></p>
-    <p>Roll No: <span id="userRoll"></span></p>
-    
-    <!-- Form to redirect to personal.html -->
-    <form action="personal.html" method="get">
-      <button type="submit">Go to Personal Details</button>
-    </form>
+
+  <!-- ===== Dashboard Container ===== -->
+  <div class="dashboard-container">
+
+    <!-- ===== Student Info Card ===== -->
+    <div class="student-card">
+      <img id="userPhoto" alt="Profile Photo">
+      <h2 id="userName">Student Name</h2>
+      <p>Email: <span id="userEmail"></span></p>
+      <p>Roll No: <span id="userRoll"></span></p>
+    </div>
+
+    <!-- ===== Navigation Menu ===== -->
+    <nav class="dashboard-menu">
+      <button onclick="goToPage('dashboard-home.html')">Dashboard / Home</button>
+      
+      <!-- My Details Section -->
+      <div class="menu-group">
+        <span>My Details</span>
+        <button onclick="goToPage('personal.html')">Personal Details</button>
+        <button onclick="goToPage('academic.html')">Academic Details</button>
+        <button onclick="goToPage('skills.html')">Skills & Programs</button>
+        <button onclick="goToPage('additional.html')">Additional Info</button>
+      </div>
+
+      <!-- Portfolio Section -->
+      <div class="menu-group">
+        <span>Portfolio</span>
+        <button onclick="goToPage('portfolio-view.html')">View Portfolio</button>
+        <button onclick="downloadPortfolio()">Download Portfolio</button>
+      </div>
+
+      <!-- Settings Section -->
+      <div class="menu-group">
+        <span>Settings</span>
+        <button onclick="logout()">Logout</button>
+      </div>
+    </nav>
+
   </div>
 
-  <script src="js/profile.js"></script>
+  <script src="js/profile.js" defer></script>
 </body>
 </html>
