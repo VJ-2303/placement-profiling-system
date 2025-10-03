@@ -3,39 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Profile</title>
-  <link rel="stylesheet" href="css/view.css">
+  <title>Placement Portfolio - View Profile</title>
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <!-- Hamburger menu -->
-  <div class="hamburger">&#9776;</div>
-  <nav class="side-menu">
-    <a href="view.html">Profile</a>
-    <a href="forms.html">Forms</a>
-    <a href="logout.html">Logout</a>
-  </nav>
-
-  <!-- Profile box -->
   <div class="container">
-    <h2>Personal Details</h2>
-    <div class="card" id="personal-details">
-      <p>Loading...</p>
-    </div>
+    <header>
+      <h1>Placement Portfolio</h1>
+      <h2>Profile Overview</h2>
+    </header>
 
+    <!-- Personal Details -->
+    <section id="personal-details"></section>
+
+    <!-- More Info -->
     <button id="moreInfoBtn">More Info</button>
-
-    <div class="more-info hidden" id="more-info">
-      <h2>Academic Details</h2>
-      <div class="card" id="academic-details"></div>
-
-      <h2>Skills & Programs</h2>
-      <div class="card" id="skills-details"></div>
-
-      <h2>Additional Info</h2>
-      <div class="card" id="additional-details"></div>
-    </div>
+    <section id="more-info" class="hidden">
+      <div id="academic-details"></div>
+      <div id="skills-details"></div>
+    </section>
   </div>
 
-  <script src="js/view.js"></script>
+  <script src="js/view.js" defer></script>
 </body>
 </html>

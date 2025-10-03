@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const personalContainer = document.getElementById("personal-details");
   const academicContainer = document.getElementById("academic-details");
   const skillsContainer = document.getElementById("skills-details");
-  const additionalContainer = document.getElementById("additional-details");
   const moreInfoBtn = document.getElementById("moreInfoBtn");
   const moreInfoSection = document.getElementById("more-info");
 
@@ -26,36 +25,32 @@ document.addEventListener("DOMContentLoaded", () => {
       return res.json();
     })
     .then(data => {
-      const student = data.student || data; // fallback if backend wraps in student object
+      const student = data.student || data; // fallback if backend wraps in "student"
 
-      // Personal Details
+      // Personal
       personalContainer.innerHTML = `
-        <p><strong>Name:</strong> ${student.name || "N/A"}</p>
-        <p><strong>Roll Number:</strong> ${student.rollNumber || "N/A"}</p>
-        <p><strong>Degree:</strong> ${student.degree || "N/A"}</p>
-        <p><strong>Department:</strong> ${student.department || "N/A"}</p>
-        <p><strong>DOB:</strong> ${student.dob || "N/A"}</p>
+        <p><strong>Name:</strong> ${student.name || "Not Provided"}</p>
+        <p><strong>Roll Number:</strong> ${student.rollNumber || "Not Provided"}</p>
+        <p><strong>Degree:</strong> ${student.degree || "Not Provided"}</p>
+        <p><strong>Department:</strong> ${student.department || "Not Provided"}</p>
+        <p><strong>DOB:</strong> ${student.dob || "Not Provided"}</p>
       `;
 
-      // Academic
+      // Academic (hidden initially, shown only when More Info clicked)
       if (data.academic) {
         academicContainer.innerHTML = `
-          <p><strong>Year:</strong> ${data.academic.year || "N/A"}</p>
-          <p><strong>GPA:</strong> ${data.academic.gpa || "N/A"}</p>
-          <p><strong>Achievements:</strong> ${data.academic.achievements || "N/A"}</p>
+          <h3>Academic Details</h3>
+          <p><strong>Year:</strong> ${data.academic.year || "Not Provided"}</p>
+          <p><strong>GPA:</strong> ${data.academic.gpa || "Not Provided"}</p>
+          <p><strong>Achievements:</strong> ${data.academic.achievements || "Not Provided"}</p>
         `;
       }
 
       // Skills
       if (data.skills && data.skills.length) {
-        skillsContainer.innerHTML = data.skills.map(skill => `<p>• ${skill}</p>`).join("");
-      }
-
-      // Additional
-      if (data.additional) {
-        additionalContainer.innerHTML = `
-          <p><strong>Hobbies:</strong> ${data.additional.hobbies || "N/A"}</p>
-          <p><strong>Projects:</strong> ${data.additional.projects || "N/A"}</p>
+        skillsContainer.innerHTML = `
+          <h3>Skills</h3>
+          ${data.skills.map(skill => `<p>• ${skill}</p>`).join("")}
         `;
       }
     })
@@ -64,19 +59,11 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("Error fetching details:", err);
     });
 
-  // More Info toggle
+  // More Info toggle (academic + skills)
   moreInfoBtn.addEventListener("click", () => {
     moreInfoSection.classList.toggle("hidden");
     moreInfoBtn.innerText = moreInfoSection.classList.contains("hidden")
       ? "More Info"
       : "Hide Info";
-  });
-
-  // Hamburger Menu
-  const hamburger = document.querySelector(".hamburger");
-  const sideMenu = document.querySelector(".side-menu");
-
-  hamburger.addEventListener("click", () => {
-    sideMenu.classList.toggle("active");
   });
 });
