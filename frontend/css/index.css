@@ -1,0 +1,94 @@
+/* ------------------------------------------------------------------- */
+/* 1. GLOBAL STYLES (Key to Centering) */
+/* ------------------------------------------------------------------- */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    /* Light blue background matching your image */
+    background-color: #e0f2f7; 
+    min-height: 100vh;
+    display: flex;
+    /* Use flexbox to center content */
+    justify-content: center; /* Centers horizontally */
+    align-items: center;     /* Centers vertically */
+}
+
+/* ------------------------------------------------------------------- */
+/* 2. HEADER/LOGO (Placed absolutely at the top so it doesn't interfere with centering) */
+/* ------------------------------------------------------------------- */
+.header-box {
+    position: absolute; /* Ensures it sits outside the main flex content flow */
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 40px;
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    box-sizing: border-box; 
+    background-color: white; /* White strip for header */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional subtle line under header */
+}
+
+.main-header-text {
+    margin: 0; 
+    font-size: 2em;
+    font-weight: 600;
+    color: #004d99; /* Dark blue color */
+    text-align: center; 
+    flex-grow: 1; /* Pushes logo to the right */
+}
+
+.university-logo {
+    width: 200px;
+    height: auto;
+}
+
+/* ------------------------------------------------------------------- */
+/* 3. MAIN LOGIN CONTAINER (THE SMALL BOX - NOW CENTERED) */
+/* ------------------------------------------------------------------- */
+.container {
+    /* Since body is flex and centering, we remove absolute/transform properties */
+    background-color: #ffffff; 
+    padding: 25px 40px; /* Small padding */
+    border-radius: 10px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* Shadow matching your image */
+    text-align: center;
+    max-width: 300px; 
+    width: 100%;
+    
+    /* Ensure only the button is inside, so no need for internal flex layout */
+    /* Remove any margin: auto or transform properties that could conflict */
+}
+
+/* ------------------------------------------------------------------- */
+/* 4. LOGIN BUTTON STYLES (No change needed here) */
+/* ------------------------------------------------------------------- */
+button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    font-size: 1.1em;
+    cursor: pointer;
+    background-color: #0078D4; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #005a9e;
+}
+
+.microsoft-logo-button {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    margin-right: 10px;
+    background-color: white; 
+    padding: 2px;
+    object-fit: contain; 
+}
