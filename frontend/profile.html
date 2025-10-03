@@ -3,51 +3,45 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Dashboard</title>
-  <link rel="stylesheet" href="css/style.css?v=3">
+  <title>Student Profile</title>
+  <link rel="stylesheet" href="css/profile.css">
 </head>
 <body>
 
-  <!-- ===== Dashboard Container ===== -->
-  <div class="dashboard-container">
+  <!-- Sidebar Menu -->
+  <div class="side-menu" id="sideMenu">
+    <h2>Placement Portfolio</h2>
+    <button id="btnDashboard">Dashboard</button>
 
-    <!-- ===== Student Info Card ===== -->
-    <div class="student-card">
-      <img id="userPhoto" alt="Profile Photo">
-      <h2 id="userName">Student Name</h2>
+    <!-- Collapsible Menu -->
+    <button class="collapsible">My Details</button>
+    <div class="submenu">
+      <button id="btnPersonal">Personal Details</button>
+      <button id="btnAcademic">Academic Details</button>
+      <button id="btnSkills">Skills & Programs</button>
+      <button id="btnAdditional">Additional Info</button>
+    </div>
+
+    <button id="btnViewPortfolio">View Portfolio</button>
+    <button id="btnDownloadPortfolio">Download Portfolio</button>
+    <button id="btnLogout">Logout</button>
+  </div>
+
+  <!-- Main Content -->
+  <div class="profile-content">
+    <div class="profile-card">
+      <img id="userPhoto" alt="User Photo">
+      <h3 id="userName"></h3>
       <p>Email: <span id="userEmail"></span></p>
       <p>Roll No: <span id="userRoll"></span></p>
     </div>
 
-    <!-- ===== Navigation Menu ===== -->
-    <nav class="dashboard-menu">
-      <button onclick="goToPage('dashboard-home.html')">Dashboard / Home</button>
-      
-      <!-- My Details Section -->
-      <div class="menu-group">
-        <span>My Details</span>
-        <button onclick="goToPage('personal.html')">Personal Details</button>
-        <button onclick="goToPage('academic.html')">Academic Details</button>
-        <button onclick="goToPage('skills.html')">Skills & Programs</button>
-        <button onclick="goToPage('additional.html')">Additional Info</button>
-      </div>
-
-      <!-- Portfolio Section -->
-      <div class="menu-group">
-        <span>Portfolio</span>
-        <button onclick="goToPage('portfolio-view.html')">View Portfolio</button>
-        <button onclick="downloadPortfolio()">Download Portfolio</button>
-      </div>
-
-      <!-- Settings Section -->
-      <div class="menu-group">
-        <span>Settings</span>
-        <button onclick="logout()">Logout</button>
-      </div>
-    </nav>
-
+    <div class="dashboard-message">
+      <h2>Welcome to Your Placement Portfolio Dashboard</h2>
+      <p>Use the sidebar menu to view and edit your details, check your skills, or view your portfolio.</p>
+    </div>
   </div>
 
-  <script src="js/profile.js" defer></script>
+  <script src="js/profile.js"></script>
 </body>
 </html>
