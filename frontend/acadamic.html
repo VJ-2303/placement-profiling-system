@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Placement Portfolio - Academic Details</title>
+  <link rel="stylesheet" href="css/styles.css">
+  
+</head>
+<body>
+
+  <div>
+    <!-- Header -->
+    <header>
+      <h1>Placement Portfolio</h1>
+      <h2>Academic Details (Page 2 of 3)</h2>
+      <p>Please enter your marks and current academic status accurately.</p>
+    </header>
+
+    <!-- Added form id -->
+    <form id="academicForm">
+
+      <!-- 1. Pre-University Grades -->
+      <section>
+        <h3>1. Pre-University Grades</h3>
+        <div>
+          <label for="tenth_percentage">10th Grade Percentage:</label>
+          <input type="text" id="tenth_percentage" name="tenth_percentage">
+        </div>
+        <div>
+          <label for="twelth_percentage">12th / Diploma Percentage:</label>
+          <input type="text" id="twelth_percentage" name="twelth_percentage">
+        </div>
+      </section>
+
+      <!-- 2. Undergraduate CGPA -->
+      <section>
+        <h3>2. Semester CGPA Scores (Max 10)</h3>
+        <div>
+          <label for="cgpa_sem1">Sem 1 CGPA:</label>
+          <input type="text" id="cgpa_sem1" name="cgpa_sem1">
+        </div>
+        <div>
+          <label for="cgpa_sem2">Sem 2 CGPA:</label>
+          <input type="text" id="cgpa_sem2" name="cgpa_sem2">
+        </div>
+        <div>
+          <label for="cgpa_sem3">Sem 3 CGPA:</label>
+          <input type="text" id="cgpa_sem3" name="cgpa_sem3">
+        </div>
+        <div>
+          <label for="cgpa_sem4">Sem 4 CGPA:</label>
+          <input type="text" id="cgpa_sem4" name="cgpa_sem4">
+        </div>
+        <div>
+          <label for="cgpa_overall">UG Overall CGPA (Actual):</label>
+          <input type="text" id="cgpa_overall" name="cgpa_overall">
+          <p>Note: Enter the exact CGPA, do not round off.</p>
+        </div>
+      </section>
+
+      <!-- 3. Backlog Details -->
+      <section>
+        <h3>3. Backlog Status</h3>
+        <div>
+          <label for="current_backlogs">Current Number of Backlogs:</label>
+          <input type="number" id="current_backlogs" name="current_backlogs" min="0">
+        </div>
+        <div class="radio-group">
+          <label>Backlog History (Yes/No):</label>
+          <label>
+            <input type="radio" name="has_backlog_history" value="Yes">
+            Yes (Cleared previously)
+          </label>
+          <label>
+            <input type="radio" name="has_backlog_history" value="No">
+            No (Never had arrears)
+          </label>
+          <p>Select 'Yes' if you had arrears but have cleared them.</p>
+        </div>
+      </section>
+
+      <!-- Navigation Buttons -->
+      <div>
+        <button type="button" onclick="saveAndNavigateBack('academicForm', 'personal.html')">
+          &larr; Back to Personal Details
+        </button>
+        <div></div>
+        <button type="button" onclick="saveAndNavigateToSkills()">
+          Save & Continue to Program Details & Skills &rarr;
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+
+  <script>
+    // Initialize form with saved data if any
+    window.onload = () => initializePage('academicForm');
+  </script>
+
+<script src="js/app.js" defer></script>
+</body>
+</html>

@@ -1,162 +1,118 @@
-// app.js
-// Single script file containing all application logic (storage, load, and navigation)
-
 const STORAGE_KEY = 'placementPortfolioData';
 
-// --- Utility Functions: Data Persistence and Retrieval ---
-
-/**
- * Loads data from localStorage and populates the form fields.
- * @param {string} formId - The ID of the form element.
- */
+// --- Load Data into Form ---
 function loadData(formId) {
     const storedData = localStorage.getItem(STORAGE_KEY);
     if (storedData) {
         const data = JSON.parse(storedData);
         const form = document.getElementById(formId);
-        
-        // Iterate over all form elements and populate them
-        form.querySelectorAll('input, select, textarea').forEach(element => {
-            if (data[element.name] !== undefined && data[element.name] !== null) {
-                if (element.type === 'radio') {
-                    if (element.value === data[element.name]) {
-                        element.checked = true;
-                    }
+        if (!form) return;
+        form.querySelectorAll('input, select, textarea').forEach(el => {
+            if (data[el.name] !== undefined && data[el.name] !== null) {
+                if (el.type === 'radio') {
+                    if (el.value === data[el.name]) el.checked = true;
                 } else {
-                    element.value = data[element.name];
+                    el.value = data[el.name];
                 }
             }
         });
     }
 }
 
-/**
- * Collects data from the specified form and saves it to localStorage.
- * @param {string} formId - The ID of the form element.
- * @returns {Object} The collected data object.
- */
+// --- Save Current Form Data ---
 function saveCurrentData(formId) {
     const form = document.getElementById(formId);
+    if (!form) return {};
     const formData = new FormData(form);
     const data = {};
-
-    // Collect form data
     for (const [key, value] of formData.entries()) {
-        // Sanitize input: replace empty strings with null if needed
-        data[key] = value === '' ? null : value; 
+        data[key] = value === '' ? null : value;
     }
-
-    // Merge with existing data in localStorage (if any)
     const existingData = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
     const newData = { ...existingData, ...data };
-    
     localStorage.setItem(STORAGE_KEY, JSON.stringify(newData));
     return newData;
 }
 
-/**
- * Saves current form data and navigates to the next page.
- * @param {string} formId - The ID of the form element.
- * @param {string} nextPage - The HTML file to navigate to.
- */
+// --- Save and Navigate ---
 function saveAndNavigate(formId, nextPage) {
     saveCurrentData(formId);
     window.location.href = nextPage;
 }
 
-// --- Page-Specific Navigation Functions (Exposed to HTML) ---
+// --- Save and Navigate Back ---
+function saveAndNavigateBack(formId, prevPage) {
+    saveCurrentData(formId);
+    window.location.href = prevPage;
+}
 
-// PERSONAL PAGE (personal.html) navigation
-window.saveAndNavigateToAcademic = () => {
-    saveAndNavigate('personalForm', 'academic.html');
-};
+// --- Navigation Functions ---
+window.saveAndNavigateToAcademic = () => saveAndNavigate('personalForm', 'acadamic.html');
+window.saveAndNavigateToSkills = () => saveAndNavigate('academicForm', 'skills.html');
+window.saveAndNavigateToPersonal = () => saveAndNavigate('academicForm', 'personal.html');
+window.saveAndNavigateToAcademicFromSkills = () => saveAndNavigate('skillsForm', 'acadamic.html');
 
-// ACADEMIC PAGE (academic.html) navigation
-window.saveAndNavigateToSkills = () => {
-    saveAndNavigate('academicForm', 'skills.html');
-};
+// --- Initialize Page ---
+window.initializePage = (formId) => loadData(formId);
 
-window.saveAndNavigateToPersonal = () => {
-    saveAndNavigate('academicForm', 'personal.html');
-};
-
-// SKILLS PAGE (skills.html) navigation
-window.saveAndNavigateToAcademicFromSkills = () => {
-    saveAndNavigate('skillsForm', 'academic.html');
-};
-
-/**
- * Consolidates all data, formats it, displays it, and handles final submission.
- */
-window.finalSubmission = () => {
-    // 1. Save any final changes from the current page
+// --- Final Submission to Backend ---
+window.finalSubmission = async () => {
+    // Save all forms before submission
+    saveCurrentData('personalForm');
+    saveCurrentData('academicForm');
     saveCurrentData('skillsForm');
-    
-    // 2. Retrieve the complete JSON object
+
     const finalData = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-    
-    // 3. Format/Clean up the final object
+
+    // Replace empty/null values with "-"
     const formattedData = {};
     for (const key in finalData) {
         let value = finalData[key];
-        
-        // Handle explicit null string replacement
-        if (value === 'null') {
-            value = null;
-        } 
-        // Replace genuinely empty strings (from non-required fields left blank) with '-'
-        else if (typeof value === 'string' && value.trim() === '') {
-            value = '-';
-        }
-
+        if (value === 'null' || value === null || value === '') value = '-';
         formattedData[key] = value;
     }
 
-    const jsonOutput = JSON.stringify(formattedData, null, 4);
+    // Get auth token (this is stored separately in localStorage, not merged into finalData)
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+        alert("You must login first!");
+        return;
+    }
 
-    // 4. Display the result in the dedicated area
-    const resultArea = document.getElementById('resultArea');
-    const outputContainer = document.getElementById('outputContainer');
-    const mainFormContainer = document.getElementById('mainFormContainer');
-    const copyButton = document.getElementById('copyButton');
-    const copyMessage = document.getElementById('copyMessage');
+    try {
+        const response = await fetch("https://placement-profiling-system-production.up.railway.app/profile/complete", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`   // token goes in headers, not in body
+            },
+            body: JSON.stringify(formattedData)
+        });
 
-    if (resultArea && outputContainer && mainFormContainer) {
-        resultArea.textContent = jsonOutput;
-        outputContainer.classList.remove('hidden');
-        mainFormContainer.classList.add('hidden');
-
-        // Logic for copying JSON to clipboard
-        copyButton.onclick = () => {
-             // Create a dummy textarea to hold the text
-            const dummy = document.createElement("textarea");
-            document.body.appendChild(dummy);
-            dummy.value = jsonOutput;
-            dummy.select();
-            // Use document.execCommand('copy') for better iframe compatibility
-            document.execCommand('copy');
-            document.body.removeChild(dummy);
-            
-            copyMessage.classList.remove('hidden');
-            setTimeout(() => {
-                copyMessage.classList.add('hidden');
-            }, 2000);
-        };
-        
-        // Print to console for visibility
-        console.log("--- FINAL CONSOLIDATED JSON OUTPUT ---");
-        console.log(formattedData);
-        console.log("--------------------------------------");
-
-    } else {
-        console.error("DOM elements for output not found.");
+        if (response.ok) {
+            alert("Portfolio submitted successfully!");
+            console.log("--- SUBMITTED DATA ---", formattedData);
+            localStorage.removeItem(STORAGE_KEY); // clear saved data
+            window.location.href = "profile.html"; // redirect after success
+        } else {
+            const error = await response.json();
+            alert("Error submitting portfolio: " + (error.message || response.statusText));
+        }
+    } catch (err) {
+        console.error(err);
+        alert("Network or server error occurred!");
     }
 };
 
-
-// --- Initialization ---
-
-// Global function to initialize the correct page on load
-window.initializePage = (formId) => {
-    loadData(formId);
+// --- Optional: Copy JSON for debugging ---
+window.copyFinalData = () => {
+    const finalData = localStorage.getItem(STORAGE_KEY);
+    if (!finalData) return;
+    const dummy = document.createElement("textarea");
+    document.body.appendChild(dummy);
+    dummy.value = finalData;
+    dummy.select();
+    document.execCommand('copy');
+    document.body.removeChild(dummy);
+    alert("Data copied to clipboard!");
 };
