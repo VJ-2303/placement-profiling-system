@@ -1,5 +1,14 @@
 // ---------------- Check Token and Fetch Student Info ----------------
 window.onload = function() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const tokenFromUrl = urlParams.get('token');
+
+  if (tokenFromUrl) {
+    localStorage.setItem("authToken", tokenFromUrl);
+    // Clean the URL by removing the token parameter
+    window.history.replaceState({}, document.title, window.location.pathname);
+  }
+
   const token = localStorage.getItem("authToken");
 
   if (!token) {
