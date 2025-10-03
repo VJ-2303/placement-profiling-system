@@ -7,29 +7,33 @@
 }
 
 /* ---------------- Body ---------------- */
+html, body {
+  height: 100%;
+}
+
 body {
-  min-height: 100vh;
-  display: flex;                /* Flex layout */
-  justify-content: center;      /* Center horizontally */
-  align-items: center;          /* Center vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background: linear-gradient(135deg, #4a90e2, #1c3c88);
-  margin: 0;
+  padding: 20px;
 }
 
 /* ---------------- Login Container ---------------- */
 .container {
-  width: 360px;
+  width: 100%;
+  max-width: 360px;
   background-color: #fff;
   padding: 40px 30px;
   border-radius: 20px;
   text-align: center;
-  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.15);
   transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .container:hover {
   transform: translateY(-5px);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
 }
 
 .container h1 {
@@ -39,7 +43,8 @@ body {
 }
 
 .container button {
-  padding: 12px 25px;
+  width: 100%;
+  padding: 12px 0;
   background: #1c3c88;
   border: none;
   color: #fff;
@@ -54,27 +59,52 @@ body {
   transform: translateY(-2px);
 }
 
-/* ---------------- Sidebar Menu (Profile) ---------------- */
-.side-menu {
+/* ---------------- Hamburger Menu ---------------- */
+.hamburger {
+  display: none;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 30px;
+  height: 22px;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+.hamburger div {
+  height: 4px;
+  background: #fff;
+  border-radius: 2px;
+}
+
+/* ---------------- Sidebar Menu ---------------- */
+.sidebar {
   width: 220px;
   background-color: #1c3c88;
-  color: #fff;
+  color: white;
   display: flex;
   flex-direction: column;
   padding: 20px;
   min-height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  transition: transform 0.3s ease;
+  z-index: 1000;
 }
 
-.side-menu h2 {
+.sidebar h2 {
   text-align: center;
   margin-bottom: 20px;
   font-size: 20px;
 }
 
-.side-menu button {
+.sidebar button {
   background-color: #1c3c88;
   border: none;
-  color: #fff;
+  color: white;
   padding: 12px;
   margin: 5px 0;
   text-align: left;
@@ -84,7 +114,7 @@ body {
   transition: background 0.3s;
 }
 
-.side-menu button:hover {
+.sidebar button:hover {
   background-color: #164070;
 }
 
@@ -107,12 +137,11 @@ body {
   margin: 3px 0;
 }
 
-/* ---------------- Profile Content ---------------- */
-.profile-content {
+/* ---------------- Main Content ---------------- */
+.main-content {
   flex-grow: 1;
+  margin-left: 240px;
   padding: 40px;
-  display: flex;
-  flex-direction: column;
 }
 
 .profile-card {
@@ -120,7 +149,7 @@ body {
   padding: 25px 30px;
   border-radius: 15px;
   width: 350px;
-  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.15);
   margin-bottom: 30px;
   text-align: center;
 }
@@ -131,7 +160,7 @@ body {
   border-radius: 50%;
   margin-bottom: 15px;
   object-fit: cover;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
 }
 
 .profile-card h3 {
@@ -147,44 +176,54 @@ body {
   color: #222;
 }
 
-/* ---------------- Flex Layout ---------------- */
-body > .side-menu,
-.profile-content {
-  display: flex;
-}
-
-.profile-content {
-  flex-direction: column;
-  flex-grow: 1;
-}
-
 /* ---------------- Responsive ---------------- */
 @media (max-width: 768px) {
   body {
     flex-direction: column;
-    align-items: stretch;
   }
 
-  .side-menu {
-    width: 100%;
-    flex-direction: row;
-    overflow-x: auto;
-    min-height: auto;
-    padding: 10px;
+  .hamburger {
+    display: flex;
   }
 
-  .side-menu button {
-    flex: 1;
-    margin: 5px;
+  .sidebar {
+    transform: translateX(-100%);
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+
+  .sidebar.active {
+    transform: translateX(0);
+  }
+
+  .main-content {
+    margin-left: 0;
+    padding: 20px;
+  }
+
+  .sidebar button {
     font-size: 13px;
     padding: 10px;
   }
 
-  .profile-content {
-    padding: 20px;
-  }
-
   .profile-card {
     width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 30px 20px;
+    width: 100%;
+  }
+
+  .container h1 {
+    font-size: 24px;
+  }
+
+  .container button {
+    font-size: 14px;
+    padding: 10px 0;
   }
 }
