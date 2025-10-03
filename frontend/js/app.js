@@ -46,7 +46,6 @@ function saveAndNavigateBack(formId, prevPage) {
     window.location.href = prevPage;
 }
 
-
 // --- Navigation Functions ---
 window.saveAndNavigateToAcademic = () => saveAndNavigate('personalForm', 'acadamic.html');
 window.saveAndNavigateToSkills = () => saveAndNavigate('academicForm', 'skills.html');
@@ -58,7 +57,11 @@ window.initializePage = (formId) => loadData(formId);
 
 // --- Final Submission to Backend ---
 window.finalSubmission = async () => {
+    // Save all forms before submission
+    saveCurrentData('personalForm');
+    saveCurrentData('academicForm');
     saveCurrentData('skillsForm');
+
     const finalData = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
 
     // Replace empty/null values with "-"
@@ -69,7 +72,7 @@ window.finalSubmission = async () => {
         formattedData[key] = value;
     }
 
-    // Get auth token
+    // Get auth token (this is stored separately in localStorage, not merged into finalData)
     const token = localStorage.getItem('authToken');
     if (!token) {
         alert("You must login first!");
@@ -81,7 +84,7 @@ window.finalSubmission = async () => {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
+                "Authorization": `Bearer ${token}`   // token goes in headers, not in body
             },
             body: JSON.stringify(formattedData)
         });
