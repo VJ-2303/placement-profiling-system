@@ -10,25 +10,23 @@
 body {
   min-height: 100vh;
   display: flex;
-  justify-content: center;      /* Center for login */
-  align-items: center;          /* Center for login */
+  justify-content: center;      
+  align-items: center;          
   background: linear-gradient(135deg, #4a90e2, #1c3c88);
   margin: 0;
   padding: 20px;
-  position: relative;           /* for hamburger positioning */
 }
 
 /* ---------------- Login Container ---------------- */
 .container {
-  width: 100%;
-  max-width: 360px;
+  width: 350px;                /* Fixed size for all screens */
+  max-width: 90%;              /* Responsive on very small devices */
   background-color: #fff;
   padding: 40px 30px;
   border-radius: 20px;
   text-align: center;
   box-shadow: 0 12px 25px rgba(0,0,0,0.15);
   transition: transform 0.3s, box-shadow 0.3s;
-  margin: 0 auto;
 }
 
 .container:hover {
@@ -61,7 +59,7 @@ body {
 
 /* ---------------- Hamburger Menu ---------------- */
 .hamburger {
-  display: none;              /* default hidden for large screens */
+  display: flex;               /* Always visible */
   position: fixed;
   top: 20px;
   left: 20px;
@@ -90,6 +88,15 @@ body {
   padding: 20px;
   min-height: 100vh;
   transition: transform 0.3s ease-in-out;
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform: translateX(-100%);   /* Hidden initially */
+  z-index: 1000;
+}
+
+.sidebar.active {
+  transform: translateX(0);       /* Slide in */
 }
 
 .sidebar h2 {
@@ -137,21 +144,21 @@ body {
 /* ---------------- Main Content ---------------- */
 .main-content {
   flex-grow: 1;
-  padding: 40px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: center;     
+  justify-content: center; 
   min-height: 100vh;
   transition: margin-left 0.3s;
 }
 
-/* Profile Card */
+/* ---------------- Profile Card ---------------- */
 .profile-card {
   background-color: #fff;
   padding: 25px 30px;
   border-radius: 15px;
-  width: 350px;
+  width: 350px;                 /* Fixed size */
+  max-width: 90%;
   box-shadow: 0 12px 25px rgba(0,0,0,0.15);
   text-align: center;
 }
@@ -184,6 +191,7 @@ body {
   color: #555;
 }
 
+/* Subtle divider */
 .profile-container hr {
   margin: 20px 0;
   border: none;
@@ -191,6 +199,7 @@ body {
   background: #eee;
 }
 
+/* Optional tagline */
 .profile-container .tagline {
   font-size: 14px;
   color: #888;
@@ -198,63 +207,13 @@ body {
   font-style: italic;
 }
 
-/* ---------------- University Logo ---------------- */
+/* ---------------- Logo ---------------- */
 .university-logo {
   position: absolute;
-  top: 20px;
-  left: 20px;
-  width: 250px;
-  height: auto;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  z-index: 10;
-}
-
-/* ---------------- Responsive ---------------- */
-@media (max-width: 1024px) {
-  .hamburger {
-    display: flex;  /* show hamburger on small/medium screens */
-  }
-
-  .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    transform: translateX(-100%); /* hidden by default */
-    height: 100%;
-    z-index: 1000;
-  }
-
-  .sidebar.active {
-    transform: translateX(0);      /* show sidebar when active */
-  }
-
-  .main-content {
-    padding: 20px;
-  }
-}
-
-@media (max-width: 768px) {
-  .main-content {
-    padding: 15px;
-  }
-
-  .profile-card {
-    width: 90%;
-  }
-}
-
-@media (max-width: 480px) {
-  .container {
-    width: 100%;
-    padding: 30px 20px;
-  }
-
-  .container h1 {
-    font-size: 24px;
-  }
-
-  .container button {
-    font-size: 14px;
-    padding: 10px 0;
-  }
+  top: 20px;  
+  left: 20px; 
+  width: 250px; 
+  height: auto; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+  z-index: 10; 
 }
