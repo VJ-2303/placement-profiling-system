@@ -176,52 +176,48 @@ body {
   color: #222;
 }
 
-/* ---------------- Responsive ---------------- */
-@media (max-width: 1024px) {
-  .hamburger {
-    display: flex;           /* show hamburger on smaller screens */
-  }
-
-  .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    transform: translateX(-100%); /* hidden by default */
-    height: 100%;
-    z-index: 1000;
-  }
-
-  .sidebar.active {
-    transform: translateX(0);      /* show sidebar when active */
-  }
-
-  .main-content {
-    padding: 20px;
-  }
+.profile-container p {
+  margin: 5px 0;
+  font-size: 16px;
+  color: #555;
 }
 
-@media (max-width: 768px) {
-  .main-content {
-    padding: 15px;
-  }
-
-  .profile-card {
-    width: 90%;
-  }
+/* Subtle divider */
+.profile-container hr {
+  margin: 20px 0;
+  border: none;
+  height: 1px;
+  background: #eee;
 }
 
-@media (max-width: 480px) {
-  .container {
-    width: 100%;
-    padding: 30px 20px;
-  }
+/* Optional tagline */
+.profile-container .tagline {
+  font-size: 14px;
+  color: #888;
+  margin-top: 10px;
+  font-style: italic;
+}
+/* Styling for the logo */
+.university-logo {
+    
+    position: absolute;
+    
+    
+    top: 20px;  
+    left: 20px; 
+    
+   
+    width: 250px; 
+    height: auto; 
+    
+   
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+    
+    
+    z-index: 10; 
+}
 
-  .container h1 {
-    font-size: 24px;
-  }
-
-  .container button {
-    font-size: 14px;
-    padding: 10px 0;
-  }
+.container {
+   
+    margin-top: 100px; 
 }
