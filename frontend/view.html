@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Profile</title>
+  <link rel="stylesheet" href="css/view.css">
+</head>
+<body>
+  <!-- Hamburger menu -->
+  <div class="hamburger">&#9776;</div>
+  <nav class="side-menu">
+    <a href="view.html">Profile</a>
+    <a href="forms.html">Forms</a>
+    <a href="logout.html">Logout</a>
+  </nav>
+
+  <!-- Profile box -->
+  <div class="container">
+    <h2>Personal Details</h2>
+    <div class="card" id="personal-details">
+      <p>Loading...</p>
+    </div>
+
+    <button id="moreInfoBtn">More Info</button>
+
+    <div class="more-info hidden" id="more-info">
+      <h2>Academic Details</h2>
+      <div class="card" id="academic-details"></div>
+
+      <h2>Skills & Programs</h2>
+      <div class="card" id="skills-details"></div>
+
+      <h2>Additional Info</h2>
+      <div class="card" id="additional-details"></div>
+    </div>
+  </div>
+
+  <script src="js/view.js"></script>
+</body>
+</html>
