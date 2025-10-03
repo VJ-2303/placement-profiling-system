@@ -46,8 +46,7 @@ window.onload = function() {
     btnPersonal: "personal.html",
     btnAcademic: "acadamic.html",
     btnSkills: "skills.html",
-    btnAdditional: "additional.html",
-    btnViewPortfolio: "portfolio-view.html"
+    btnViewPortfolio: "view.html"
   };
 
   Object.keys(navMap).forEach(btnId => {
