@@ -74,4 +74,14 @@ window.onload = function() {
       window.location.href = "index.html";
     };
   }
+
+  // ---------------- Hamburger Toggle (New) ----------------
+  const hamburger = document.getElementById("hamburger");
+  const sidebar = document.getElementById("sidebar");
+
+  if (hamburger && sidebar) {
+    hamburger.addEventListener("click", () => {
+      sidebar.classList.toggle("active");
+    });
+  }
 };
