@@ -80,7 +80,7 @@ window.finalSubmission = async () => {
     }
 
     try {
-        const response = await fetch("https://placement-profiling-system-production.up.railway.app/api/submit-portfolio", {
+        const response = await fetch("https://placement-profiling-system-production.up.railway.app/profile/complete", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
