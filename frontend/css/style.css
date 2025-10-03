@@ -9,12 +9,12 @@
 /* ---------------- Body ---------------- */
 body {
   min-height: 100vh;
-  display: flex;             /* Enable flex */
-  justify-content: center;   /* Center horizontally */
-  align-items: center;       /* Center vertically */
+  display: flex;
+  justify-content: center;      /* Center for login */
+  align-items: center;          /* Center for login */
   background: linear-gradient(135deg, #4a90e2, #1c3c88);
   margin: 0;
-  padding: 20px;             /* Optional padding for small screens */
+  padding: 20px;
 }
 
 /* ---------------- Login Container ---------------- */
@@ -30,7 +30,7 @@ body {
 }
 
 .container:hover {
-  transform: translateY(5%) translateY(-5px);
+  transform: translateY(-5px);
   box-shadow: 0 15px 35px rgba(0,0,0,0.2);
 }
 
@@ -59,21 +59,21 @@ body {
 
 /* ---------------- Hamburger Menu ---------------- */
 .hamburger {
-  width: 30px;
-  cursor: pointer;
+  display: none;              /* hidden on large screens */
   position: fixed;
   top: 20px;
   left: 20px;
-  z-index: 1000;
-  display: flex;
   flex-direction: column;
   justify-content: space-between;
+  width: 30px;
   height: 22px;
+  cursor: pointer;
+  z-index: 1001;
 }
 
 .hamburger div {
-  height: 4px;
   width: 100%;
+  height: 4px;
   background-color: #fff;
   border-radius: 2px;
 }
@@ -87,16 +87,7 @@ body {
   flex-direction: column;
   padding: 20px;
   min-height: 100vh;
-  position: fixed;
-  top: 0;
-  left: 0;
-  transform: translateX(-100%);
-  transition: transform 0.3s ease;
-  z-index: 999;
-}
-
-.sidebar.active {
-  transform: translateX(0);
+  transition: transform 0.3s ease-in-out;
 }
 
 .sidebar h2 {
@@ -108,7 +99,7 @@ body {
 .sidebar button {
   background-color: #1c3c88;
   border: none;
-  color: #fff;
+  color: white;
   padding: 12px;
   margin: 5px 0;
   text-align: left;
@@ -141,14 +132,14 @@ body {
   margin: 3px 0;
 }
 
-/* ---------------- Main Profile Content ---------------- */
+/* ---------------- Main Content ---------------- */
 .main-content {
-  margin-left: 0;
-  padding: 20px;
+  flex-grow: 1;
+  padding: 40px;
   display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: center;     /* Center vertically */
   flex-direction: column;
+  align-items: center;         /* Center profile card horizontally */
+  justify-content: center;     /* Center profile card vertically */
   min-height: 100vh;
   transition: margin-left 0.3s;
 }
@@ -159,7 +150,7 @@ body {
   padding: 25px 30px;
   border-radius: 15px;
   width: 350px;
-  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.15);
   text-align: center;
 }
 
@@ -169,16 +160,11 @@ body {
   border-radius: 50%;
   margin-bottom: 15px;
   object-fit: cover;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
 }
 
 .profile-card h3 {
   margin-bottom: 10px;
-}
-
-.dashboard-message {
-  text-align: center;
-  margin-top: 20px;
 }
 
 .dashboard-message h2 {
@@ -191,25 +177,43 @@ body {
 }
 
 /* ---------------- Responsive ---------------- */
-@media (min-width: 769px) {
-  .sidebar {
-    transform: translateX(0); /* Always visible on larger screens */
+@media (max-width: 1024px) {
+  .hamburger {
+    display: flex;           /* show hamburger on smaller screens */
   }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translateX(-100%); /* hidden by default */
+    height: 100%;
+    z-index: 1000;
+  }
+
+  .sidebar.active {
+    transform: translateX(0);      /* show sidebar when active */
+  }
+
   .main-content {
-    margin-left: 220px; /* Space for sidebar */
+    padding: 20px;
   }
 }
 
 @media (max-width: 768px) {
   .main-content {
-    margin-left: 0;
+    padding: 15px;
+  }
+
+  .profile-card {
+    width: 90%;
   }
 }
 
 @media (max-width: 480px) {
   .container {
-    padding: 30px 20px;
     width: 100%;
+    padding: 30px 20px;
   }
 
   .container h1 {
