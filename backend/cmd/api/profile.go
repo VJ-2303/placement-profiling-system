@@ -49,6 +49,12 @@ func (app *application) createStudentProfileHandler(w http.ResponseWriter, r *ht
 		return
 	}
 
+	// Handle nullable pincode
+	pincode := ""
+	if input.Pincode != nil {
+		pincode = *input.Pincode
+	}
+
 	// Insert into student_details
 	details := models.StudentDetails{
 		StudentID:             studentID,
@@ -59,7 +65,7 @@ func (app *application) createStudentProfileHandler(w http.ResponseWriter, r *ht
 		LinkedinProfile:       input.LinkedInUrl,
 		Address:               input.Address,
 		City:                  input.City,
-		Pincode:               input.Pincode,
+		Pincode:               pincode,
 		AdhaarNo:              input.AdhaarNo,
 		ResidenceType:         input.ResidenceType,
 		Strength:              input.Strength,
@@ -165,12 +171,9 @@ func (app *application) createStudentProfileHandler(w http.ResponseWriter, r *ht
 		"Git/Github":                   input.ToolGit,
 		"Linux/Unix":                   input.ToolLinux,
 		"Cloud Basics (AWS/Azure/GCP)": input.ToolCloud,
-		"Competitive Coding (Codeforces/LeetCode/Hackerrank)": input.ToolCompCoding,
-		"Hacker Rank":  input.ToolHackerRank,
-		"Hacker Earth": input.ToolHackerEarth,
-	}
-
-	// Insert skills for this student
+		"Hacker Rank":                  input.ToolHackerRank,
+		"Hacker Earth":                 input.ToolHackerEarth,
+	} // Insert skills for this student
 	for skillName, proficiency := range skillsToInsert {
 		if skillID, ok := skillMap[skillName]; ok && proficiency != "" {
 			err = app.models.StudentSkills.Insert(tx, studentID, skillID, proficiency)

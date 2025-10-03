@@ -19,12 +19,12 @@ CREATE TABLE IF NOT EXISTS student_details (
     linkedin_profile TEXT NOT NULL,
     address TEXT NOT NULL,
     city TEXT NOT NULL,
-    pincode TEXT NOT NULL,
+    pincode TEXT, -- Made nullable as it can be null in JSON
     adhaar_no TEXT NOT NULL,
     residence_type TEXT NOT NULL,
-    strength TEXT NOT NULL,
-    weakness TEXT NOT NULL,
-    remarks TEXT NOT NULL
+    strength TEXT DEFAULT '', -- Made optional with default
+    weakness TEXT DEFAULT '', -- Made optional with default
+    remarks TEXT DEFAULT '' -- Made optional with default
 );
 
 -- Parent/guardian information.
@@ -64,10 +64,10 @@ CREATE TABLE IF NOT EXISTS student_aspirations (
     awards TEXT NOT NULL,
     workshops TEXT NOT NULL,
     internships TEXT NOT NULL,
-    hackathons_attended TEXT NOT NULL,
-    extracurriculars TEXT NOT NULL,
-    club_participation TEXT NOT NULL,
-    future_path TEXT NOT NULL,
+    hackathons_attended TEXT DEFAULT '', -- Made optional with default
+    extracurriculars TEXT DEFAULT '', -- Made optional with default
+    club_participation TEXT DEFAULT '', -- Made optional with default
+    future_path TEXT DEFAULT '', -- Made optional with default
     communication_skills TEXT NOT NULL
 );
 
