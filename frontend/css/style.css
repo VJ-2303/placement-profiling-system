@@ -1,4 +1,4 @@
-/* Reset */
+/* ---------------- Reset ---------------- */
 * {
   margin: 0;
   padding: 0;
@@ -6,14 +6,56 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Body Layout */
+/* ---------------- Body ---------------- */
 body {
-  display: flex;
   min-height: 100vh;
+  display: flex;                /* Enable flex */
+  justify-content: center;      /* Center horizontally */
+  align-items: center;          /* Center vertically */
   background: linear-gradient(135deg, #4a90e2, #1c3c88);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
 }
 
-/* Sidebar Menu */
+/* ---------------- Login Container ---------------- */
+.container {
+  width: 360px;
+  background-color: #fff;
+  padding: 40px 30px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+}
+
+.container h1 {
+  color: #1c3c88;
+  font-size: 28px;
+  margin-bottom: 30px;
+}
+
+.container button {
+  padding: 12px 25px;
+  background: #1c3c88;
+  border: none;
+  color: #fff;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.container button:hover {
+  background: #164070;
+  transform: translateY(-2px);
+}
+
+/* ---------------- Sidebar Menu (Profile) ---------------- */
 .side-menu {
   width: 220px;
   background-color: #1c3c88;
@@ -21,6 +63,7 @@ body {
   display: flex;
   flex-direction: column;
   padding: 20px;
+  min-height: 100vh;
 }
 
 .side-menu h2 {
@@ -62,11 +105,12 @@ body {
   padding-left: 20px;
 }
 
-/* Profile Content */
+/* ---------------- Profile Content ---------------- */
 .profile-content {
   flex-grow: 1;
   padding: 40px;
-  color: #333;
+  display: flex;
+  flex-direction: column;
 }
 
 .profile-card {
@@ -101,7 +145,17 @@ body {
   color: #222;
 }
 
-/* Responsive */
+/* ---------------- Flex Layout ---------------- */
+body > .side-menu, .profile-content {
+  display: flex;
+}
+
+.profile-content {
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+/* ---------------- Responsive ---------------- */
 @media (max-width: 768px) {
   body {
     flex-direction: column;
@@ -111,6 +165,7 @@ body {
     width: 100%;
     flex-direction: row;
     overflow-x: auto;
+    min-height: auto;
   }
 
   .side-menu button {
@@ -120,5 +175,9 @@ body {
 
   .profile-content {
     padding: 20px;
+  }
+
+  .profile-card {
+    width: 100%;
   }
 }
