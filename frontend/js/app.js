@@ -267,39 +267,62 @@ function populateAcademicForm(profile) {
 function populateSkillsForm(profile) {
     if (!profile) return;
     
-    // Fields where frontend ID matches backend JSON key exactly
-    const matchingFields = [
+    // Regular input/textarea/select fields (not radio buttons)
+    const regularFields = [
         // Career aspirations
         'company_aim', 'target_package',
         
         // Certifications & experience
         'certifications', 'internships', 'workshops', 'awards',
         
-        // Programming skills
-        'skill_c', 'skill_cpp', 'skill_java', 'skill_python', 'skill_node_js',
-        'skill_php', 'skill_web_dev', 'skill_flutter', 'skill_sql', 'skill_no_sql',
-        
-        // Concepts
-        'concept_data_structures', 'concept_algos', 'concept_dbms', 'concept_oops',
-        'concept_os', 'concept_networks', 'concept_problem_solving',
-        
-        // Tools
-        'tool_git', 'tool_linux', 'tool_cloud', 'tool_hacker_rank', 'tool_hacker_earth',
-        
-        // Other skills
-        'skill_aptitude', 'skill_reasoning', 'communication_skills',
-        
         // Additional fields
         'hackathons_attended', 'extracurriculars', 'club_participation',
         'future_path', 'strength', 'weakness', 'remarks'
     ];
     
-    // Populate all matching fields
-    matchingFields.forEach(fieldName => {
+    // Radio button fields (proficiency levels)
+    const radioButtonFields = [
+        // Programming skills (radio buttons)
+        'skill_c', 'skill_cpp', 'skill_java', 'skill_python', 'skill_node_js',
+        'skill_php', 'skill_web_dev', 'skill_flutter', 'skill_sql', 'skill_no_sql',
+        
+        // Concepts (radio buttons)
+        'concept_data_structures', 'concept_algos', 'concept_dbms', 'concept_oops',
+        'concept_os', 'concept_networks', 'concept_problem_solving',
+        
+        // Tools (radio buttons) 
+        'tool_git', 'tool_linux', 'tool_cloud', 'tool_hacker_rank', 'tool_hacker_earth',
+        
+        // Other skills (radio buttons)
+        'skill_aptitude', 'skill_reasoning', 'communication_skills'
+    ];
+    
+    // Populate regular fields
+    regularFields.forEach(fieldName => {
         const element = document.getElementById(fieldName);
         if (element && profile[fieldName]) {
             element.value = profile[fieldName];
-            console.log(`✅ Set ${fieldName} = ${profile[fieldName]}`);
+            console.log(`✅ Set regular field ${fieldName} = ${profile[fieldName]}`);
+        }
+    });
+    
+    // Populate radio button fields
+    radioButtonFields.forEach(fieldName => {
+        const profileValue = profile[fieldName];
+        if (profileValue) {
+            // Clear any existing selection for this radio group
+            document.querySelectorAll(`input[name="${fieldName}"]`).forEach(radio => {
+                radio.checked = false;
+            });
+            
+            // Set the correct radio button
+            const radioButton = document.querySelector(`input[name="${fieldName}"][value="${profileValue}"]`);
+            if (radioButton) {
+                radioButton.checked = true;
+                console.log(`✅ Set radio button ${fieldName} = ${profileValue}`);
+            } else {
+                console.log(`❌ Radio button not found for ${fieldName} = ${profileValue}`);
+            }
         }
     });
     
