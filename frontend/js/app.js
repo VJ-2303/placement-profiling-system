@@ -125,16 +125,14 @@ window.finalSubmission = async () => {
 
         if (response.ok) {
             alert("Portfolio submitted successfully!");
-            console.log("--- SUBMITTED DATA ---", formattedData);
-            localStorage.removeItem(STORAGE_KEY); // clear saved data
-            clearProfileCache(); // clear cached profile data so it gets fresh data next time
-            window.location.href = "profile.html"; // redirect after success
+            localStorage.removeItem(STORAGE_KEY);
+            clearProfileCache();
+            window.location.href = "profile.html";
         } else {
             const error = await response.json();
             alert("Error submitting portfolio: " + (error.message || response.statusText));
         }
     } catch (err) {
-        console.error(err);
         alert("Network or server error occurred!");
     }
 };
@@ -157,12 +155,11 @@ window.clearProfileCache = clearProfileCache;
 
 // --- Centralized function to get profile data (cached or fresh) ---
 async function getProfileData() {
-    // Check if we have cached profile data
     const cachedProfile = localStorage.getItem('cachedProfileData');
     const cacheTimestamp = localStorage.getItem('profileCacheTimestamp');
     const cacheExpiry = 5 * 60 * 1000; // 5 minutes cache
     
-    // Use cached data if it exists and is not expired
+    // Use cached data if valid and not expired
     if (cachedProfile && cacheTimestamp) {
         const age = Date.now() - parseInt(cacheTimestamp);
         if (age < cacheExpiry) {
@@ -170,7 +167,6 @@ async function getProfileData() {
         }
     }
     
-    // Fetch fresh data from API
     const token = localStorage.getItem('authToken');
     if (!token) return null;
 
@@ -185,7 +181,6 @@ async function getProfileData() {
         const data = await response.json();
         const profile = data.profile;
         
-        // Cache the profile data
         if (profile) {
             localStorage.setItem('cachedProfileData', JSON.stringify(profile));
             localStorage.setItem('profileCacheTimestamp', Date.now().toString());
@@ -193,7 +188,6 @@ async function getProfileData() {
         
         return profile;
     } catch (error) {
-        console.log('Error fetching profile data:', error);
         return null;
     }
 }
@@ -202,66 +196,33 @@ async function getProfileData() {
 function populatePersonalForm(profile) {
     if (!profile) return;
     
-    // Regular input/textarea fields
-    const inputFields = [
+    const allFields = [
         'name', 'roll_no', 'date_of_birth', 'adhaar_no', 'mobile_number',
-        'alt_mobile_number', 'personal_email', 'linkedin_url', 
-        'address', 'city', 'pincode',
-        // Father's details
-        'father_name', 'father_mobile', 'father_occupation',
-        'father_company_details', 'father_email',
-        // Mother's details  
+        'alt_mobile_number', 'personal_email', 'linkedin_url', 'residence_type',
+        'address', 'city', 'pincode', 'father_name', 'father_mobile', 
+        'father_occupation', 'father_company_details', 'father_email',
         'mother_name', 'mother_mobile', 'mother_occupation', 'mother_email',
-        // Career aspirations - text input
-        'company_aim'
+        'company_aim', 'target_package'
     ];
     
-    // Dropdown/select fields
-    const dropdownFields = [
-        'residence_type',    // Dropdown for residence type
-        'target_package'     // Dropdown for CTC range
-    ];
-    
-    // Populate input fields
-    inputFields.forEach(fieldName => {
+    allFields.forEach(fieldName => {
         const element = document.getElementById(fieldName);
         if (element && profile[fieldName]) {
             element.value = profile[fieldName];
-            console.log(`✅ Set input field ${fieldName} = ${profile[fieldName]}`);
         }
     });
-    
-    // Populate dropdown fields with validation
-    dropdownFields.forEach(fieldName => {
-        const element = document.getElementById(fieldName);
-        if (element && profile[fieldName]) {
-            // Check if the value exists as an option
-            const option = element.querySelector(`option[value="${profile[fieldName]}"]`);
-            if (option) {
-                element.value = profile[fieldName];
-                console.log(`✅ Set dropdown ${fieldName} = ${profile[fieldName]}`);
-            } else {
-                console.log(`❌ Dropdown option not found for ${fieldName} = ${profile[fieldName]}`);
-                console.log(`Available options:`, Array.from(element.options).map(opt => opt.value));
-            }
-        }
-    });
-    
-    console.log('✅ Populated personal form with profile data');
 }
 
 // --- Populate Academic Form Fields ---
 function populateAcademicForm(profile) {
     if (!profile) return;
     
-    // Fields where frontend ID matches backend JSON key exactly
-    const matchingFields = [
+    const academicFields = [
         'tenth_percentage', 'twelth_percentage', 'cgpa_sem1', 'cgpa_sem2',
         'cgpa_sem3', 'cgpa_sem4', 'cgpa_overall', 'current_backlogs'
     ];
     
-    // Populate all matching fields
-    matchingFields.forEach(fieldName => {
+    academicFields.forEach(fieldName => {
         const element = document.getElementById(fieldName);
         if (element && profile[fieldName]) {
             element.value = profile[fieldName];
@@ -270,52 +231,32 @@ function populateAcademicForm(profile) {
     
     // Handle radio buttons for backlog history
     if (profile.has_backlog_history) {
-        console.log('Setting backlog history radio to:', profile.has_backlog_history);
-        // Clear any existing selection first
         document.querySelectorAll('input[name="has_backlog_history"]').forEach(radio => {
             radio.checked = false;
         });
-        // Set the correct value
         const radioButton = document.querySelector(`input[name="has_backlog_history"][value="${profile.has_backlog_history}"]`);
         if (radioButton) {
             radioButton.checked = true;
-            console.log('✅ Set backlog history radio button');
-        } else {
-            console.log('❌ Radio button not found for value:', profile.has_backlog_history);
         }
     }
-    
-    console.log('✅ Populated academic form with profile data');
 }
 
 // --- Populate Skills Form Fields ---
 function populateSkillsForm(profile) {
     if (!profile) return;
     
-    // Regular input/textarea/select fields (not radio buttons)
     const regularFields = [
-        // Certifications & experience
         'certifications', 'internships', 'workshops', 'awards',
-        
-        // Additional fields
         'hackathons_attended', 'extracurriculars', 'club_participation',
         'future_path', 'strength', 'weakness', 'remarks'
     ];
     
-    // Radio button fields (proficiency levels)
     const radioButtonFields = [
-        // Programming skills (radio buttons)
         'skill_c', 'skill_cpp', 'skill_java', 'skill_python', 'skill_node_js',
         'skill_php', 'skill_web_dev', 'skill_flutter', 'skill_sql', 'skill_no_sql',
-        
-        // Concepts (radio buttons)
         'concept_data_structures', 'concept_algos', 'concept_dbms', 'concept_oops',
         'concept_os', 'concept_networks', 'concept_problem_solving',
-        
-        // Tools (radio buttons) 
         'tool_git', 'tool_linux', 'tool_cloud', 'tool_hacker_rank', 'tool_hacker_earth',
-        
-        // Other skills (radio buttons)
         'skill_aptitude', 'skill_reasoning', 'communication_skills'
     ];
     
@@ -324,7 +265,6 @@ function populateSkillsForm(profile) {
         const element = document.getElementById(fieldName);
         if (element && profile[fieldName]) {
             element.value = profile[fieldName];
-            console.log(`✅ Set regular field ${fieldName} = ${profile[fieldName]}`);
         }
     });
     
@@ -332,39 +272,22 @@ function populateSkillsForm(profile) {
     radioButtonFields.forEach(fieldName => {
         const profileValue = profile[fieldName];
         if (profileValue) {
-            // Clear any existing selection for this radio group
             document.querySelectorAll(`input[name="${fieldName}"]`).forEach(radio => {
                 radio.checked = false;
             });
-            
-            // Set the correct radio button
             const radioButton = document.querySelector(`input[name="${fieldName}"][value="${profileValue}"]`);
             if (radioButton) {
                 radioButton.checked = true;
-                console.log(`✅ Set radio button ${fieldName} = ${profileValue}`);
-            } else {
-                console.log(`❌ Radio button not found for ${fieldName} = ${profileValue}`);
             }
         }
     });
-    
-    console.log('✅ Populated skills form with profile data');
 }
 
 // --- Enhanced page initialization with profile data ---
 async function initializePageWithProfile(formId) {
-    console.log('🚀 Initializing page with profile for:', formId);
-    
-    // First fetch profile data from database
     const profile = await getProfileData();
-    console.log('📊 Fetched profile data:', profile);
     
     if (profile) {
-        // Show available profile fields for debugging
-        const nonEmptyFields = Object.entries(profile).filter(([key, value]) => value && value !== '' && value !== null);
-        console.log(`📈 Found ${nonEmptyFields.length} non-empty profile fields:`, nonEmptyFields.map(([key]) => key));
-        
-        // Populate with database data first (priority)
         switch (formId) {
             case 'personalForm':
                 populatePersonalForm(profile);
@@ -376,15 +299,9 @@ async function initializePageWithProfile(formId) {
                 populateSkillsForm(profile);
                 break;
         }
-        console.log('✅ Populated form with database data');
-    } else {
-        console.log('❌ No profile data available');
     }
     
-    // Then load localStorage data only for fields that are still empty
-    // This preserves any unsaved changes while prioritizing database data
     loadDataSelectively(formId);
-    console.log('🔄 Applied localStorage data to empty fields');
 }
 
 // --- Make functions available globally ---
