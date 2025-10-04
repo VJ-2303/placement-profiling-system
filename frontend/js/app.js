@@ -202,142 +202,123 @@ async function getProfileData() {
 function populatePersonalForm(profile) {
     if (!profile) return;
     
-    // Personal information fields
-    const personalFields = [
+    // Fields where frontend ID matches backend JSON key exactly
+    const matchingFields = [
         'name', 'roll_no', 'date_of_birth', 'adhaar_no', 'mobile_number',
         'alt_mobile_number', 'personal_email', 'linkedin_url', 'residence_type',
-        'address', 'city', 'pincode'
-    ];
-    
-    personalFields.forEach(fieldName => {
-        const element = document.getElementById(fieldName);
-        if (element) {
-            // Always use database value if it exists, otherwise keep current value
-            element.value = profile[fieldName] || element.value || '';
-        }
-    });
-
-    // Father's details
-    const fatherFields = [
-        'father_name', 'father_mobile', 'father_occupation', 
-        'father_company_details', 'father_email'
-    ];
-    
-    fatherFields.forEach(fieldName => {
-        const element = document.getElementById(fieldName);
-        if (element) {
-            element.value = profile[fieldName] || element.value || '';
-        }
-    });
-
-    // Mother's details
-    const motherFields = [
+        'address', 'city', 'pincode',
+        // Father's details
+        'father_name', 'father_mobile', 'father_occupation',
+        'father_company_details', 'father_email',
+        // Mother's details
         'mother_name', 'mother_mobile', 'mother_occupation', 'mother_email'
     ];
     
-    motherFields.forEach(fieldName => {
+    // Populate all matching fields
+    matchingFields.forEach(fieldName => {
         const element = document.getElementById(fieldName);
-        if (element) {
-            element.value = profile[fieldName] || element.value || '';
+        if (element && profile[fieldName]) {
+            element.value = profile[fieldName];
         }
     });
+    
+    console.log('✅ Populated personal form with profile data');
 }
 
 // --- Populate Academic Form Fields ---
 function populateAcademicForm(profile) {
     if (!profile) return;
     
-    // Academic fields
-    const academicFields = [
+    // Fields where frontend ID matches backend JSON key exactly
+    const matchingFields = [
         'tenth_percentage', 'twelth_percentage', 'cgpa_sem1', 'cgpa_sem2',
         'cgpa_sem3', 'cgpa_sem4', 'cgpa_overall', 'current_backlogs'
     ];
     
-    academicFields.forEach(fieldName => {
+    // Populate all matching fields
+    matchingFields.forEach(fieldName => {
         const element = document.getElementById(fieldName);
-        if (element) {
-            // Always use database value if it exists, otherwise keep current value
-            element.value = profile[fieldName] || element.value || '';
+        if (element && profile[fieldName]) {
+            element.value = profile[fieldName];
         }
     });
     
     // Handle radio buttons for backlog history
     if (profile.has_backlog_history) {
+        console.log('Setting backlog history radio to:', profile.has_backlog_history);
         // Clear any existing selection first
         document.querySelectorAll('input[name="has_backlog_history"]').forEach(radio => {
             radio.checked = false;
         });
         // Set the correct value
         const radioButton = document.querySelector(`input[name="has_backlog_history"][value="${profile.has_backlog_history}"]`);
-        if (radioButton) radioButton.checked = true;
+        if (radioButton) {
+            radioButton.checked = true;
+            console.log('✅ Set backlog history radio button');
+        } else {
+            console.log('❌ Radio button not found for value:', profile.has_backlog_history);
+        }
     }
+    
+    console.log('✅ Populated academic form with profile data');
 }
 
 // --- Populate Skills Form Fields ---
 function populateSkillsForm(profile) {
     if (!profile) return;
     
-    // Career aspirations
-    const aspirationFields = ['company_aim', 'target_package'];
-    aspirationFields.forEach(fieldName => {
-        const element = document.getElementById(fieldName);
-        if (element) {
-            element.value = profile[fieldName] || element.value || '';
-        }
-    });
-    
-    // Certifications & experience
-    const experienceFields = ['certifications', 'internships', 'workshops', 'awards'];
-    experienceFields.forEach(fieldName => {
-        const element = document.getElementById(fieldName);
-        if (element) {
-            element.value = profile[fieldName] || element.value || '';
-        }
-    });
-    
-    // All skill dropdowns
-    const skillFields = [
+    // Fields where frontend ID matches backend JSON key exactly
+    const matchingFields = [
+        // Career aspirations
+        'company_aim', 'target_package',
+        
+        // Certifications & experience
+        'certifications', 'internships', 'workshops', 'awards',
+        
+        // Programming skills
         'skill_c', 'skill_cpp', 'skill_java', 'skill_python', 'skill_node_js',
         'skill_php', 'skill_web_dev', 'skill_flutter', 'skill_sql', 'skill_no_sql',
+        
+        // Concepts
         'concept_data_structures', 'concept_algos', 'concept_dbms', 'concept_oops',
-        'concept_os', 'concept_networks', 'tool_git', 'tool_linux', 'tool_cloud',
-        'concept_problem_solving', 'tool_hacker_rank', 'tool_hacker_earth',
-        'skill_aptitude', 'skill_reasoning', 'communication_skills'
-    ];
-    
-    skillFields.forEach(fieldName => {
-        const element = document.getElementById(fieldName);
-        if (element) {
-            // For dropdowns, use database value if it exists, otherwise keep current selection
-            if (profile[fieldName]) {
-                element.value = profile[fieldName];
-            }
-        }
-    });
-    
-    // Communication & extracurricular fields (optional fields)
-    const optionalFields = [
+        'concept_os', 'concept_networks', 'concept_problem_solving',
+        
+        // Tools
+        'tool_git', 'tool_linux', 'tool_cloud', 'tool_hacker_rank', 'tool_hacker_earth',
+        
+        // Other skills
+        'skill_aptitude', 'skill_reasoning', 'communication_skills',
+        
+        // Additional fields
         'hackathons_attended', 'extracurriculars', 'club_participation',
         'future_path', 'strength', 'weakness', 'remarks'
     ];
     
-    optionalFields.forEach(fieldName => {
+    // Populate all matching fields
+    matchingFields.forEach(fieldName => {
         const element = document.getElementById(fieldName);
-        if (element) {
-            element.value = profile[fieldName] || element.value || '';
+        if (element && profile[fieldName]) {
+            element.value = profile[fieldName];
+            console.log(`✅ Set ${fieldName} = ${profile[fieldName]}`);
         }
     });
+    
+    console.log('✅ Populated skills form with profile data');
 }
 
 // --- Enhanced page initialization with profile data ---
 async function initializePageWithProfile(formId) {
-    console.log('Initializing page with profile for:', formId);
+    console.log('🚀 Initializing page with profile for:', formId);
     
     // First fetch profile data from database
     const profile = await getProfileData();
-    console.log('Fetched profile data:', profile);
+    console.log('📊 Fetched profile data:', profile);
     
     if (profile) {
+        // Show available profile fields for debugging
+        const nonEmptyFields = Object.entries(profile).filter(([key, value]) => value && value !== '' && value !== null);
+        console.log(`📈 Found ${nonEmptyFields.length} non-empty profile fields:`, nonEmptyFields.map(([key]) => key));
+        
         // Populate with database data first (priority)
         switch (formId) {
             case 'personalForm':
@@ -350,12 +331,15 @@ async function initializePageWithProfile(formId) {
                 populateSkillsForm(profile);
                 break;
         }
-        console.log('Populated form with database data');
+        console.log('✅ Populated form with database data');
+    } else {
+        console.log('❌ No profile data available');
     }
     
     // Then load localStorage data only for fields that are still empty
     // This preserves any unsaved changes while prioritizing database data
     loadDataSelectively(formId);
+    console.log('🔄 Applied localStorage data to empty fields');
 }
 
 // --- Make functions available globally ---
