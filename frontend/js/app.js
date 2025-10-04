@@ -175,7 +175,7 @@ async function getProfileData() {
     if (!token) return null;
 
     try {
-        const response = await fetch('/profile/complete', {
+        const response = await fetch('https://placement-profiling-system-production.up.railway.app/profile/complete', {
             method: 'GET',
             headers: { 'Authorization': 'Bearer ' + token }
         });
