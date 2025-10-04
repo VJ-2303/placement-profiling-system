@@ -202,23 +202,48 @@ async function getProfileData() {
 function populatePersonalForm(profile) {
     if (!profile) return;
     
-    // Fields where frontend ID matches backend JSON key exactly
-    const matchingFields = [
+    // Regular input/textarea fields
+    const inputFields = [
         'name', 'roll_no', 'date_of_birth', 'adhaar_no', 'mobile_number',
-        'alt_mobile_number', 'personal_email', 'linkedin_url', 'residence_type',
+        'alt_mobile_number', 'personal_email', 'linkedin_url', 
         'address', 'city', 'pincode',
         // Father's details
         'father_name', 'father_mobile', 'father_occupation',
         'father_company_details', 'father_email',
-        // Mother's details
-        'mother_name', 'mother_mobile', 'mother_occupation', 'mother_email'
+        // Mother's details  
+        'mother_name', 'mother_mobile', 'mother_occupation', 'mother_email',
+        // Career aspirations - text input
+        'company_aim'
     ];
     
-    // Populate all matching fields
-    matchingFields.forEach(fieldName => {
+    // Dropdown/select fields
+    const dropdownFields = [
+        'residence_type',    // Dropdown for residence type
+        'target_package'     // Dropdown for CTC range
+    ];
+    
+    // Populate input fields
+    inputFields.forEach(fieldName => {
         const element = document.getElementById(fieldName);
         if (element && profile[fieldName]) {
             element.value = profile[fieldName];
+            console.log(`✅ Set input field ${fieldName} = ${profile[fieldName]}`);
+        }
+    });
+    
+    // Populate dropdown fields with validation
+    dropdownFields.forEach(fieldName => {
+        const element = document.getElementById(fieldName);
+        if (element && profile[fieldName]) {
+            // Check if the value exists as an option
+            const option = element.querySelector(`option[value="${profile[fieldName]}"]`);
+            if (option) {
+                element.value = profile[fieldName];
+                console.log(`✅ Set dropdown ${fieldName} = ${profile[fieldName]}`);
+            } else {
+                console.log(`❌ Dropdown option not found for ${fieldName} = ${profile[fieldName]}`);
+                console.log(`Available options:`, Array.from(element.options).map(opt => opt.value));
+            }
         }
     });
     
@@ -269,9 +294,6 @@ function populateSkillsForm(profile) {
     
     // Regular input/textarea/select fields (not radio buttons)
     const regularFields = [
-        // Career aspirations
-        'company_aim', 'target_package',
-        
         // Certifications & experience
         'certifications', 'internships', 'workshops', 'awards',
         
