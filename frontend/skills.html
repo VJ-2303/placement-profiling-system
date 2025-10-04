@@ -5,8 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Placement Portfolio - Program Details & Skills</title>
     <link rel="stylesheet" href="css/styles.css">
-</head>
-<body>
+</hea  <script src="js/app.js"></script>
+  <script>
+    // Initialize form with saved data from localStorage and DB
+    window.onload = async () => {
+      // Initialize page using app.js functions
+      await initializePageWithProfile('skillsForm');
+    };
+  </script>
 <div class="main-container">
     <!-- Header -->
     <header>
@@ -261,9 +267,12 @@
 </div>
     </form>
 
-<script>
-    // Initialize form with saved data if any
-    window.onload = () => initializePage('personalForm');
+  <script>
+    // Initialize form with saved data from localStorage and DB
+    window.onload = async () => {
+      // Initialize page using app.js functions
+      await initializePageWithProfile('skillsForm');
+    };
   </script>
 
 <script src="js/app.js" defer></script> <!-- include app.js -->

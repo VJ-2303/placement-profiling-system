@@ -188,12 +188,14 @@
 
   </div>
 
-  <script>
-    // Initialize form with saved data if any
-    window.onload = () => initializePage('personalForm');
-  </script>
-
-<script src="js/app.js" defer></script> <!-- include app.js -->
+<script src="js/app.js"></script>
+<script>
+  // Initialize form with saved data from localStorage and DB
+  window.onload = async () => {
+    // Initialize page using app.js functions
+    await initializePageWithProfile('personalForm');
+  };
+</script> <!-- include app.js -->
 
 </body>
 </html>
