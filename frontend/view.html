@@ -3,27 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Placement Portfolio - View Profile</title>
+  <title>Student Profile - Placement Portfolio</title>
   <link rel="stylesheet" href="css/view.css">
 </head>
 <body>
   <div class="container">
-    <header>
-      <h1>Placement Portfolio</h1>
-      <h2>Profile Overview</h2>
-    </header>
+    <div class="header">
+      <h1>Student Profile</h1>
+      <p>Complete placement portfolio overview</p>
+    </div>
 
-    <!-- Personal Details -->
-    <section id="personal-details"></section>
+    <div id="loading" class="loading">
+      <div>📊 Loading your profile...</div>
+    </div>
 
-    <!-- More Info -->
-    <button id="moreInfoBtn">More Info</button>
-    <section id="more-info" class="hidden">
-      <div id="academic-details"></div>
-      <div id="skills-details"></div>
-    </section>
+    <div id="profile-container" style="display: none;">
+      <!-- Profile will be populated here -->
+    </div>
+
+    <div class="actions">
+      <button class="btn" onclick="window.location.href='personal.html'">✏️ Edit Profile</button>
+      <button class="btn" onclick="window.location.href='index.html'">🏠 Home</button>
+    </div>
   </div>
 
-  <script src="js/view.js" defer></script>
+  <script src="js/app.js"></script>
+  <script src="js/view.js"></script>
 </body>
 </html>
