@@ -28,12 +28,22 @@ window.onload = function() {
   .then(data => {
     const student = data.student;
 
-    // Fill in profile details
+    // Check localStorage first for uploaded photo
+    const storedData = JSON.parse(localStorage.getItem('placementPortfolioData') || '{}');
+    const uploadedPhoto = storedData.photo || storedData.photoPreviewData; // either key
+
     document.getElementById("userName").innerText = student.name || "Unknown User";
     document.getElementById("userEmail").innerText = student.official_email || "No email found";
     document.getElementById("userRoll").innerText = student.id || "N/A";
-    document.getElementById("userPhoto").src = student.profile_image_url || "https://via.placeholder.com/120";
-  })
+
+    const userPhotoEl = document.getElementById("userPhoto");
+    if (uploadedPhoto) {
+        userPhotoEl.src = uploadedPhoto;  // use uploaded photo
+    } else {
+        userPhotoEl.src = student.profile_image_url || "https://via.placeholder.com/120"; // fallback
+    }
+})
+
   .catch(err => {
     console.error(err);
     alert("Session expired or invalid token. Please login again.");
