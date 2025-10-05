@@ -255,10 +255,4 @@ button:hover {
     color: rgb(16, 16, 16); 
 }
 
-#photoPreview {
-  transition: transform 0.2s ease;
-}
 
-#photoPreview:hover {
-  transform: scale(1.05);
-}

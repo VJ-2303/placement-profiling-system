@@ -202,3 +202,11 @@ label.skill-label {
   color: #1a4d8f; /* darker royal blue */
   font-weight: 600;
 }
+
+#photoPreview {
+  transition: transform 0.2s ease;
+}
+
+#photoPreview:hover {
+  transform: scale(1.05);
+}
