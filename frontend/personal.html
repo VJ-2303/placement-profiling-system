@@ -45,6 +45,17 @@
           <input type="text" id="adhaar_no" name="adhaar_no" required pattern="[\d\s]{12,}" title="Aadhar number must contain 12 digits" maxlength="14">
         </div>
 
+         <div>
+          <label for="photo">Upload Recent Passport Size Photo *</label>
+          <input type="file" id="photo" name="photo" accept="image/*" required onchange="previewPhoto(event)">
+         </div>
+
+  <!-- ✅ Preview Area -->
+          <div id="photoPreviewContainer" style="margin-top:10px; text-align:center;">
+            <img id="photoPreview" src="" alt="Photo Preview" 
+            style="max-width:150px; max-height:150px; border-radius:10px; display:none; border:1px solid #ccc; padding:5px;">
+          </div>
+
       </section>
 
       <!-- 2. Contact & Residential Details -->
