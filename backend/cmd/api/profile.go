@@ -37,8 +37,8 @@ func (app *application) createStudentProfileHandler(w http.ResponseWriter, r *ht
 	defer tx.Rollback()
 
 	// Update students table with roll_no and name
-	_, err = tx.Exec("UPDATE students SET roll_no = $1, name = $2 WHERE id = $3",
-		input.RollNo, input.Name, studentID)
+	_, err = tx.Exec("UPDATE students SET roll_no = $1, name = $2 , photo = $3 WHERE id = $4",
+		input.RollNo, input.Name, input.Photo, studentID)
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 		return

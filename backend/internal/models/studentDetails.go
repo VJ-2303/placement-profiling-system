@@ -19,7 +19,6 @@ type StudentDetails struct {
 	City                  string    `json:"city"`
 	Pincode               string    `json:"pincode"`
 	AdhaarNo              string    `json:"adhaar_no"`
-	Photo                 string    `json:"photo"`
 	ResidenceType         string    `json:"residence_type"`
 	Strength              string    `json:"strength"`
 	Weakness              string    `json:"weakness"`
@@ -152,7 +151,7 @@ func (m StudentDetailsModel) Insert(tx *sql.Tx, details *StudentDetails) error {
 		INSERT INTO student_details (
 			student_id, date_of_birth, mobile_number, alternate_mobile_number,
 			personal_email, linkedin_profile, address, city, pincode, adhaar_no,
-			residence_type, strength, weakness, remarks, photo
+			residence_type, strength, weakness, remarks
 		) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
 		ON CONFLICT (student_id) DO UPDATE SET
 			date_of_birth = EXCLUDED.date_of_birth,
@@ -174,7 +173,7 @@ func (m StudentDetailsModel) Insert(tx *sql.Tx, details *StudentDetails) error {
 		details.StudentID, details.DateOfBirth, details.MobileNumber,
 		details.AlternateMobileNumber, details.PersonalEmail, details.LinkedinProfile,
 		details.Address, details.City, details.Pincode, details.AdhaarNo,
-		details.ResidenceType, details.Strength, details.Weakness, details.Remarks, details.Photo,
+		details.ResidenceType, details.Strength, details.Weakness, details.Remarks,
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
