@@ -23,6 +23,7 @@ type FlatProfileRequest struct {
 	City                 string  `json:"city"`
 	Pincode              *string `json:"pincode"` // Can be null
 	AdhaarNo             string  `json:"adhaar_no"`
+	Photo                string  `json:"photo"`
 	CompanyAim           string  `json:"company_aim"`
 	TargetPackage        string  `json:"target_package"`
 	TenthPercentage      string  `json:"tenth_percentage"`
