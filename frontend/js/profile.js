@@ -1,7 +1,7 @@
 // ---------------- Check Token and Fetch Student Info ----------------
-window.onload = function() {
+window.onload = function () {
   const urlParams = new URLSearchParams(window.location.search);
-  const tokenFromUrl = urlParams.get('token');
+  const tokenFromUrl = urlParams.get("token");
 
   if (tokenFromUrl) {
     localStorage.setItem("authToken", tokenFromUrl);
@@ -17,46 +17,44 @@ window.onload = function() {
     return;
   }
 
-  fetch("https://placement-profiling-system-production.up.railway.app/profile", {
-    method: "GET",
-    headers: { "Authorization": "Bearer " + token }
-  })
-  .then(res => {
-    if (!res.ok) throw new Error("Failed to fetch user info");
-    return res.json();
-  })
-  .then(data => {
-    const student = data.student;
+  fetch(
+    "https://placement-profiling-system-production.up.railway.app/profile",
+    {
+      method: "GET",
+      headers: { Authorization: "Bearer " + token },
+    },
+  )
+    .then((res) => {
+      if (!res.ok) throw new Error("Failed to fetch user info");
+      return res.json();
+    })
+    .then((data) => {
+      const student = data.student;
 
-    // Check localStorage first for uploaded photo
-    const storedData = JSON.parse(localStorage.getItem('placementPortfolioData') || '{}');
-    const uploadedPhoto = storedData.photo || storedData.photoPreviewData; // either key
+      document.getElementById("userName").innerText =
+        student.name || "Unknown User";
+      document.getElementById("userEmail").innerText =
+        student.official_email || "No email found";
+      document.getElementById("userRoll").innerText = student.id || "N/A";
 
-    document.getElementById("userName").innerText = student.name || "Unknown User";
-    document.getElementById("userEmail").innerText = student.official_email || "No email found";
-    document.getElementById("userRoll").innerText = student.id || "N/A";
+      const userPhotoEl = document.getElementById("userPhoto");
+      userPhotoEl.src = student.photo || "https://via.placeholder.com/120"; // fallback
+    })
 
-    const userPhotoEl = document.getElementById("userPhoto");
-    if (uploadedPhoto) {
-        userPhotoEl.src = uploadedPhoto;  // use uploaded photo
-    } else {
-        userPhotoEl.src = student.profile_image_url || "https://via.placeholder.com/120"; // fallback
-    }
-})
-
-  .catch(err => {
-    console.error(err);
-    alert("Session expired or invalid token. Please login again.");
-    localStorage.removeItem("authToken");
-    window.location.href = "index.html";
-  });
+    .catch((err) => {
+      console.error(err);
+      alert("Session expired or invalid token. Please login again.");
+      localStorage.removeItem("authToken");
+      window.location.href = "index.html";
+    });
 
   // ---------------- Collapsible Submenu ----------------
   const collapsibles = document.getElementsByClassName("collapsible");
   for (let i = 0; i < collapsibles.length; i++) {
-    collapsibles[i].addEventListener("click", function() {
+    collapsibles[i].addEventListener("click", function () {
       const submenu = this.nextElementSibling;
-      submenu.style.display = (submenu.style.display === "flex") ? "none" : "flex";
+      submenu.style.display =
+        submenu.style.display === "flex" ? "none" : "flex";
     });
   }
 
@@ -65,13 +63,15 @@ window.onload = function() {
     btnPersonal: "personal.html",
     btnAcademic: "acadamic.html",
     btnSkills: "skills.html",
-    btnViewPortfolio: "view.html"
+    btnViewPortfolio: "view.html",
   };
 
-  Object.keys(navMap).forEach(btnId => {
+  Object.keys(navMap).forEach((btnId) => {
     const btn = document.getElementById(btnId);
     if (btn) {
-      btn.onclick = () => { window.location.href = navMap[btnId]; };
+      btn.onclick = () => {
+        window.location.href = navMap[btnId];
+      };
     }
   });
 

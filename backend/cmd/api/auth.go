@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"strings"
 
 	"github.com/VJ-2303/placement-profiling-system/internal/models"
 )
@@ -82,9 +81,6 @@ func (app *application) callbackHandler(w http.ResponseWriter, r *http.Request) 
 
 	app.logger.Printf("User Info: %+v\n", userInfo)
 
-	photoURL := fmt.Sprintf("https://ui-avatars.com/api/?name=%s&size=200&background=667eea&color=fff&bold=true",
-		strings.ReplaceAll(userInfo.DisplayName, " ", "+"))
-
 	// Determine the email to use
 	email := userInfo.Mail
 	if email == "" {
@@ -98,9 +94,8 @@ func (app *application) callbackHandler(w http.ResponseWriter, r *http.Request) 
 		case errors.Is(err, models.ErrRecordNotFound):
 			// Create new student
 			newStudent := &models.Student{
-				Name:            userInfo.DisplayName,
-				OfficialEmail:   email,
-				ProfileImageURL: photoURL,
+				Name:          userInfo.DisplayName,
+				OfficialEmail: email,
 			}
 
 			err = app.models.Students.Insert(newStudent)

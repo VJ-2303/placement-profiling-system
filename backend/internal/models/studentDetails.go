@@ -90,6 +90,7 @@ type FlatProfileResponse struct {
 	City                  string  `json:"city"`
 	Pincode               string  `json:"pincode"`
 	AdhaarNo              string  `json:"adhaar_no"`
+	Photo                 string  `json:"photo"`
 	CompanyAim            string  `json:"company_aim"`
 	TargetPackage         string  `json:"target_package"`
 	TenthPercentage       string  `json:"tenth_percentage"`
@@ -148,8 +149,8 @@ type StudentDetailsModel struct {
 func (m StudentDetailsModel) Insert(tx *sql.Tx, details *StudentDetails) error {
 	query := `
 		INSERT INTO student_details (
-			student_id, date_of_birth, mobile_number, alternate_mobile_number, 
-			personal_email, linkedin_profile, address, city, pincode, adhaar_no, 
+			student_id, date_of_birth, mobile_number, alternate_mobile_number,
+			personal_email, linkedin_profile, address, city, pincode, adhaar_no,
 			residence_type, strength, weakness, remarks
 		) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
 		ON CONFLICT (student_id) DO UPDATE SET
@@ -188,8 +189,8 @@ type StudentParentsModel struct {
 func (m StudentParentsModel) Insert(tx *sql.Tx, parents *StudentParents) error {
 	query := `
 		INSERT INTO student_parents (
-			student_id, father_name, father_mobile, father_occupation, 
-			father_company_details, father_email, mother_name, mother_mobile, 
+			student_id, father_name, father_mobile, father_occupation,
+			father_company_details, father_email, mother_name, mother_mobile,
 			mother_occupation, mother_email
 		) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
 		ON CONFLICT (student_id) DO UPDATE SET
@@ -223,8 +224,8 @@ type StudentAcademicsModel struct {
 func (m StudentAcademicsModel) Insert(tx *sql.Tx, academics *StudentAcademics) error {
 	query := `
 		INSERT INTO student_academics (
-			student_id, tenth_percentage, twelth_percentage, cgpa_sem1, 
-			cgpa_sem2, cgpa_sem3, cgpa_sem4, cgpa_overall, current_backlogs, 
+			student_id, tenth_percentage, twelth_percentage, cgpa_sem1,
+			cgpa_sem2, cgpa_sem3, cgpa_sem4, cgpa_overall, current_backlogs,
 			has_backlog_history
 		) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
 		ON CONFLICT (student_id) DO UPDATE SET
@@ -258,8 +259,8 @@ type StudentAspirationsModel struct {
 func (m StudentAspirationsModel) Insert(tx *sql.Tx, aspirations *StudentAspirations) error {
 	query := `
 		INSERT INTO student_aspirations (
-			student_id, company_aim, target_package, certifications, awards, 
-			workshops, internships, hackathons_attended, extracurriculars, 
+			student_id, company_aim, target_package, certifications, awards,
+			workshops, internships, hackathons_attended, extracurriculars,
 			club_participation, future_path, communication_skills
 		) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
 		ON CONFLICT (student_id) DO UPDATE SET
@@ -341,20 +342,20 @@ func (m StudentModel) GetFullProfile(id int64) (*FlatProfileResponse, error) {
 	query := `
 		SELECT
 			COALESCE(s.roll_no, ''), s.name, s.official_email,
-			COALESCE(sd.date_of_birth::text, ''), COALESCE(sd.mobile_number, ''), 
-			COALESCE(sd.alternate_mobile_number, ''), COALESCE(sd.personal_email, ''), 
-			COALESCE(sd.linkedin_profile, ''), COALESCE(sd.address, ''), COALESCE(sd.city, ''), 
-			COALESCE(sd.pincode, ''), COALESCE(sd.adhaar_no, ''), COALESCE(sd.residence_type, ''), 
+			COALESCE(sd.date_of_birth::text, ''), COALESCE(sd.mobile_number, ''),
+			COALESCE(sd.alternate_mobile_number, ''), COALESCE(sd.personal_email, ''),
+			COALESCE(sd.linkedin_profile, ''), COALESCE(sd.address, ''), COALESCE(sd.city, ''),
+			COALESCE(sd.pincode, ''), COALESCE(sd.adhaar_no, ''), COALESCE(sd.residence_type, ''),
 			COALESCE(sd.strength, ''), COALESCE(sd.weakness, ''), COALESCE(sd.remarks, ''),
-			COALESCE(sp.father_name, ''), COALESCE(sp.father_mobile, ''), COALESCE(sp.father_occupation, ''), 
-			COALESCE(sp.father_company_details, ''), COALESCE(sp.father_email, ''), COALESCE(sp.mother_name, ''), 
+			COALESCE(sp.father_name, ''), COALESCE(sp.father_mobile, ''), COALESCE(sp.father_occupation, ''),
+			COALESCE(sp.father_company_details, ''), COALESCE(sp.father_email, ''), COALESCE(sp.mother_name, ''),
 			COALESCE(sp.mother_mobile, ''), COALESCE(sp.mother_occupation, ''), COALESCE(sp.mother_email, ''),
-			COALESCE(sa.tenth_percentage, ''), COALESCE(sa.twelth_percentage, ''), sa.cgpa_sem1, sa.cgpa_sem2, 
-			sa.cgpa_sem3, sa.cgpa_sem4, COALESCE(sa.cgpa_overall, ''), COALESCE(sa.current_backlogs, ''), 
+			COALESCE(sa.tenth_percentage, ''), COALESCE(sa.twelth_percentage, ''), sa.cgpa_sem1, sa.cgpa_sem2,
+			sa.cgpa_sem3, sa.cgpa_sem4, COALESCE(sa.cgpa_overall, ''), COALESCE(sa.current_backlogs, ''),
 			COALESCE(sa.has_backlog_history, ''),
-			COALESCE(sas.company_aim, ''), COALESCE(sas.target_package, ''), COALESCE(sas.certifications, ''), 
-			COALESCE(sas.awards, ''), COALESCE(sas.workshops, ''), COALESCE(sas.internships, ''), 
-			COALESCE(sas.hackathons_attended, ''), COALESCE(sas.extracurriculars, ''), COALESCE(sas.club_participation, ''), 
+			COALESCE(sas.company_aim, ''), COALESCE(sas.target_package, ''), COALESCE(sas.certifications, ''),
+			COALESCE(sas.awards, ''), COALESCE(sas.workshops, ''), COALESCE(sas.internships, ''),
+			COALESCE(sas.hackathons_attended, ''), COALESCE(sas.extracurriculars, ''), COALESCE(sas.club_participation, ''),
 			COALESCE(sas.future_path, ''), COALESCE(sas.communication_skills, '')
 		FROM students s
 		LEFT JOIN student_details sd ON s.id = sd.student_id
@@ -394,9 +395,9 @@ func (m StudentModel) GetFullProfile(id int64) (*FlatProfileResponse, error) {
 
 	// Fetch skills separately
 	skillRows, err := m.DB.QueryContext(ctx, `
-		SELECT s.name, ss.proficiency_level 
-		FROM skills s 
-		JOIN student_skills ss ON s.id = ss.skill_id 
+		SELECT s.name, ss.proficiency_level
+		FROM skills s
+		JOIN student_skills ss ON s.id = ss.skill_id
 		WHERE ss.student_id = $1`, id)
 	if err != nil {
 		return nil, err

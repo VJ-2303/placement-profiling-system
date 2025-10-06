@@ -13,12 +13,12 @@ var (
 )
 
 type Student struct {
-	ID              int64     `json:"id"`
-	CreatedAt       time.Time `json:"created_at"`
-	Name            string    `json:"name"`
-	OfficialEmail   string    `json:"official_email"`
-	ProfileImageURL string    `json:"profile_image_url"`
-	Version         int       `json:"version"`
+	ID            int64     `json:"id"`
+	CreatedAt     time.Time `json:"created_at"`
+	Name          string    `json:"name"`
+	OfficialEmail string    `json:"official_email"`
+	Photo         string    `json:"photo"`
+	Version       int       `json:"version"`
 }
 
 type StudentModel struct {
@@ -27,11 +27,11 @@ type StudentModel struct {
 
 func (m StudentModel) Insert(student *Student) error {
 	query := `
-		INSERT INTO students (name, official_email, profile_image_url)
+		INSERT INTO students (name, official_email, photo)
 		VALUES ($1, $2, $3)
 		RETURNING id, created_at, version`
 
-	args := []any{student.Name, student.OfficialEmail, student.ProfileImageURL}
+	args := []any{student.Name, student.OfficialEmail, student.Photo}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
@@ -49,7 +49,7 @@ func (m StudentModel) GetByEmail(email string) (*Student, error) {
 	}
 
 	query := `
-		SELECT id, created_at, name, official_email, profile_image_url, version
+		SELECT id, created_at, name, official_email, photo, version
 		FROM students
 		WHERE official_email = $1`
 
@@ -63,7 +63,7 @@ func (m StudentModel) GetByEmail(email string) (*Student, error) {
 		&student.CreatedAt,
 		&student.Name,
 		&student.OfficialEmail,
-		&student.ProfileImageURL,
+		&student.Photo,
 		&student.Version,
 	)
 
@@ -85,7 +85,7 @@ func (m StudentModel) GetByID(id int64) (*Student, error) {
 	}
 
 	query := `
-		SELECT id, created_at, name, official_email, profile_image_url, version
+		SELECT id, created_at, name, official_email, photo, version
 		FROM students
 		WHERE id = $1`
 
@@ -99,7 +99,7 @@ func (m StudentModel) GetByID(id int64) (*Student, error) {
 		&student.CreatedAt,
 		&student.Name,
 		&student.OfficialEmail,
-		&student.ProfileImageURL,
+		&student.Photo,
 		&student.Version,
 	)
 
