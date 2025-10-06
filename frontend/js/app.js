@@ -232,49 +232,52 @@ function populatePersonalForm(profile) {
   }
 }
 document.addEventListener('DOMContentLoaded', () => {
-    // Get all necessary elements
     const fileInput = document.getElementById('photoUpload');
-    const photoPreview = document.getElementById('photoPreview');
-    const previewBtn = document.getElementById('previewBtn');
-    const deleteBtn = document.getElementById('deleteBtn');
+    const chooseFileBtn = document.getElementById('chooseFileBtn');
+    const fileInputText = document.getElementById('fileInputText');
     const fileStatusDiv = document.getElementById('fileStatus');
     const fileNameDisplay = document.getElementById('fileNameDisplay');
     const viewBtn = document.getElementById('viewBtn');
+    const deleteBtn = document.getElementById('deleteBtn');
+    const photoPreview = document.getElementById('photoPreview');
+    const photoPreviewArea = document.getElementById('photoPreviewArea');
+
+    let currentFile = null; // Store the currently selected file
+
+    // --- Make the custom "Choose file" button trigger the hidden file input ---
+    chooseFileBtn.addEventListener('click', () => {
+        fileInput.click(); // Programmatically click the hidden file input
+    });
 
     // --- Core Functionality: Handle file selection ---
     fileInput.addEventListener('change', (event) => {
         const file = event.target.files[0];
-        
+        currentFile = file; // Store the selected file
+
         if (file) {
             const reader = new FileReader();
 
-            // Set up the reader to display the image
             reader.onload = (e) => {
                 photoPreview.src = e.target.result;
-                // photoPreview.style.display = 'block'; // Keep hidden until 'View' is clicked
-
-                // Update UI state for an uploaded file
-                previewBtn.style.display = 'none'; // Hide Preview button once a file is selected (now handled by View)
-                deleteBtn.style.display = 'block';
-                
-                // Show file name and View button
-                fileInput.style.display = 'none'; // Hide the file input
-                fileStatusDiv.style.display = 'flex';
-                fileNameDisplay.textContent = file.name;
+                // Don't display photoPreview immediately, wait for 'View'
             };
 
             reader.readAsDataURL(file);
+
+            // Update UI: Hide custom file input, show file status and action buttons
+            document.querySelector('.file-input-wrapper').style.display = 'none';
+            fileStatusDiv.style.display = 'flex';
+            fileNameDisplay.textContent = file.name;
+            viewBtn.textContent = 'View'; // Ensure View button says 'View' initially
+            photoPreview.style.display = 'none'; // Ensure preview is hidden initially
         } else {
-            // If the user cancels the file selection
+            // If user opens file dialog but cancels, reset everything
             handleDelete();
         }
     });
 
-    // --- Preview/View Button Logic ---
-    // In a real application, "Preview" and "View" often do the same thing.
-    // Here, we use 'View' on the uploaded file and ensure the preview is visible.
+    // --- View Button Logic ---
     viewBtn.addEventListener('click', () => {
-        // Toggle the visibility of the preview image
         if (photoPreview.style.display === 'block') {
             photoPreview.style.display = 'none';
             viewBtn.textContent = 'View';
@@ -288,21 +291,23 @@ document.addEventListener('DOMContentLoaded', () => {
     deleteBtn.addEventListener('click', handleDelete);
 
     function handleDelete() {
-        // 1. Reset the file input (crucial for re-uploading the same file)
-        fileInput.value = ''; 
+        // 1. Reset the file input
+        fileInput.value = '';
+        currentFile = null;
         
-        // 2. Clear the preview image
+        // 2. Clear the preview image and hide it
         photoPreview.src = '';
         photoPreview.style.display = 'none';
         
-        // 3. Reset UI state
-        previewBtn.style.display = 'none';
-        deleteBtn.style.display = 'none';
+        // 3. Reset UI state: Show custom file input, hide file status/buttons
+        document.querySelector('.file-input-wrapper').style.display = 'flex';
+        fileInputText.textContent = 'No file chosen'; // Reset the text
         fileStatusDiv.style.display = 'none';
-        fileInput.style.display = 'block';
-        viewBtn.textContent = 'View'; // Reset the view button text
+        viewBtn.textContent = 'View'; // Reset button text
     }
 
+    // Initial state: ensure photoPreview is hidden
+    photoPreview.style.display = 'none';
 });
 
 // --- Populate Academic Form ---
