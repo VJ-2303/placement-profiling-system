@@ -26,8 +26,6 @@ func (app *application) createStudentProfileHandler(w http.ResponseWriter, r *ht
 		return
 	}
 
-	app.logger.Println(input)
-
 	// Start transaction
 	tx, err := app.models.DB.Begin()
 	if err != nil {

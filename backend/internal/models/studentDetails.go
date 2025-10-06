@@ -152,7 +152,7 @@ func (m StudentDetailsModel) Insert(tx *sql.Tx, details *StudentDetails) error {
 			student_id, date_of_birth, mobile_number, alternate_mobile_number,
 			personal_email, linkedin_profile, address, city, pincode, adhaar_no,
 			residence_type, strength, weakness, remarks
-		) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
+		) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
 		ON CONFLICT (student_id) DO UPDATE SET
 			date_of_birth = EXCLUDED.date_of_birth,
 			mobile_number = EXCLUDED.mobile_number,
