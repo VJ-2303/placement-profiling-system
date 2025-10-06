@@ -202,11 +202,99 @@ label.skill-label {
   color: #1a4d8f; /* darker royal blue */
   font-weight: 600;
 }
+/* --- Form Section Card (Retained from previous response) --- */
+#photoPreviewContainer {
+    background-color: #f7fbfc; 
+    border: 1px solid #e1e7ec; 
+    border-radius: 8px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); 
+    padding: 30px; 
+    margin: 20px auto; 
+    max-width: 600px; 
+    text-align: left;
+}
+
+/* --- Label Styling --- */
+.photo-upload-label {
+    display: block;
+    font-size: 16px;
+    font-weight: 600; 
+    color: #333333; 
+    margin-bottom: 10px;
+}
+
+/* --- File Input and Buttons Alignment --- */
+.upload-controls {
+    display: flex; /* Aligns the file input and buttons horizontally */
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+/* --- General Button Styles --- */
+.action-btn {
+    padding: 8px 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s, border-color 0.2s;
+    background-color: #ffffff;
+    color: #333;
+}
+
+/* Hover effect for general buttons (Preview/View) */
+.action-btn:hover {
+    background-color: #f0f0f0;
+    border-color: #aaa;
+}
+
+/* --- Delete Button Specific Style (Red/Danger Theme) --- */
+.delete-btn {
+    color: #e74c3c; /* Red text */
+    border-color: #e74c3c;
+    background-color: #fff;
+}
+
+.delete-btn:hover {
+    background-color: #fcebeb; /* Very light red background on hover */
+    border-color: #c0392b;
+}
+
+/* --- View Button (When file is uploaded) --- */
+.file-status {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Puts file name on left, View button on right */
+    padding: 10px;
+    border: 1px solid #dcdcdc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    margin-bottom: 10px;
+}
+
+#fileNameDisplay {
+    font-style: italic;
+    color: #4a4a4a;
+}
+
+/* --- Photo Preview Image Styling (Retained from previous response) --- */
+#photoPreviewArea { 
+    margin-top: 15px;
+}
 
 #photoPreview {
-  transition: transform 0.2s ease;
+    max-width: 150px;
+    max-height: 150px;
+    border: 1px solid #cccccc; 
+    border-radius: 4px;
+    padding: 2px;
+    background-color: #ffffff;
+    display: none; /* Initial state, controlled by JS */
+    transition: transform 0.2s ease;
 }
 
 #photoPreview:hover {
-  transform: scale(1.05);
+    transform: scale(1.05);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); 
 }

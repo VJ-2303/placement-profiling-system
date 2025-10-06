@@ -231,6 +231,79 @@ function populatePersonalForm(profile) {
     }
   }
 }
+document.addEventListener('DOMContentLoaded', () => {
+    // Get all necessary elements
+    const fileInput = document.getElementById('photoUpload');
+    const photoPreview = document.getElementById('photoPreview');
+    const previewBtn = document.getElementById('previewBtn');
+    const deleteBtn = document.getElementById('deleteBtn');
+    const fileStatusDiv = document.getElementById('fileStatus');
+    const fileNameDisplay = document.getElementById('fileNameDisplay');
+    const viewBtn = document.getElementById('viewBtn');
+
+    // --- Core Functionality: Handle file selection ---
+    fileInput.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        
+        if (file) {
+            const reader = new FileReader();
+
+            // Set up the reader to display the image
+            reader.onload = (e) => {
+                photoPreview.src = e.target.result;
+                // photoPreview.style.display = 'block'; // Keep hidden until 'View' is clicked
+
+                // Update UI state for an uploaded file
+                previewBtn.style.display = 'none'; // Hide Preview button once a file is selected (now handled by View)
+                deleteBtn.style.display = 'block';
+                
+                // Show file name and View button
+                fileInput.style.display = 'none'; // Hide the file input
+                fileStatusDiv.style.display = 'flex';
+                fileNameDisplay.textContent = file.name;
+            };
+
+            reader.readAsDataURL(file);
+        } else {
+            // If the user cancels the file selection
+            handleDelete();
+        }
+    });
+
+    // --- Preview/View Button Logic ---
+    // In a real application, "Preview" and "View" often do the same thing.
+    // Here, we use 'View' on the uploaded file and ensure the preview is visible.
+    viewBtn.addEventListener('click', () => {
+        // Toggle the visibility of the preview image
+        if (photoPreview.style.display === 'block') {
+            photoPreview.style.display = 'none';
+            viewBtn.textContent = 'View';
+        } else {
+            photoPreview.style.display = 'block';
+            viewBtn.textContent = 'Hide';
+        }
+    });
+
+    // --- Delete Button Logic ---
+    deleteBtn.addEventListener('click', handleDelete);
+
+    function handleDelete() {
+        // 1. Reset the file input (crucial for re-uploading the same file)
+        fileInput.value = ''; 
+        
+        // 2. Clear the preview image
+        photoPreview.src = '';
+        photoPreview.style.display = 'none';
+        
+        // 3. Reset UI state
+        previewBtn.style.display = 'none';
+        deleteBtn.style.display = 'none';
+        fileStatusDiv.style.display = 'none';
+        fileInput.style.display = 'block';
+        viewBtn.textContent = 'View'; // Reset the view button text
+    }
+
+});
 
 // --- Populate Academic Form ---
 function populateAcademicForm(profile) {
