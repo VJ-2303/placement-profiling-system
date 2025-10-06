@@ -166,8 +166,7 @@ func (m StudentDetailsModel) Insert(tx *sql.Tx, details *StudentDetails) error {
 			residence_type = EXCLUDED.residence_type,
 			strength = EXCLUDED.strength,
 			weakness = EXCLUDED.weakness,
-			remarks = EXCLUDED.remarks,
-			photo = EXCLUDED.photo`
+			remarks = EXCLUDED.remarks`
 
 	args := []any{
 		details.StudentID, details.DateOfBirth, details.MobileNumber,
