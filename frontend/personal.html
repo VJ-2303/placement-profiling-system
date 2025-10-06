@@ -45,16 +45,32 @@
           <input type="text" id="adhaar_no" name="adhaar_no" required pattern="[\d\s]{12,}" title="Aadhar number must contain 12 digits" maxlength="14">
         </div>
 
-         <div>
-          <label for="photo">Upload Recent Passport Size Photo *</label>
-          <input type="file" id="photo" name="photo" accept="image/*" required onchange="previewPhoto(event)">
-         </div>
+       <div>  <label for="photoUpload">Upload Recent Passport Size Photo *</label>
+       </div>
+<div id="photoPreviewContainer">
+    <div class="file-input-wrapper">
+        <input type="file" id="photoUpload" accept="image/*">
+        <span id="fileInputText" class="file-input-text">No file chosen</span>
+        <button type="button" id="chooseFileBtn" class="action-btn">Choose file</button>
+    </div>
 
-  <!-- ✅ Preview Area -->
-          <div id="photoPreviewContainer" style="margin-top:10px; text-align:center;">
-            <img id="photoPreview" src="" alt="Photo Preview" 
-            style="max-width:150px; max-height:150px; border-radius:10px; display:none; border:1px solid #ccc; padding:5px;">
-          </div>
+    <div id="fileStatus" class="file-status" style="display:none;">
+        <span id="fileNameDisplay"></span>
+        <div class="file-actions">
+            <button type="button" id="viewBtn" class="action-btn view-btn">
+                View
+            </button>
+            <button type="button" id="deleteBtn" class="action-btn delete-btn">
+                Delete
+            </button>
+        </div>
+    </div>
+
+    <div id="photoPreviewArea"> 
+        <img id="photoPreview" src="" alt="Photo Preview"> 
+    </div>
+</div>
+
 
       </section>
 
