@@ -1,9 +1,11 @@
-window.onload = function() {
+window.onload = function () {
   const urlParams = new URLSearchParams(window.location.search);
   const tokenFromUrl = urlParams.get("token");
+  const roleFromUrl = urlParams.get("role");
 
   if (tokenFromUrl) {
     localStorage.setItem("authToken", tokenFromUrl);
+    localStorage.setItem("role", roleFromUrl);
     // Clean the URL
     window.history.replaceState({}, document.title, window.location.pathname);
   }
@@ -16,37 +18,45 @@ window.onload = function() {
     return;
   }
 
-  fetch("https://placement-profiling-system-production.up.railway.app/profile", {
-    method: "GET",
-    headers: { "Authorization": "Bearer " + token }
-  })
-  .then(res => {
-    if (!res.ok) throw new Error("Failed to fetch student info");
-    return res.json();
-  })
-  .then(data => {
-    const student = data.student;
+  fetch(
+    "https://placement-profiling-system-production.up.railway.app/admin/profile",
+    {
+      method: "GET",
+      headers: { Authorization: "Bearer " + token },
+    },
+  )
+    .then((res) => {
+      if (!res.ok) throw new Error("Failed to fetch student info");
+      return res.json();
+    })
+    .then((data) => {
+      const admin = data.admin;
 
-    document.getElementById("userName").innerText = student.name || "Unknown User";
-    document.getElementById("userEmail").innerText = student.official_email || "No email found";
-    document.getElementById("userPhoto").src = student.profile_image_url || "https://via.placeholder.com/120";
-  })
-  .catch(err => {
-    console.error("Error:", err);
-    alert("Session expired or invalid token. Please login again.");
-    localStorage.removeItem("authToken");
-    window.location.href = "index.html";
-  });
+      document.getElementById("userName").innerText =
+        admin.name || "Unknown User";
+      document.getElementById("userEmail").innerText =
+        student.email || "No email found";
+      document.getElementById("userPhoto").src =
+        "https://via.placeholder.com/120";
+    })
+    .catch((err) => {
+      console.error("Error:", err);
+      alert("Session expired or invalid token. Please login again.");
+      localStorage.removeItem("authToken");
+      window.location.href = "index.html";
+    });
 
   const navMap = {
     btnDashboard: "admin.html",
-    btnViewDatabase: "viewdb.html"
+    btnViewDatabase: "viewdb.html",
   };
 
-  Object.keys(navMap).forEach(btnId => {
+  Object.keys(navMap).forEach((btnId) => {
     const btn = document.getElementById(btnId);
     if (btn) {
-      btn.onclick = () => { window.location.href = navMap[btnId]; };
+      btn.onclick = () => {
+        window.location.href = navMap[btnId];
+      };
     }
   });
 
