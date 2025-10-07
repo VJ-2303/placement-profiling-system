@@ -119,8 +119,6 @@ func (app *application) callbackHandler(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	// Redirect to frontend with JWT token
-	// Frontend should extract the token from URL and store it
 	frontendURL := fmt.Sprintf("%s?token=%s", app.config.frontend.successURL, jwtToken)
 	http.Redirect(w, r, frontendURL, http.StatusTemporaryRedirect)
 }
