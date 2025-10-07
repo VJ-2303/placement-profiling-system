@@ -29,8 +29,11 @@
         <script src="js/auth.js"></script>
         <script>
             const token = localStorage.getItem("authToken");
-            if (token != null) {
+            const role = localStorage.getItem("role");
+            if (token != null && role == "student") {
                 window.location.href = "profile.html";
+            } else if (token != null && role == "admin") {
+                window.location.href = "admin-profile.html";
             }
         </script>
     </body>
