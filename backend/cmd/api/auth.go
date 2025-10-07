@@ -113,7 +113,7 @@ func (app *application) callbackHandler(w http.ResponseWriter, r *http.Request) 
 	}
 
 	// Generate JWT token
-	jwtToken, err := app.jwtService.GenerateToken(student.ID, student.OfficialEmail)
+	jwtToken, err := app.jwtService.GenerateToken(student.ID, student.OfficialEmail, "student")
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 		return
