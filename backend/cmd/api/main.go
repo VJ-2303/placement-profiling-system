@@ -27,7 +27,8 @@ type config struct {
 		secret string
 	}
 	frontend struct {
-		successURL string
+		successURLStudent string
+		successURLAdmin   string
 	}
 }
 
@@ -58,7 +59,8 @@ func main() {
 	}
 
 	cfg.jwt.secret = os.Getenv("JWT_SECRET")
-	cfg.frontend.successURL = getEnvWithDefault("FRONTEND_SUCCESS_URL", "")
+	cfg.frontend.successURLStudent = getEnvWithDefault("FRONTEND_SUCCESS_STUDENT_URL", "")
+	cfg.frontend.successURLAdmin = getEnvWithDefault("FRONTEND_SUCCESS_ADMIN_URL", "")
 
 	// Validate required environment variables
 	if cfg.db.dsn == "" {
@@ -73,8 +75,11 @@ func main() {
 	if cfg.jwt.secret == "" {
 		log.Fatal("JWT_SECRET environment variable is required")
 	}
-	if cfg.frontend.successURL == "" {
-		log.Fatal("FRONTEND_SUCCESS_URL environment variable is required")
+	if cfg.frontend.successURLAdmin == "" {
+		log.Fatal("FRONTEND_SUCCESS_ADMIN_URL environment variable is required")
+	}
+	if cfg.frontend.successURLStudent == "" {
+		log.Fatal("FRONTEND_SUCCESS_STUDENT_URL environment variable is required")
 	}
 
 	// Initialize logger
@@ -83,7 +88,7 @@ func main() {
 	logger.Printf("Starting server with config:")
 	logger.Printf("- Port: %s", cfg.port)
 	logger.Printf("- Environment: %s", cfg.env)
-	logger.Printf("- Frontend URL: %s", cfg.frontend.successURL)
+	logger.Printf("- Frontend URL: %s", cfg.frontend.successURLStudent)
 	logger.Printf("- OAuth Redirect: %s", cfg.oauth.redirectURL)
 
 	// Open database connection, defined under internal/data/data.go

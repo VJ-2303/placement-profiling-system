@@ -22,15 +22,17 @@ func NewJWTService(secret string) *JWTService {
 }
 
 type Claims struct {
-	StudentID int64  `json:"student_id"`
-	Email     string `json:"email"`
+	UserID int64  `json:"student_id"`
+	Email  string `json:"email"`
+	Role   string `json:"role"`
 	jwt.RegisteredClaims
 }
 
-func (j *JWTService) GenerateToken(studentID int64, email string) (string, error) {
+func (j *JWTService) GenerateToken(studentID int64, email string, role string) (string, error) {
 	claims := Claims{
-		StudentID: studentID,
-		Email:     email,
+		UserID: studentID,
+		Email:  email,
+		Role:   role,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(7 * 24 * time.Hour)),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
@@ -47,7 +49,7 @@ func (j *JWTService) GenerateToken(studentID int64, email string) (string, error
 }
 
 func (j *JWTService) ValidateToken(tokenString string) (*Claims, error) {
-	token, err := jwt.ParseWithClaims(tokenString, &Claims{}, func(token *jwt.Token) (interface{}, error) {
+	token, err := jwt.ParseWithClaims(tokenString, &Claims{}, func(token *jwt.Token) (any, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, ErrInvalidToken
 		}
