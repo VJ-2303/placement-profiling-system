@@ -31,7 +31,7 @@ func (m AdminModel) Insert(admin *Admin) error {
 	defer cancel()
 
 	return m.DB.QueryRowContext(ctx, query, args...).Scan(
-		&admin.ID, admin.CreatedAt,
+		&admin.ID, &admin.CreatedAt,
 	)
 }
 
