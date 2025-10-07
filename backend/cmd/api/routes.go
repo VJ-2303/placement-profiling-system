@@ -11,7 +11,9 @@ func (app *application) routes() http.Handler {
 
 	router.HandlerFunc(http.MethodGet, "/auth/login", app.loginHandler)
 	router.HandlerFunc(http.MethodGet, "/auth/callback", app.callbackHandler)
-	router.HandlerFunc(http.MethodGet, "/profile", app.profileHandler)
+	router.HandlerFunc(http.MethodGet, "/profile", app.StudentprofileHandler)
+
+	router.HandlerFunc(http.MethodGet, "/admin/profile", app.AdminProfileHandler)
 
 	// New comprehensive profile endpoints
 	router.HandlerFunc(http.MethodPost, "/profile/complete", app.createStudentProfileHandler)

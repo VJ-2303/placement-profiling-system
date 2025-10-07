@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/VJ-2303/placement-profiling-system/internal/models"
 )
@@ -87,7 +88,37 @@ func (app *application) callbackHandler(w http.ResponseWriter, r *http.Request) 
 		email = userInfo.UserPrincipalName
 	}
 
-	// Check if student exists in database
+	if strings.HasSuffix(email, "cse@kct.ac.in") || email == "vanaraj1018@gmail.com" {
+		admin, err := app.models.Admins.GetByEmail(email)
+		if err != nil {
+			switch {
+			case errors.Is(err, models.ErrRecordNotFound):
+				newAdmin := &models.Admin{
+					Name:          userInfo.DisplayName,
+					OfficialEmail: email,
+				}
+
+				err = app.models.Admins.Insert(newAdmin)
+				if err != nil {
+					app.serverErrorResponse(w, r, err)
+					return
+				}
+				admin = newAdmin
+
+			default:
+				app.serverErrorResponse(w, r, err)
+				return
+			}
+		}
+		jwtToken, err := app.jwtService.GenerateToken(admin.ID, admin.OfficialEmail, "admin")
+		if err != nil {
+			app.serverErrorResponse(w, r, err)
+			return
+		}
+		frontendURL := fmt.Sprintf("%s?token=%s&role=admin", app.config.frontend.successURLAdmin, jwtToken)
+		http.Redirect(w, r, frontendURL, http.StatusTemporaryRedirect)
+	}
+
 	student, err := app.models.Students.GetByEmail(email)
 	if err != nil {
 		switch {
@@ -119,20 +150,20 @@ func (app *application) callbackHandler(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	frontendURL := fmt.Sprintf("%s?token=%s", app.config.frontend.successURL, jwtToken)
+	frontendURL := fmt.Sprintf("%s?token=%s&role=student", app.config.frontend.successURLStudent, jwtToken)
 	http.Redirect(w, r, frontendURL, http.StatusTemporaryRedirect)
 }
 
-func (app *application) profileHandler(w http.ResponseWriter, r *http.Request) {
+func (app *application) StudentprofileHandler(w http.ResponseWriter, r *http.Request) {
 	// Authenticate the request
-	claims, err := app.authenticateRequest(r)
+	claims, err := app.authenticateStudent(r)
 	if err != nil {
 		app.unauthorizedResponse(w, r)
 		return
 	}
 
 	// Get student from database
-	student, err := app.models.Students.GetByID(claims.StudentID)
+	student, err := app.models.Students.GetByID(claims.UserID)
 	if err != nil {
 		switch {
 		case errors.Is(err, models.ErrRecordNotFound):
@@ -145,6 +176,29 @@ func (app *application) profileHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Return student profile
 	err = app.writeJSON(w, http.StatusOK, envelope{"student": student}, nil)
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+	}
+}
+
+func (app *application) AdminProfileHandler(w http.ResponseWriter, r *http.Request) {
+
+	claims, err := app.authenticateAdmin(r)
+	if err != nil {
+		app.unauthorizedResponse(w, r)
+		return
+	}
+	admin, err := app.models.Admins.GetByID(claims.UserID)
+	if err != nil {
+		switch {
+		case errors.Is(err, models.ErrRecordNotFound):
+			app.notFoundResponse(w, r)
+		default:
+			app.serverErrorResponse(w, r, err)
+		}
+		return
+	}
+	err = app.writeJSON(w, http.StatusOK, envelope{"admin": admin}, nil)
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 	}

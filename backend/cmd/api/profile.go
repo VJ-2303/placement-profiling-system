@@ -10,13 +10,13 @@ import (
 
 func (app *application) createStudentProfileHandler(w http.ResponseWriter, r *http.Request) {
 	// Authenticate the request
-	claims, err := app.authenticateRequest(r)
+	claims, err := app.authenticateStudent(r)
 	app.logger.Print(claims)
 	if err != nil {
 		app.unauthorizedResponse(w, r)
 		return
 	}
-	studentID := claims.StudentID
+	studentID := int64(claims.UserID)
 
 	// Parse the input
 	var input FlatProfileRequest
@@ -196,12 +196,12 @@ func (app *application) createStudentProfileHandler(w http.ResponseWriter, r *ht
 
 func (app *application) getStudentProfileHandler(w http.ResponseWriter, r *http.Request) {
 	// Authenticate the request
-	claims, err := app.authenticateRequest(r)
+	claims, err := app.authenticateStudent(r)
 	if err != nil {
 		app.unauthorizedResponse(w, r)
 		return
 	}
-	studentID := claims.StudentID
+	studentID := int64(claims.UserID)
 
 	// Get the full profile
 	profile, err := app.models.Students.GetFullProfile(studentID)

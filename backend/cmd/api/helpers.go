@@ -97,7 +97,7 @@ func (app *application) extractTokenFromHeader(r *http.Request) (string, error) 
 	return parts[1], nil
 }
 
-func (app *application) authenticateRequest(r *http.Request) (*auth.Claims, error) {
+func (app *application) authenticateStudent(r *http.Request) (*auth.Claims, error) {
 	tokenString, err := app.extractTokenFromHeader(r)
 	if err != nil {
 		return nil, err
@@ -107,6 +107,24 @@ func (app *application) authenticateRequest(r *http.Request) (*auth.Claims, erro
 	if err != nil {
 		return nil, fmt.Errorf("invalid token: %w", err)
 	}
+	if claims.Role != "admin" {
+		return nil, fmt.Errorf("must be an student")
+	}
 
+	return claims, nil
+}
+
+func (app *application) authenticateAdmin(r *http.Request) (*auth.Claims, error) {
+	tokenString, err := app.extractTokenFromHeader(r)
+	if err != nil {
+		return nil, err
+	}
+	claims, err := app.jwtService.ValidateToken(tokenString)
+	if err != nil {
+		return nil, fmt.Errorf("invalid token: %w", err)
+	}
+	if claims.Role != "admin" {
+		return nil, fmt.Errorf("admin access required")
+	}
 	return claims, nil
 }
