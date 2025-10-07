@@ -35,7 +35,7 @@ window.onload = function () {
       document.getElementById("userName").innerText =
         admin.name || "Unknown User";
       document.getElementById("userEmail").innerText =
-        student.email || "No email found";
+        admin.email || "No email found";
       document.getElementById("userPhoto").src =
         "https://via.placeholder.com/120";
     })
