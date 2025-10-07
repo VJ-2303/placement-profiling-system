@@ -5,8 +5,6 @@ window.onload = function () {
 
   if (tokenFromUrl) {
     localStorage.setItem("authToken", tokenFromUrl);
-    // Clean the URL by removing the token parameter
-    window.history.replaceState({}, document.title, window.location.pathname);
   }
 
   const token = localStorage.getItem("authToken");
@@ -48,7 +46,7 @@ window.onload = function () {
       window.location.href = "index.html";
     });
 
-  // ---------------- Collapsible Submenu ----------------
+  
   const collapsibles = document.getElementsByClassName("collapsible");
   for (let i = 0; i < collapsibles.length; i++) {
     collapsibles[i].addEventListener("click", function () {
@@ -58,7 +56,7 @@ window.onload = function () {
     });
   }
 
-  // ---------------- Button Navigation ----------------
+  
   const navMap = {
     btnPersonal: "personal.html",
     btnAcademic: "acadamic.html",
@@ -75,7 +73,7 @@ window.onload = function () {
     }
   });
 
-  // ---------------- Logout ----------------
+ 
   const btnLogout = document.getElementById("btnLogout");
   if (btnLogout) {
     btnLogout.onclick = () => {
@@ -84,7 +82,7 @@ window.onload = function () {
     };
   }
 
-  // ---------------- Hamburger Toggle (New) ----------------
+  
   const hamburger = document.getElementById("hamburger");
   const sidebar = document.getElementById("sidebar");
 

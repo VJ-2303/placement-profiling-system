@@ -1,15 +1,25 @@
 function login() {
-  // Backend login URL (given by your teammate)
-  const loginUrl = "https://placement-profiling-system-production.up.railway.app/auth/login";  
+  const loginUrl = "https://placement-profiling-system-production.up.railway.app/auth/login";
   window.location.href = loginUrl;
 }
 
-// After successful login, backend may redirect back with ?token=...
 window.onload = function() {
   const params = new URLSearchParams(window.location.search);
+
+  
   if (params.has("token")) {
     const token = params.get("token");
+    const role = params.get("role") || "user"; 
+
     localStorage.setItem("authToken", token);
-    window.location.href = "profile.html";  // go to profile page
+    localStorage.setItem("userRole", role);
+
+    window.history.replaceState({}, document.title, window.location.pathname);
+
+    if (role.toLowerCase() === "admin") {
+      window.location.href = "admin.html";
+    } else {
+      window.location.href = "profile.html";
+    }
   }
-}
+};
