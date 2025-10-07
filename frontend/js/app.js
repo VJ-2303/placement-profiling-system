@@ -152,19 +152,6 @@ window.finalSubmission = async () => {
   }
 };
 
-// --- Copy Final Data ---
-window.copyFinalData = () => {
-  const finalData = localStorage.getItem(STORAGE_KEY);
-  if (!finalData) return;
-  const dummy = document.createElement("textarea");
-  document.body.appendChild(dummy);
-  dummy.value = finalData;
-  dummy.select();
-  document.execCommand('copy');
-  document.body.removeChild(dummy);
-  alert("Data copied to clipboard!");
-};
-
 // --- Profile Cache (Global Access) ---
 window.clearProfileCache = clearProfileCache;
 

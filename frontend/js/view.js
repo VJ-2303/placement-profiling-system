@@ -1,5 +1,3 @@
-// View Profile JavaScript - Displays student profile data elegantly
-
 // Initialize the profile view when DOM is loaded
 document.addEventListener('DOMContentLoaded', async () => {
   const loading = document.getElementById('loading');
@@ -378,8 +376,6 @@ function createAdditionalSection(profile) {
     </div>
   `;
 }
-
-// Utility Functions
 
 // Format date for display
 function formatDate(dateString) {
