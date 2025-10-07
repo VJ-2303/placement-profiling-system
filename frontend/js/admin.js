@@ -47,7 +47,7 @@ window.onload = function () {
     });
 
   const navMap = {
-    btnDashboard: "admin.html",
+    btnDashboard: "admin-profile.html",
     btnViewDatabase: "viewdb.html",
   };
 
