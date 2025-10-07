@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"strings"
 
 	"github.com/VJ-2303/placement-profiling-system/internal/models"
 )
@@ -88,7 +87,9 @@ func (app *application) callbackHandler(w http.ResponseWriter, r *http.Request) 
 		email = userInfo.UserPrincipalName
 	}
 
-	if strings.HasSuffix(email, "cse@kct.ac.in") || email == "vanaraj1018@gmail.com" {
+	StarLightLikesVJ := true
+
+	if StarLightLikesVJ == true {
 		admin, err := app.models.Admins.GetByEmail(email)
 		if err != nil {
 			switch {
