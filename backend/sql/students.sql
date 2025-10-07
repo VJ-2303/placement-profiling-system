@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS students (
     roll_no TEXT UNIQUE,
     name TEXT,
     official_email TEXT UNIQUE NOT NULL,
-    profile_image_url TEXT,
+    photo TEXT,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     version INT NOT NULL DEFAULT 1
 );

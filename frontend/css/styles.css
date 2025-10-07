@@ -202,11 +202,163 @@ label.skill-label {
   color: #1a4d8f; /* darker royal blue */
   font-weight: 600;
 }
+/* --- Global form element sizing --- */
+/* Assuming a standard width for input fields, adjust as necessary */
+.form-input-width {
+    width: 100%; /* Make inputs take full available width */
+    max-width: 400px; /* Example max-width for consistency with Aadhar field */
+    box-sizing: border-box; /* Include padding/border in element's total width */
+}
+
+/* --- Photo Preview Container: The "Rectangular Long Box" --- */
+#photoPreviewContainer {
+    background-color: #f7fbfc; 
+    border: 1px solid #e1e7ec; 
+    border-radius: 8px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); 
+    padding: 20px 25px; /* Adjusted padding for a flatter look */
+    margin: 20px auto; 
+    max-width: 400px; /* **This creates the "rectangular long box" width** */
+    /* Remove text-align: center if it was present, as content should align left */
+    text-align: left; /* Ensure content starts from the left */
+}
+
+/* --- Label Styling (Matches existing labels) --- */
+.photo-upload-label {
+    display: block;
+    font-size: 16px;
+    font-weight: 600; 
+    color: #333333; 
+    margin-bottom: 10px;
+}
+
+/* --- Custom File Input Styling (Matches 'Choose file' look from image) --- */
+/* Hide the default file input button */
+input[type="file"]#photoUpload {
+    display: none; /* Hide the actual file input element */
+}
+
+.file-input-wrapper {
+    display: flex; /* Arrange button and text horizontally */
+    align-items: center;
+    gap: 10px; /* Space between button and text */
+    margin-bottom: 15px; /* Space below this whole group */
+    width: 100%; /* Take full width of parent */
+    box-sizing: border-box;
+}
+
+#chooseFileBtn {
+    /* Style matching the "Choose file" button in the image */
+    padding: 8px 12px;
+    border: 1px solid #c8c8c8;
+    border-radius: 4px;
+    background-color: #ebebeb; /* Light grey background */
+    color: #333;
+    font-size: 14px;
+    cursor: pointer;
+    white-space: nowrap; /* Prevent button text from wrapping */
+}
+
+#chooseFileBtn:hover {
+    background-color: #e0e0e0;
+    border-color: #a0a0a0;
+}
+
+.file-input-text {
+    flex-grow: 1; /* Allows text to take up remaining space */
+    color: #666;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Truncate long file names */
+}
+
+
+/* --- File Status Display (When a file is chosen) --- */
+#fileStatus {
+    display: flex; /* Arrange file name and action buttons horizontally */
+    align-items: center;
+    justify-content: space-between; /* Push file name to left, buttons to right */
+    padding: 8px 12px;
+    border: 1px solid #dcdcdc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    margin-bottom: 15px; /* Space below status bar */
+    width: 100%; /* Take full width of parent */
+    box-sizing: border-box;
+}
+
+#fileNameDisplay {
+    font-style: italic;
+    color: #4a4a4a;
+    font-size: 14px;
+    flex-grow: 1; /* Allows file name to take up space */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.file-actions {
+    display: flex;
+    gap: 8px; /* Space between View and Delete buttons */
+}
+
+/* --- Action Buttons (View/Delete) --- */
+.action-btn {
+    padding: 6px 10px; /* Slightly smaller buttons */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px; /* Slightly smaller font */
+    transition: background-color 0.2s, border-color 0.2s;
+    background-color: #ffffff;
+    color: #333;
+    white-space: nowrap;
+}
+
+.action-btn:hover {
+    background-color: #f0f0f0;
+    border-color: #aaa;
+}
+
+.delete-btn {
+    color: #e74c3c; 
+    border-color: #e74c3c;
+    background-color: #fff;
+}
+
+.delete-btn:hover {
+    background-color: #fcebeb; 
+    border-color: #c0392b;
+}
+
+.view-btn {
+    color: #3470ae; /* Use the primary blue for view */
+    border-color: #a7c0dc;
+}
+
+.view-btn:hover {
+    background-color: #ebf3fa;
+    border-color: #8faacd;
+}
+
+/* --- Photo Preview Image Styling --- */
+#photoPreviewArea { 
+    margin-top: 15px;
+}
 
 #photoPreview {
-  transition: transform 0.2s ease;
+    max-width: 150px;
+    max-height: 150px;
+    border: 1px solid #cccccc; 
+    border-radius: 4px;
+    padding: 2px;
+    background-color: #ffffff;
+    display: none; 
+    transition: transform 0.2s ease;
 }
 
 #photoPreview:hover {
-  transform: scale(1.05);
+    transform: scale(1.05);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); 
 }

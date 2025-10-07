@@ -218,6 +218,84 @@ function populatePersonalForm(profile) {
     }
   }
 }
+document.addEventListener('DOMContentLoaded', () => {
+    const fileInput = document.getElementById('photoUpload');
+    const chooseFileBtn = document.getElementById('chooseFileBtn');
+    const fileInputText = document.getElementById('fileInputText');
+    const fileStatusDiv = document.getElementById('fileStatus');
+    const fileNameDisplay = document.getElementById('fileNameDisplay');
+    const viewBtn = document.getElementById('viewBtn');
+    const deleteBtn = document.getElementById('deleteBtn');
+    const photoPreview = document.getElementById('photoPreview');
+    const photoPreviewArea = document.getElementById('photoPreviewArea');
+
+    let currentFile = null; // Store the currently selected file
+
+    // --- Make the custom "Choose file" button trigger the hidden file input ---
+    chooseFileBtn.addEventListener('click', () => {
+        fileInput.click(); // Programmatically click the hidden file input
+    });
+
+    // --- Core Functionality: Handle file selection ---
+    fileInput.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        currentFile = file; // Store the selected file
+
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = (e) => {
+                photoPreview.src = e.target.result;
+                // Don't display photoPreview immediately, wait for 'View'
+            };
+
+            reader.readAsDataURL(file);
+
+            // Update UI: Hide custom file input, show file status and action buttons
+            document.querySelector('.file-input-wrapper').style.display = 'none';
+            fileStatusDiv.style.display = 'flex';
+            fileNameDisplay.textContent = file.name;
+            viewBtn.textContent = 'View'; // Ensure View button says 'View' initially
+            photoPreview.style.display = 'none'; // Ensure preview is hidden initially
+        } else {
+            // If user opens file dialog but cancels, reset everything
+            handleDelete();
+        }
+    });
+
+    // --- View Button Logic ---
+    viewBtn.addEventListener('click', () => {
+        if (photoPreview.style.display === 'block') {
+            photoPreview.style.display = 'none';
+            viewBtn.textContent = 'View';
+        } else {
+            photoPreview.style.display = 'block';
+            viewBtn.textContent = 'Hide';
+        }
+    });
+
+    // --- Delete Button Logic ---
+    deleteBtn.addEventListener('click', handleDelete);
+
+    function handleDelete() {
+        // 1. Reset the file input
+        fileInput.value = '';
+        currentFile = null;
+        
+        // 2. Clear the preview image and hide it
+        photoPreview.src = '';
+        photoPreview.style.display = 'none';
+        
+        // 3. Reset UI state: Show custom file input, hide file status/buttons
+        document.querySelector('.file-input-wrapper').style.display = 'flex';
+        fileInputText.textContent = 'No file chosen'; // Reset the text
+        fileStatusDiv.style.display = 'none';
+        viewBtn.textContent = 'View'; // Reset button text
+    }
+
+    // Initial state: ensure photoPreview is hidden
+    photoPreview.style.display = 'none';
+});
 
 // --- Populate Academic Form ---
 function populateAcademicForm(profile) {
