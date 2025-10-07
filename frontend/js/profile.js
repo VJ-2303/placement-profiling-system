@@ -75,15 +75,6 @@ window.onload = function() {
     }
   });
 
-  // ---------------- Download Portfolio Placeholder ----------------
-  const btnDownload = document.getElementById("btnDownloadPortfolio");
-  if (btnDownload) {
-    btnDownload.onclick = () => {
-      alert("Download feature to be implemented");
-      // TODO: Implement API call for PDF download
-    };
-  }
-
   // ---------------- Logout ----------------
   const btnLogout = document.getElementById("btnLogout");
   if (btnLogout) {
