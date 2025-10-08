@@ -1,1 +1,52 @@
-<h1>Hello</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Search | Placement Portfolio</title>
+  <link rel="stylesheet" href="css/student_search.css">
+</head>
+<body>
+  <!-- Hamburger -->
+  <div class="hamburger" id="hamburger">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+
+  <!-- Sidebar -->
+  <nav class="sidebar" id="sidebar">
+    <h2>Placement Portfolio</h2>
+    <button id="btnDashboard">Dashboard</button>
+    <button id="btnDatabase">View Database</button>
+    <button id="btnLogout">Logout</button>
+  </nav>
+
+  <!-- University Logo -->
+  <img src="https://i.postimg.cc/5ytvTV8P/shared-image.jpg" alt="Kumaraguru Institutions Logo" class="university-logo">
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <h1 class="main-header">Search Student Details</h1>
+
+    <div class="search-box">
+      <input type="text" id="rollInput" placeholder="Enter Roll Number">
+      <button id="searchBtn">Search</button>
+    </div>
+
+    <div id="result" class="result-box hidden">
+      <h2>Student Details</h2>
+      <img id="studentPhoto" alt="Student Photo">
+      <p><strong>Name:</strong> <span id="studentName"></span></p>
+      <p><strong>Email:</strong> <span id="studentEmail"></span></p>
+      <p><strong>Department:</strong> <span id="studentDept"></span></p>
+      <p><strong>Year:</strong> <span id="studentYear"></span></p>
+      <p><strong>Phone:</strong> <span id="studentPhone"></span></p>
+    </div>
+
+    <p id="errorMsg" class="error hidden"></p>
+  </main>
+
+  <script src="js/viewdb.js"></script>
+</body>
+</html>
