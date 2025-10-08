@@ -5,11 +5,29 @@ document.addEventListener("DOMContentLoaded", () => {
   const resultBox = document.getElementById("result");
   const errorMsg = document.getElementById("errorMsg");
 
+  // 🔹 Token Handling — moved inside DOMContentLoaded to avoid reference issues
+  const urlParams = new URLSearchParams(window.location.search);
+  const tokenFromUrl = urlParams.get("token");
+
+  if (tokenFromUrl) {
+    localStorage.setItem("authToken", tokenFromUrl);
+  }
+
+  const token = localStorage.getItem("authToken");
+
+  if (!token) {
+    alert("Not logged in. Redirecting...");
+    window.location.href = "index.html";
+    return;
+  }
+
   // Sidebar toggle (for responsive menu)
   const hamburger = document.getElementById("hamburger");
-  hamburger.addEventListener("click", () => {
-    document.getElementById("sidebar").classList.toggle("active");
-  });
+  if (hamburger) {
+    hamburger.addEventListener("click", () => {
+      document.getElementById("sidebar").classList.toggle("active");
+    });
+  }
 
   // Search button click event
   searchBtn.addEventListener("click", async () => {
@@ -29,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
     resultBox.classList.remove("hidden");
 
     try {
-      const student = await fetchStudentDetails(roll);
+      const student = await fetchStudentDetails(roll, token);
       if (!student) throw new Error("No student found");
 
       displayStudent(student);
@@ -41,8 +59,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 // Fetch student details from backend API
-async function fetchStudentDetails(roll) {
-  const response = await fetch("https://placement-profiling-system-production.up.railway.app/admin/student/rollno/${roll}");
+async function fetchStudentDetails(roll, token) {
+  const endpoint = `https://placement-profiling-system-production.up.railway.app/admin/student/rollno/${roll}`;
+  const response = await fetch(endpoint, {
+    method: "GET",
+    headers: { Authorization: "Bearer " + token },
+  });
 
   if (!response.ok) throw new Error("Network error");
   const data = await response.json();
