@@ -17,7 +17,7 @@ window.onload = function() {
     window.history.replaceState({}, document.title, window.location.pathname);
 
     if (role.toLowerCase() === "admin") {
-      window.location.href = "admin.html";
+      window.location.href = "admin-profile.html";
     } else {
       window.location.href = "profile.html";
     }
