@@ -199,7 +199,12 @@ func (app *application) AdminProfileHandler(w http.ResponseWriter, r *http.Reque
 		}
 		return
 	}
-	err = app.writeJSON(w, http.StatusOK, envelope{"admin": admin}, nil)
+	analytics, err := app.models.Analytics.GetDashboardAnalytics()
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+		return
+	}
+	err = app.writeJSON(w, http.StatusOK, envelope{"admin": admin, "analytics": analytics}, nil)
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 	}

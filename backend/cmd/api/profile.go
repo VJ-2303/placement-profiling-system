@@ -184,6 +184,12 @@ func (app *application) createStudentProfileHandler(w http.ResponseWriter, r *ht
 		}
 	}
 
+	err = app.models.Students.SetStudentProfileCompleted(tx, studentID)
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+		return
+	}
+
 	// Commit the transaction
 	if err := tx.Commit(); err != nil {
 		app.serverErrorResponse(w, r, err)

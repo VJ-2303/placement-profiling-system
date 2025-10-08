@@ -13,12 +13,13 @@ var (
 )
 
 type Student struct {
-	ID            int64     `json:"id"`
-	CreatedAt     time.Time `json:"created_at"`
-	Name          string    `json:"name"`
-	OfficialEmail string    `json:"official_email"`
-	Photo         string    `json:"photo"`
-	Version       int       `json:"version"`
+	ID               int64     `json:"id"`
+	CreatedAt        time.Time `json:"created_at"`
+	Name             string    `json:"name"`
+	OfficialEmail    string    `json:"official_email"`
+	Photo            string    `json:"photo"`
+	Version          int       `json:"version"`
+	ProfileCompleted bool      `json:"profile_completed"`
 }
 
 type StudentModel struct {
@@ -113,4 +114,16 @@ func (m StudentModel) GetByID(id int64) (*Student, error) {
 	}
 
 	return &student, nil
+}
+
+func (m StudentModel) SetStudentProfileCompleted(tx *sql.Tx, studentID int64) error {
+
+	query := `
+		UPDATE students
+		SET is_profile_completed = true
+		WHERE id = $1
+	`
+	_, err := tx.Exec(query, studentID)
+
+	return err
 }
