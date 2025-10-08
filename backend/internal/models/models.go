@@ -13,6 +13,7 @@ type Models struct {
 	Skills             SkillsModel
 	StudentSkills      StudentSkillsModel
 	Admins             AdminModel
+	Analytics          AnalyticsModel
 	DB                 *sql.DB
 }
 
@@ -26,6 +27,7 @@ func NewModels(db *sql.DB) Models {
 		Skills:             SkillsModel{DB: db},
 		StudentSkills:      StudentSkillsModel{DB: db},
 		Admins:             AdminModel{DB: db},
+		Analytics:          AnalyticsModel{DB: db},
 		DB:                 db,
 	}
 }
