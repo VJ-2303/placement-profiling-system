@@ -68,6 +68,7 @@ type StudentAspirations struct {
 
 // FlatProfileResponse represents the complete flattened profile data
 type FlatProfileResponse struct {
+	Id                    int64   `json:"id"`
 	RollNo                string  `json:"roll_no"`
 	Name                  string  `json:"name"`
 	OfficialEmail         string  `json:"official_email"`
