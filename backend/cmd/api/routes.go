@@ -14,6 +14,7 @@ func (app *application) routes() http.Handler {
 	router.HandlerFunc(http.MethodGet, "/profile", app.StudentprofileHandler)
 
 	router.HandlerFunc(http.MethodGet, "/admin/profile", app.AdminProfileHandler)
+	router.HandlerFunc(http.MethodGet, "/admin/student/rollno/:rollno", app.SearchByRollNo)
 
 	// New comprehensive profile endpoints
 	router.HandlerFunc(http.MethodPost, "/profile/complete", app.createStudentProfileHandler)
