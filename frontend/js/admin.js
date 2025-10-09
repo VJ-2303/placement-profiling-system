@@ -37,8 +37,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       admin.name || "Unknown User";
     document.getElementById("userEmail").innerText =
       admin.email || "No email found";
-    document.getElementById("userPhoto").src =
-      "https://via.placeholder.com/120";
     document.getElementById("totalStudents").innerText =
       analytics.total_students;
     document.getElementById("filledFormCount").innerText =
