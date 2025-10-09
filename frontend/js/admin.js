@@ -30,6 +30,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const data = await res.json();
     const admin = data.admin;
     const analytics = data.analytics;
+    console.log(admin);
+    console.log(analytics);
 
     document.getElementById("userName").innerText =
       admin.name || "Unknown User";
@@ -37,7 +39,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       admin.email || "No email found";
     document.getElementById("userPhoto").src =
       "https://via.placeholder.com/120";
-    document.getElementById("totalStudent").innerText =
+    document.getElementById("totalStudents").innerText =
       analytics.total_students;
     document.getElementById("filledFormCount").innerText =
       analytics.profile_completed;
