@@ -36,6 +36,35 @@
             </div>
             <div></div>
             <div class="dashboard-message"></div>
+
+            <main class="main-content">
+    <!-- Existing Profile Card -->
+    <div class="profile-card">
+        <img id="userPhoto" alt="User Photo" />
+        <h3 id="userName"></h3>
+        <p>Email: <span id="userEmail"></span></p>
+    </div>
+
+    <!-- ✨ Stats Boxes -->
+    <div class="stats-container">
+        <div class="stat-box">
+            <h3>Total Students Present</h3>
+            <p id="totalStudents">350</p> <!-- Placeholder -->
+        </div>
+        <div class="stat-box">
+            <h3>Students Filled Form</h3>
+            <p id="filledFormCount">--</p> <!-- Will be fetched from backend -->
+        </div>
+    </div>
+
+    <!-- ✨ Performance Analytics Section -->
+    <div class="analytics-section">
+        <h3>Performance Analytics</h3>
+        <canvas id="performanceChart"></canvas>
+    </div>
+</main>
+
+
         </main>
 
         <script src="js/admin.js"></script>
