@@ -1,12 +1,11 @@
 const STORAGE_KEY = 'placementPortfolioData';
 
-// --- Utility function to clear profile data cache ---
+
 function clearProfileCache() {
   localStorage.removeItem('cachedProfileData');
   localStorage.removeItem('profileCacheTimestamp');
 }
 
-// --- Load Data into Form ---
 function loadData(formId) {
   const storedData = localStorage.getItem(STORAGE_KEY);
   if (!storedData) return;
@@ -25,8 +24,6 @@ function loadData(formId) {
     }
   });
 }
-
-// --- Load Data Selectively (only if empty) ---
 function loadDataSelectively(formId) {
   const storedData = localStorage.getItem(STORAGE_KEY);
   if (!storedData) return;
@@ -46,7 +43,6 @@ function loadDataSelectively(formId) {
     }
   });
 
-  // --- Load photo from localStorage ---
   if (data.photo) {
     const preview = document.getElementById('photoPreview');
     if (preview) {
@@ -56,7 +52,6 @@ function loadDataSelectively(formId) {
   }
 }
 
-// --- Save Current Form Data ---
 function saveCurrentData(formId) {
   const form = document.getElementById(formId);
   if (!form) return {};
@@ -86,28 +81,25 @@ function saveCurrentData(formId) {
   return newData;
 }
 
-// --- Save and Navigate ---
 function saveAndNavigate(formId, nextPage) {
   saveCurrentData(formId);
   window.location.href = nextPage;
 }
 
-// --- Save and Navigate Back ---
 function saveAndNavigateBack(formId, prevPage) {
   saveCurrentData(formId);
   window.location.href = prevPage;
 }
 
-// --- Navigation Functions ---
+
 window.saveAndNavigateToAcademic = () => saveAndNavigate('personalForm', 'acadamic.html');
 window.saveAndNavigateToSkills = () => saveAndNavigate('academicForm', 'skills.html');
 window.saveAndNavigateToPersonal = () => saveAndNavigate('academicForm', 'personal.html');
 window.saveAndNavigateToAcademicFromSkills = () => saveAndNavigate('skillsForm', 'acadamic.html');
 
-// --- Initialize Page ---
 window.initializePage = (formId) => loadData(formId);
 
-// --- Final Submission to Backend ---
+
 window.finalSubmission = async () => {
   saveCurrentData('personalForm');
   saveCurrentData('academicForm');
@@ -152,15 +144,13 @@ window.finalSubmission = async () => {
   }
 };
 
-// --- Profile Cache (Global Access) ---
 window.clearProfileCache = clearProfileCache;
 
-// --- Get Profile Data (with caching) ---
+
 async function getProfileData() {
   const cachedProfile = localStorage.getItem('cachedProfileData');
   const cacheTimestamp = localStorage.getItem('profileCacheTimestamp');
-  const cacheExpiry = 5 * 60 * 1000; // 5 minutes
-
+  const cacheExpiry = 5 * 60 * 1000; 
   if (cachedProfile && cacheTimestamp) {
     const age = Date.now() - parseInt(cacheTimestamp);
     if (age < cacheExpiry) return JSON.parse(cachedProfile);
@@ -191,7 +181,7 @@ async function getProfileData() {
   }
 }
 
-// --- Populate Personal Form ---
+
 function populatePersonalForm(profile) {
   if (!profile) return;
 
@@ -209,7 +199,7 @@ function populatePersonalForm(profile) {
     if (el && profile[f]) el.value = profile[f];
   });
 
-  // Show photo if exists
+ 
   if (profile.photo) {
     const preview = document.getElementById('photoPreview');
     if (preview) {
@@ -229,41 +219,40 @@ document.addEventListener('DOMContentLoaded', () => {
     const photoPreview = document.getElementById('photoPreview');
     const photoPreviewArea = document.getElementById('photoPreviewArea');
 
-    let currentFile = null; // Store the currently selected file
+    let currentFile = null;
 
-    // --- Make the custom "Choose file" button trigger the hidden file input ---
+    
     chooseFileBtn.addEventListener('click', () => {
-        fileInput.click(); // Programmatically click the hidden file input
+        fileInput.click();
     });
 
-    // --- Core Functionality: Handle file selection ---
+   
     fileInput.addEventListener('change', (event) => {
         const file = event.target.files[0];
-        currentFile = file; // Store the selected file
+        currentFile = file; 
 
         if (file) {
             const reader = new FileReader();
 
             reader.onload = (e) => {
                 photoPreview.src = e.target.result;
-                // Don't display photoPreview immediately, wait for 'View'
             };
 
             reader.readAsDataURL(file);
 
-            // Update UI: Hide custom file input, show file status and action buttons
+           
             document.querySelector('.file-input-wrapper').style.display = 'none';
             fileStatusDiv.style.display = 'flex';
             fileNameDisplay.textContent = file.name;
-            viewBtn.textContent = 'View'; // Ensure View button says 'View' initially
-            photoPreview.style.display = 'none'; // Ensure preview is hidden initially
+            viewBtn.textContent = 'View';
+            photoPreview.style.display = 'none';
         } else {
-            // If user opens file dialog but cancels, reset everything
+           
             handleDelete();
         }
     });
 
-    // --- View Button Logic ---
+   
     viewBtn.addEventListener('click', () => {
         if (photoPreview.style.display === 'block') {
             photoPreview.style.display = 'none';
@@ -274,30 +263,30 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- Delete Button Logic ---
+    
     deleteBtn.addEventListener('click', handleDelete);
 
     function handleDelete() {
-        // 1. Reset the file input
+       
         fileInput.value = '';
         currentFile = null;
         
-        // 2. Clear the preview image and hide it
+    
         photoPreview.src = '';
         photoPreview.style.display = 'none';
         
-        // 3. Reset UI state: Show custom file input, hide file status/buttons
+        
         document.querySelector('.file-input-wrapper').style.display = 'flex';
-        fileInputText.textContent = 'No file chosen'; // Reset the text
+        fileInputText.textContent = 'No file chosen'; 
         fileStatusDiv.style.display = 'none';
-        viewBtn.textContent = 'View'; // Reset button text
+        viewBtn.textContent = 'View'; 
     }
 
-    // Initial state: ensure photoPreview is hidden
+    
     photoPreview.style.display = 'none';
 });
 
-// --- Populate Academic Form ---
+
 function populateAcademicForm(profile) {
   if (!profile) return;
 
@@ -318,7 +307,6 @@ function populateAcademicForm(profile) {
   }
 }
 
-// --- Populate Skills Form ---
 function populateSkillsForm(profile) {
   if (!profile) return;
 
@@ -352,7 +340,7 @@ function populateSkillsForm(profile) {
   });
 }
 
-// --- Page Initialization with Profile Data ---
+
 async function initializePageWithProfile(formId) {
   const profile = await getProfileData();
 
@@ -373,7 +361,7 @@ async function initializePageWithProfile(formId) {
   loadDataSelectively(formId);
 }
 
-// --- Preview Photo ---
+
 function previewPhoto(event) {
   const preview = document.getElementById('photoPreview');
   const file = event.target.files[0];
@@ -386,7 +374,7 @@ function previewPhoto(event) {
   }
 }
 
-// --- Make Functions Global ---
+
 window.getProfileData = getProfileData;
 window.initializePageWithProfile = initializePageWithProfile;
 window.previewPhoto = previewPhoto;

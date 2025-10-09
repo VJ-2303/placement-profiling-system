@@ -1,4 +1,4 @@
-// ---------------- Check Token and Fetch Student Info ----------------
+
 window.onload = function () {
   const urlParams = new URLSearchParams(window.location.search);
   const tokenFromUrl = urlParams.get("token");
@@ -36,7 +36,7 @@ window.onload = function () {
       document.getElementById("userRoll").innerText = student.id || "N/A";
 
       const userPhotoEl = document.getElementById("userPhoto");
-      userPhotoEl.src = student.photo || "https://via.placeholder.com/120"; // fallback
+      userPhotoEl.src = student.photo || "https://via.placeholder.com/120"; 
     })
 
     .catch((err) => {

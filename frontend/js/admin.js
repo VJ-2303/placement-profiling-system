@@ -16,7 +16,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-  // === Fetch Admin Profile ===
   try {
     const res = await fetch(
       "https://placement-profiling-system-production.up.railway.app/admin/profile",
@@ -48,7 +47,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     window.location.href = "index.html";
   }
 
-  // === Sidebar Navigation ===
   const navMap = {
     btnDashboard: "admin-profile.html",
     btnViewDatabase: "viewdb.html",
@@ -71,7 +69,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  // === Sidebar Toggle ===
+ 
   const hamburger = document.getElementById("hamburger");
   const sidebar = document.getElementById("sidebar");
   const mainContent = document.querySelector(".main-content");

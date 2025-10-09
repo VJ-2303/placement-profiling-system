@@ -1,25 +1,25 @@
-// Initialize the profile view when DOM is loaded
+
 document.addEventListener('DOMContentLoaded', async () => {
   const loading = document.getElementById('loading');
   const profileContainer = document.getElementById('profile-container');
   
   try {
-    // Use the existing getProfileData function from app.js for consistency
+    
     const profile = await getProfileData();
     
     if (!profile) {
       throw new Error('No profile data found');
     }
     
-    // Display the profile data
+   
     displayProfile(profile);
     
-    // Hide loading and show profile
+    
     loading.style.display = 'none';
     profileContainer.style.display = 'block';
     
   } catch (error) {
-    // Show error message
+    
     loading.innerHTML = `
       <div class="error">
         <h3>❌ Error Loading Profile</h3>
@@ -30,16 +30,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 });
 
-// Main function to display profile data
+
 function displayProfile(profile) {
   const container = document.getElementById('profile-container');
   
-  // Generate initials from name
   const nameInitials = profile.name 
     ? profile.name.split(' ').map(n => n[0]).join('').toUpperCase() 
     : 'NA';
   
-  // Create the complete profile HTML
+ 
   container.innerHTML = `
     <div class="profile-card">
       <div class="profile-header">
@@ -57,13 +56,11 @@ function displayProfile(profile) {
     </div>
   `;
   
-  // Initialize interactive functionality
   initializeSectionToggle();
 }
 
-// Initialize collapsible section functionality
+
 function initializeSectionToggle() {
-  // Add click handlers for collapsible sections
   document.querySelectorAll('.section-header').forEach(header => {
     header.addEventListener('click', () => {
       const section = header.parentElement;
@@ -71,14 +68,14 @@ function initializeSectionToggle() {
     });
   });
   
-  // Open first section by default
+  
   const firstSection = document.querySelector('.section');
   if (firstSection) {
     firstSection.classList.add('active');
   }
 }
 
-// Create Personal Information Section
+
 function createPersonalSection(profile) {
   return `
     <div class="section active">
@@ -182,7 +179,7 @@ function createPersonalSection(profile) {
   `;
 }
 
-// Create Academic Information Section
+
 function createAcademicSection(profile) {
   return `
     <div class="section">
@@ -234,7 +231,7 @@ function createAcademicSection(profile) {
   `;
 }
 
-// Create Technical Skills Section
+
 function createSkillsSection(profile) {
   const programmingSkills = [
     {name: 'C', level: profile.skill_c},
@@ -294,7 +291,7 @@ function createSkillsSection(profile) {
   `;
 }
 
-// Create skill category HTML
+
 function createSkillCategory(title, skills) {
   return `
     <div class="skill-category">
@@ -309,7 +306,6 @@ function createSkillCategory(title, skills) {
   `;
 }
 
-// Create Career & Additional Information Section
 function createAdditionalSection(profile) {
   return `
     <div class="section">
@@ -377,7 +373,6 @@ function createAdditionalSection(profile) {
   `;
 }
 
-// Format date for display
 function formatDate(dateString) {
   if (!dateString) return null;
   try {
@@ -388,17 +383,15 @@ function formatDate(dateString) {
       day: 'numeric'
     });
   } catch (error) {
-    return dateString; // Return as-is if formatting fails
+    return dateString; 
   }
 }
 
-// Format percentage with % symbol
 function formatPercentage(value) {
   if (!value) return 'Not provided';
   return value.toString().includes('%') ? value : `${value}%`;
 }
 
-// Format LinkedIn URL as clickable link
 function formatLinkedIn(url) {
   if (!url) return 'Not provided';
   return `<a href="${url}" target="_blank" rel="noopener noreferrer">View Profile</a>`;

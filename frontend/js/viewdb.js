@@ -1,11 +1,10 @@
-// Wait until DOM is loaded
+
 document.addEventListener("DOMContentLoaded", () => {
   const searchBtn = document.getElementById("searchBtn");
   const rollInput = document.getElementById("rollInput");
   const resultBox = document.getElementById("result");
   const errorMsg = document.getElementById("errorMsg");
 
-  // 🔹 Token Handling — moved inside DOMContentLoaded to avoid reference issues
   const urlParams = new URLSearchParams(window.location.search);
   const tokenFromUrl = urlParams.get("token");
 
@@ -21,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // Sidebar toggle (for responsive menu)
+
   const hamburger = document.getElementById("hamburger");
   if (hamburger) {
     hamburger.addEventListener("click", () => {
@@ -29,11 +28,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Search button click event
   searchBtn.addEventListener("click", async () => {
     const roll = rollInput.value.trim();
 
-    // Clear old data
     resultBox.classList.add("hidden");
     errorMsg.classList.add("hidden");
 
@@ -42,7 +39,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Show loading message
     resultBox.innerHTML = `<p class="loading">Loading student details...</p>`;
     resultBox.classList.remove("hidden");
 
@@ -58,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-// Fetch student details from backend API
+
 async function fetchStudentDetails(roll, token) {
   const endpoint = `https://placement-profiling-system-production.up.railway.app/admin/student/rollno/${roll}`;
   const response = await fetch(endpoint, {
@@ -71,12 +67,10 @@ async function fetchStudentDetails(roll, token) {
   return data;
 }
 
-
-// Display the fetched student details
 function displayStudent(student) {
   const resultBox = document.getElementById("result");
 
-  // Generate initials for profile avatar
+ 
   const initials = student.name
     ? student.name.split(" ").map(n => n[0]).join("").toUpperCase()
     : "NA";
@@ -101,7 +95,6 @@ function displayStudent(student) {
 }
 
 
-// Personal details section
 function createPersonalSection(student) {
   return `
     <div class="section">
@@ -123,7 +116,6 @@ function createPersonalSection(student) {
 }
 
 
-// Academic details section
 function createAcademicSection(student) {
   return `
     <div class="section">
@@ -144,7 +136,6 @@ function createAcademicSection(student) {
 }
 
 
-// Contact details section
 function createContactSection(student) {
   return `
     <div class="section">
@@ -166,7 +157,6 @@ function createContactSection(student) {
 }
 
 
-// Reusable info item generator
 function infoItem(label, value) {
   return `
     <div class="info-item">
@@ -177,7 +167,6 @@ function infoItem(label, value) {
 }
 
 
-// Format date for display
 function formatDate(dateString) {
   if (!dateString) return "Not Provided";
   try {
@@ -193,21 +182,18 @@ function formatDate(dateString) {
 }
 
 
-// Format percentage
 function formatPercentage(value) {
   if (!value) return "Not Provided";
   return value.toString().includes("%") ? value : `${value}%`;
 }
 
 
-// Format LinkedIn URL
 function formatLinkedIn(url) {
   if (!url) return "Not Provided";
   return `<a href="${url}" target="_blank" rel="noopener noreferrer">View Profile</a>`;
 }
 
 
-// Show error messages
 function showError(message) {
   const errorMsg = document.getElementById("errorMsg");
   const resultBox = document.getElementById("result");
