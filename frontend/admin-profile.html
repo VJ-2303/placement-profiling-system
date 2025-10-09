@@ -1,66 +1,64 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Student Profile</title>
-        <link rel="stylesheet" href="css/admin.css" />
-    </head>
-    <body>
-        <!-- Hamburger Menu -->
-        <div class="hamburger" id="hamburger">
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-        <!-- Univerasity Logo -->
-        <img
-            src="https://i.postimg.cc/5ytvTV8P/shared-image.jpg"
-            alt="Kumaraguru Institutions Logo"
-            class="university-logo"
-        />
-        <!-- Sidebar Menu -->
-        <nav class="sidebar" id="sidebar">
-            <h2>Placement Portfolio</h2>
-            <button id="btnDashboard">Dashboard</button>
-            <button id="btnViewDatabase">View DataBase</button>
-            <button id="btnLogout">Logout</button>
-        </nav>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="css/admin.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <div class="profile-card">
-                <img id="userPhoto" alt="User Photo" />
-                <h3 id="userName"></h3>
-                <p>Email: <span id="userEmail"></span></p>
-            </div>
-            <div></div>
-            <div class="dashboard-message"></div>
-
-            <main class="main-content">
-
-    <!-- ✨ Stats Boxes -->
-    <div class="stats-container">
-        <div class="stat-box">
-            <h3>Total Students Present</h3>
-            <p id="totalStudents">350</p> <!-- Placeholder -->
-        </div>
-        <div class="stat-box">
-            <h3>Students Filled Form</h3>
-            <p id="filledFormCount">--</p> <!-- Will be fetched from backend -->
-        </div>
+  <body>
+    <!-- Hamburger Menu -->
+    <div class="hamburger" id="hamburger">
+      <div></div>
+      <div></div>
+      <div></div>
     </div>
 
-    <!-- ✨ Performance Analytics Section -->
-    <div class="analytics-section">
+    <!-- University Logo -->
+    <img
+      src="https://i.postimg.cc/5ytvTV8P/shared-image.jpg"
+      alt="Kumaraguru Institutions Logo"
+      class="university-logo"
+    />
+
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+      <h2>Placement Portfolio</h2>
+      <button id="btnDashboard">Dashboard</button>
+      <button id="btnViewDatabase">View Database</button>
+      <button id="btnLogout">Logout</button>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="profile-card">
+        <img id="userPhoto" alt="User Photo" />
+        <h3 id="userName"></h3>
+        <p>Email: <span id="userEmail"></span></p>
+      </div>
+
+      <!-- Stats Boxes -->
+      <div class="stats-container">
+        <div class="stat-box">
+          <h3>Total Students Present</h3>
+          <p id="totalStudents">350</p>
+        </div>
+        <div class="stat-box">
+          <h3>Students Filled Form</h3>
+          <p id="filledFormCount">--</p>
+        </div>
+      </div>
+
+      <!-- Performance Analytics -->
+      <div class="analytics-section">
         <h3>Performance Analytics</h3>
         <canvas id="performanceChart"></canvas>
-    </div>
-</main>
+      </div>
+    </main>
 
-
-        </main>
-
-        <script src="js/admin.js"></script>
-    </body>
+    <!-- JS -->
+    <script src="js/admin.js" defer></script>
+  </body>
 </html>
