@@ -230,8 +230,8 @@ button:hover {
 }
 
 .stat-box {
-    background: #1a1d2e;          /* dark dashboard tone */
-    color: #fff;
+    background: #ffffff;          /* dark dashboard tone */
+    color: #000000;
     padding: 20px;
     border-radius: 12px;
     flex: 1 1 250px;
@@ -258,14 +258,14 @@ button:hover {
 /* ===== Analytics Section ===== */
 .analytics-section {
     margin-top: 40px;
-    background: #1a1d2e;
+    background: #ffffff;
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .analytics-section h3 {
-    color: #fff;
+    color: #000000;
     margin-bottom: 20px;
     font-size: 1.3rem;
 }
