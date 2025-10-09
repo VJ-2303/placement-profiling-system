@@ -97,14 +97,12 @@ body {
 
 /* ---------------- Main Content ---------------- */
 .main-content {
-  flex-grow: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  transition: filter 0.3s ease;
-  padding-top: 80px;
+  padding-top: 100px;
 }
+
 
 /* ---------------- Profile Card ---------------- */
 .profile-card {
@@ -222,25 +220,25 @@ button:hover {
 }
 
 /* ===== Stats & Analytics Layout ===== */
-
-/* Container holds the two stat boxes side by side */
+/* ===== Stats Boxes (Responsive Side-by-Side) ===== */
 .stats-container {
   display: flex;
   justify-content: center;
   align-items: stretch;
-  gap: 25px;
-  margin-top: 40px;
+  gap: 30px;
   flex-wrap: wrap;
   width: 100%;
-  max-width: 800px;
+  max-width: 900px;
+  margin-top: 40px;
 }
 
-/* Each stat box styled cleanly */
+/* Individual stat box */
 .stat-box {
   background: #ffffff;
-  color: #000;
-  flex: 1 1 300px;
-  padding: 25px;
+  color: #1c3c88;
+  flex: 1 1 350px; /* makes it flexible for both large and small screens */
+  min-width: 260px;
+  padding: 25px 30px;
   border-radius: 15px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
   text-align: center;
@@ -248,7 +246,7 @@ button:hover {
 }
 
 .stat-box:hover {
-  transform: translateY(-5px);
+  transform: translateY(-6px);
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
 }
 
@@ -264,6 +262,20 @@ button:hover {
   font-weight: 700;
   color: #38d9a9;
 }
+
+/* ===== Responsive Adjustments ===== */
+@media (max-width: 768px) {
+  .stats-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .stat-box {
+    width: 80%;
+  }
+}
+
 
 /* ===== Analytics Section ===== */
 .analytics-section {
