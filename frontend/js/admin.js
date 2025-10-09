@@ -23,17 +23,21 @@ document.addEventListener("DOMContentLoaded", async () => {
       {
         method: "GET",
         headers: { Authorization: "Bearer " + token },
-      }
+      },
     );
 
     if (!res.ok) throw new Error("Failed to fetch admin info");
     const data = await res.json();
     const admin = data.admin;
+    const analytics = data.analytics;
 
-    document.getElementById("userName").innerText = admin.name || "Unknown User";
+    document.getElementById("userName").innerText =
+      admin.name || "Unknown User";
     document.getElementById("userEmail").innerText =
       admin.email || "No email found";
-    document.getElementById("userPhoto").src = "https://via.placeholder.com/120";
+    document.getElementById("userPhoto").src =
+      "https://via.placeholder.com/120";
+    // Document.getElementById("totalStudent").innerText = analytics.
   } catch (err) {
     console.error("Error:", err);
     alert("Session expired or invalid token. Please login again.");
@@ -81,55 +85,4 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     });
   }
-
-  // === Dashboard Data ===
-  try {
-    document.getElementById("totalStudents").textContent = 350;
-
-    const res = await fetch(
-      "https://placement-profiling-system-production.up.railway.app/api/students/filled-form",
-      { headers: { Authorization: "Bearer " + token } }
-    );
-    const data = await res.json();
-    document.getElementById("filledFormCount").textContent = data.count || 0;
-
-    renderPerformanceChart(data.performance || []);
-  } catch (error) {
-    console.error("Error loading dashboard data:", error);
-  }
 });
-
-// === Chart.js Function ===
-function renderPerformanceChart(performanceData) {
-  if (!document.getElementById("performanceChart")) return;
-
-  const ctx = document.getElementById("performanceChart").getContext("2d");
-  new Chart(ctx, {
-    type: "bar",
-    data: {
-      labels: performanceData.map((item) => item.category || "N/A"),
-      datasets: [
-        {
-          label: "Performance Score",
-          data: performanceData.map((item) => item.score || 0),
-          backgroundColor: "#4c8bf5",
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      plugins: { legend: { display: false } },
-      scales: {
-        y: {
-          beginAtZero: true,
-          grid: { color: "rgba(255,255,255,0.1)" },
-          ticks: { color: "#fff" },
-        },
-        x: {
-          grid: { display: false },
-          ticks: { color: "#fff" },
-        },
-      },
-    },
-  });
-}

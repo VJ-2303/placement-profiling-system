@@ -176,7 +176,7 @@ func (m StudentDetailsModel) Insert(tx *sql.Tx, details *StudentDetails) error {
 		details.ResidenceType, details.Strength, details.Weakness, details.Remarks,
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
 	defer cancel()
 
 	_, err := tx.ExecContext(ctx, query, args...)
@@ -211,7 +211,7 @@ func (m StudentParentsModel) Insert(tx *sql.Tx, parents *StudentParents) error {
 		parents.MotherName, parents.MotherMobile, parents.MotherOccupation, parents.MotherEmail,
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
 	defer cancel()
 
 	_, err := tx.ExecContext(ctx, query, args...)
@@ -246,7 +246,7 @@ func (m StudentAcademicsModel) Insert(tx *sql.Tx, academics *StudentAcademics) e
 		academics.CgpaOverall, academics.CurrentBacklogs, academics.HasBacklogHistory,
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
 	defer cancel()
 
 	_, err := tx.ExecContext(ctx, query, args...)
@@ -284,7 +284,7 @@ func (m StudentAspirationsModel) Insert(tx *sql.Tx, aspirations *StudentAspirati
 		aspirations.ClubParticipation, aspirations.FuturePath, aspirations.CommunicationSkills,
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
 	defer cancel()
 
 	_, err := tx.ExecContext(ctx, query, args...)
@@ -298,7 +298,7 @@ type SkillsModel struct {
 func (m SkillsModel) GetAllAsMap(tx *sql.Tx) (map[string]int, error) {
 	query := `SELECT id, name FROM skills`
 
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
 	defer cancel()
 
 	rows, err := tx.QueryContext(ctx, query)
@@ -331,7 +331,7 @@ func (m StudentSkillsModel) Insert(tx *sql.Tx, studentID int64, skillID int, pro
 		ON CONFLICT (student_id, skill_id) DO UPDATE SET
 			proficiency_level = EXCLUDED.proficiency_level`
 
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
 	defer cancel()
 
 	_, err := tx.ExecContext(ctx, query, studentID, skillID, proficiency)
@@ -367,7 +367,7 @@ func (m StudentModel) GetFullProfile(id int64) (*FlatProfileResponse, error) {
 
 	var profile FlatProfileResponse
 
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
 	defer cancel()
 
 	err := m.DB.QueryRowContext(ctx, query, id).Scan(

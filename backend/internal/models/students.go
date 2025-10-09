@@ -34,7 +34,7 @@ func (m StudentModel) Insert(student *Student) error {
 
 	args := []any{student.Name, student.OfficialEmail, student.Photo}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
 	defer cancel()
 
 	return m.DB.QueryRowContext(ctx, query, args...).Scan(
@@ -56,7 +56,7 @@ func (m StudentModel) GetByEmail(email string) (*Student, error) {
 
 	var student Student
 
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
 	defer cancel()
 
 	err := m.DB.QueryRowContext(ctx, query, email).Scan(
@@ -92,7 +92,7 @@ func (m StudentModel) GetByID(id int64) (*Student, error) {
 
 	var student Student
 
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
 	defer cancel()
 
 	err := m.DB.QueryRowContext(ctx, query, id).Scan(

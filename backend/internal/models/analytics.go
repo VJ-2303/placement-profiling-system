@@ -24,7 +24,7 @@ func (m AnalyticsModel) GetDashboardAnalytics() (*Analytics, error) {
 
 	var analytics Analytics
 
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
 	defer cancel()
 
 	err := m.DB.QueryRowContext(ctx, query).Scan(&analytics.TotalStudents, &analytics.ProfileCompleted)

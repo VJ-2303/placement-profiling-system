@@ -27,7 +27,7 @@ func (m AdminModel) Insert(admin *Admin) error {
 	`
 	args := []any{admin.Name, admin.OfficialEmail}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
 	defer cancel()
 
 	return m.DB.QueryRowContext(ctx, query, args...).Scan(
@@ -47,7 +47,7 @@ func (m AdminModel) GetByEmail(email string) (*Admin, error) {
 
 	var admin Admin
 
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
 	defer cancel()
 
 	err := m.DB.QueryRowContext(ctx, query, email).Scan(
@@ -81,7 +81,7 @@ func (m AdminModel) GetByID(id int64) (*Admin, error) {
 
 	var admin Admin
 
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
 	defer cancel()
 
 	err := m.DB.QueryRowContext(ctx, query, id).Scan(
@@ -131,7 +131,7 @@ func (m AdminModel) GetFullProfileByRollNo(rollNo string) (*FlatProfileResponse,
 
 	var profile FlatProfileResponse
 
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
 	defer cancel()
 
 	err := m.DB.QueryRowContext(ctx, query, rollNo).Scan(
