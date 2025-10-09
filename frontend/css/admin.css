@@ -221,52 +221,64 @@ button:hover {
   }
 }
 
-/* ===== Stats Boxes ===== */
+/* ===== Stats & Analytics Layout ===== */
+
+/* Container holds the two stat boxes side by side */
 .stats-container {
-    display: flex;
-    gap: 20px;
-    margin-top: 20px;
-    flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 25px;
+  margin-top: 40px;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 800px;
 }
 
+/* Each stat box styled cleanly */
 .stat-box {
-    background: #ffffff;          /* dark dashboard tone */
-    color: #000000;
-    padding: 20px;
-    border-radius: 12px;
-    flex: 1 1 250px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    transition: transform 0.3s ease;
+  background: #ffffff;
+  color: #000;
+  flex: 1 1 300px;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  transition: all 0.3s ease;
 }
 
 .stat-box:hover {
-    transform: translateY(-4px);
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
 }
 
 .stat-box h3 {
-    font-size: 1.1rem;
-    margin-bottom: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1c3c88;
+  margin-bottom: 10px;
 }
 
 .stat-box p {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #38d9a9;                /* accent color */
+  font-size: 2rem;
+  font-weight: 700;
+  color: #38d9a9;
 }
 
 /* ===== Analytics Section ===== */
 .analytics-section {
-    margin-top: 40px;
-    background: #ffffff;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 800px;
+  margin-top: 40px;
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  text-align: center;
 }
 
 .analytics-section h3 {
-    color: #000000;
-    margin-bottom: 20px;
-    font-size: 1.3rem;
+  color: #1c3c88;
+  font-size: 1.3rem;
+  margin-bottom: 20px;
 }
-
