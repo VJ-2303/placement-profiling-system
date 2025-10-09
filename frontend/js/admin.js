@@ -37,7 +37,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       admin.email || "No email found";
     document.getElementById("userPhoto").src =
       "https://via.placeholder.com/120";
-    // Document.getElementById("totalStudent").innerText = analytics.
+    document.getElementById("totalStudent").innerText =
+      analytics.total_students;
+    document.getElementById("filledFormCount").innerText =
+      analytics.profile_completed;
   } catch (err) {
     console.error("Error:", err);
     alert("Session expired or invalid token. Please login again.");
