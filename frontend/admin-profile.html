@@ -1,62 +1,55 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Admin Dashboard</title>
-        <link rel="stylesheet" href="css/admin.css" />
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    </head>
 
-    <body>
-        <!-- Hamburger Menu -->
-        <div class="hamburger" id="hamburger">
-            <div></div>
-            <div></div>
-            <div></div>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="css/admin.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="hamburger" id="hamburger">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+
+    <img src="https://i.postimg.cc/5ytvTV8P/shared-image.jpg" alt="Kumaraguru Institutions Logo"
+        class="university-logo" />
+
+
+    <nav class="sidebar" id="sidebar">
+        <h2>Placement Portfolio</h2>
+        <button id="btnDashboard">Dashboard</button>
+        <button id="btnViewDatabase">View Database</button>
+        <button id="btnLogout">Logout</button>
+    </nav>
+
+    <main class="main-content">
+        <div class="profile-card">
+            <img id="userPhoto" alt="User Photo"
+                src="https://ui-avatars.com/api/?name=ADMIN&size=200&background=667eea&color=fff&bold=true" />
+            <h3 id="userName"></h3>
+            <p>Email: <span id="userEmail"></span></p>
         </div>
 
-        <!-- University Logo -->
-        <img
-            src="https://i.postimg.cc/5ytvTV8P/shared-image.jpg"
-            alt="Kumaraguru Institutions Logo"
-            class="university-logo"
-        />
 
-        <!-- Sidebar -->
-        <nav class="sidebar" id="sidebar">
-            <h2>Placement Portfolio</h2>
-            <button id="btnDashboard">Dashboard</button>
-            <button id="btnViewDatabase">View Database</button>
-            <button id="btnLogout">Logout</button>
-        </nav>
-
-        <!-- Main Content -->
-        <main class="main-content">
-            <div class="profile-card">
-                <img
-                    id="userPhoto"
-                    alt="User Photo"
-                    src="https://ui-avatars.com/api/?name=ADMIN&size=200&background=667eea&color=fff&bold=true"
-                />
-                <h3 id="userName"></h3>
-                <p>Email: <span id="userEmail"></span></p>
+        <div class="stats-container">
+            <div class="stat-box">
+                <h3>Total Students Present</h3>
+                <p id="totalStudents"></p>
             </div>
-
-            <!-- Stats Boxes -->
-            <div class="stats-container">
-                <div class="stat-box">
-                    <h3>Total Students Present</h3>
-                    <p id="totalStudents"></p>
-                </div>
-                <div class="stat-box">
-                    <h3>Students Filled Form</h3>
-                    <p id="filledFormCount"></p>
-                </div>
+            <div class="stat-box">
+                <h3>Students Filled Form</h3>
+                <p id="filledFormCount"></p>
             </div>
-        </main>
+        </div>
+    </main>
 
-        <!-- JS -->
-        <script src="js/admin.js" defer></script>
-    </body>
+
+    <script src="js/admin.js" defer></script>
+</body>
+
 </html>

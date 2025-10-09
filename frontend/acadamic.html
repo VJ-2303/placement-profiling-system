@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Placement Portfolio - Academic Details</title>
   <link rel="stylesheet" href="css/styles.css">
-  
+
 </head>
+
 <body>
 
   <div>
@@ -29,7 +31,6 @@
         </div>
       </section>
 
-      <!-- 2. Undergraduate CGPA -->
       <section>
         <h3>2. Semester CGPA Scores (Max 10)</h3>
         <div>
@@ -55,7 +56,6 @@
         </div>
       </section>
 
-      <!-- 3. Backlog Details -->
       <section>
         <h3>3. Backlog Status</h3>
         <div>
@@ -76,7 +76,6 @@
         </div>
       </section>
 
-      <!-- Navigation Buttons -->
       <div>
         <button type="button" onclick="saveAndNavigateBack('academicForm', 'personal.html')">
           &larr; Back to Personal Details
@@ -91,13 +90,13 @@
 
   </div>
 
-<script src="js/app.js"></script>
-<script>
-  // Initialize form with saved data from localStorage and DB
-  window.onload = async () => {
-    // Initialize page using app.js functions
-    await initializePageWithProfile('academicForm');
-  };
-</script>
+  <script src="js/app.js"></script>
+  <script>
+
+    window.onload = async () => {
+      await initializePageWithProfile('academicForm');
+    };
+  </script>
 </body>
+
 </html>

@@ -1,27 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Placement Portfolio - Personal Details</title>
   <link rel="stylesheet" href="css/styles.css">
-  
+
 </head>
+
 <body>
 
   <div>
 
-    <!-- Header -->
+
     <header>
       <h1>Placement Portfolio</h1>
       <h2>Personal Details (Page 1 of 3)</h2>
       <p>Please fill in all mandatory fields accurately.</p>
     </header>
 
-    <!-- Added form id -->
     <form id="personalForm">
 
-      <!-- 1. Student & Identity Information -->
       <section>
         <h3>1. Student & Identity Information</h3>
 
@@ -42,50 +42,52 @@
 
         <div>
           <label for="adhaar_no">Aadhar Number (12 Digits) *</label>
-          <input type="text" id="adhaar_no" name="adhaar_no" required pattern="[\d\s]{12,}" title="Aadhar number must contain 12 digits" maxlength="14">
+          <input type="text" id="adhaar_no" name="adhaar_no" required pattern="[\d\s]{12,}"
+            title="Aadhar number must contain 12 digits" maxlength="14">
         </div>
 
-       <div>  <label for="photoUpload">Upload Recent Passport Size Photo *</label>
-       </div>
-<div id="photoPreviewContainer">
-    <div class="file-input-wrapper">
-        <input type="file" id="photoUpload" accept="image/*">
-        <span id="fileInputText" class="file-input-text">No file chosen</span>
-        <button type="button" id="chooseFileBtn" class="action-btn">Choose file</button>
-    </div>
+        <div> <label for="photoUpload">Upload Recent Passport Size Photo *</label>
+        </div>
+        <div id="photoPreviewContainer">
+          <div class="file-input-wrapper">
+            <input type="file" id="photoUpload" accept="image/*">
+            <span id="fileInputText" class="file-input-text">No file chosen</span>
+            <button type="button" id="chooseFileBtn" class="action-btn">Choose file</button>
+          </div>
 
-    <div id="fileStatus" class="file-status" style="display:none;">
-        <span id="fileNameDisplay"></span>
-        <div class="file-actions">
-            <button type="button" id="viewBtn" class="action-btn view-btn">
+          <div id="fileStatus" class="file-status" style="display:none;">
+            <span id="fileNameDisplay"></span>
+            <div class="file-actions">
+              <button type="button" id="viewBtn" class="action-btn view-btn">
                 View
-            </button>
-            <button type="button" id="deleteBtn" class="action-btn delete-btn">
+              </button>
+              <button type="button" id="deleteBtn" class="action-btn delete-btn">
                 Delete
-            </button>
-        </div>
-    </div>
+              </button>
+            </div>
+          </div>
 
-    <div id="photoPreviewArea"> 
-        <img id="photoPreview" src="" alt="Photo Preview"> 
-    </div>
-</div>
+          <div id="photoPreviewArea">
+            <img id="photoPreview" src="" alt="Photo Preview">
+          </div>
+        </div>
 
 
       </section>
 
-      <!-- 2. Contact & Residential Details -->
       <section>
         <h3>2. Contact & Residential Details</h3>
 
         <div>
           <label for="mobile_number">Mobile Number *</label>
-          <input type="tel" id="mobile_number" name="mobile_number" required pattern="[0-9]{10}" title="Must be a 10-digit number">
+          <input type="tel" id="mobile_number" name="mobile_number" required pattern="[0-9]{10}"
+            title="Must be a 10-digit number">
         </div>
 
         <div>
           <label for="alt_mobile_number">Alternate Mobile Number</label>
-          <input type="tel" id="alt_mobile_number" name="alt_mobile_number" pattern="[0-9]{10}" title="Must be a 10-digit number">
+          <input type="tel" id="alt_mobile_number" name="alt_mobile_number" pattern="[0-9]{10}"
+            title="Must be a 10-digit number">
         </div>
 
         <div>
@@ -95,7 +97,8 @@
 
         <div>
           <label for="linkedin_url">LinkedIn Profile URL</label>
-          <input type="url" id="linkedin_url" name="linkedin_url" placeholder="e.g., https://www.linkedin.com/in/yourprofile">
+          <input type="url" id="linkedin_url" name="linkedin_url"
+            placeholder="e.g., https://www.linkedin.com/in/yourprofile">
         </div>
 
         <div>
@@ -115,7 +118,6 @@
 
       </section>
 
-      <!-- 3. Parent/Guardian Details -->
       <section>
         <h3>3. Parent/Guardian Details</h3>
 
@@ -127,7 +129,8 @@
 
         <div>
           <label for="father_mobile">Father's Mobile Number *</label>
-          <input type="tel" id="father_mobile" name="father_mobile" required pattern="[0-9]{10}" title="Must be a 10-digit number">
+          <input type="tel" id="father_mobile" name="father_mobile" required pattern="[0-9]{10}"
+            title="Must be a 10-digit number">
         </div>
 
         <div>
@@ -153,7 +156,8 @@
 
         <div>
           <label for="mother_mobile">Mother's Mobile Number</label>
-          <input type="tel" id="mother_mobile" name="mother_mobile" pattern="[0-9]{10}" title="Must be a 10-digit number">
+          <input type="tel" id="mother_mobile" name="mother_mobile" pattern="[0-9]{10}"
+            title="Must be a 10-digit number">
         </div>
 
         <div>
@@ -168,13 +172,13 @@
 
       </section>
 
-      <!-- 4. Placement Goals -->
       <section>
         <h3>4. Placement Goals</h3>
 
         <div>
           <label for="company_aim">Target Company/Sector *</label>
-          <input type="text" id="company_aim" name="company_aim" placeholder="e.g., Service-based, Product-based, Core Tech" required>
+          <input type="text" id="company_aim" name="company_aim"
+            placeholder="e.g., Service-based, Product-based, Core Tech" required>
         </div>
 
         <div>
@@ -192,9 +196,8 @@
 
       </section>
 
-      <!-- Navigation -->
       <div>
-        <!-- Call app.js function instead of simple href -->
+
         <button type="button" onclick="saveAndNavigateToAcademic()">
           Save & Continue to Academic Details →
         </button>
@@ -204,14 +207,15 @@
 
   </div>
 
-<script src="js/app.js"></script>
-<script>
-  // Initialize form with saved data from localStorage and DB
-  window.onload = async () => {
-    // Initialize page using app.js functions
-    await initializePageWithProfile('personalForm');
-  };
-</script> <!-- include app.js -->
+  <script src="js/app.js"></script>
+  <script>
+
+    window.onload = async () => {
+
+      await initializePageWithProfile('personalForm');
+    };
+  </script>
 
 </body>
+
 </html>
