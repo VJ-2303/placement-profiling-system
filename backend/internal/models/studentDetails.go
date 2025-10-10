@@ -7,7 +7,6 @@ import (
 	"time"
 )
 
-// Extended models for the complete schema
 type StudentDetails struct {
 	StudentID             int64     `json:"student_id"`
 	DateOfBirth           time.Time `json:"date_of_birth"`
@@ -66,7 +65,6 @@ type StudentAspirations struct {
 	CommunicationSkills string `json:"communication_skills"`
 }
 
-// FlatProfileResponse represents the complete flattened profile data
 type FlatProfileResponse struct {
 	Id                    int64   `json:"id"`
 	RollNo                string  `json:"roll_no"`
@@ -142,7 +140,6 @@ type FlatProfileResponse struct {
 	Remarks               string  `json:"remarks"`
 }
 
-// Model instances for the new tables
 type StudentDetailsModel struct {
 	DB *sql.DB
 }
@@ -338,7 +335,6 @@ func (m StudentSkillsModel) Insert(tx *sql.Tx, studentID int64, skillID int, pro
 	return err
 }
 
-// Add method to get full profile with all data
 func (m StudentModel) GetFullProfile(id int64) (*FlatProfileResponse, error) {
 	query := `
 		SELECT
@@ -394,7 +390,6 @@ func (m StudentModel) GetFullProfile(id int64) (*FlatProfileResponse, error) {
 		return nil, err
 	}
 
-	// Fetch skills separately
 	skillRows, err := m.DB.QueryContext(ctx, `
 		SELECT s.name, ss.proficiency_level
 		FROM skills s
@@ -411,7 +406,6 @@ func (m StudentModel) GetFullProfile(id int64) (*FlatProfileResponse, error) {
 			return nil, err
 		}
 
-		// Map skills to the flat structure
 		switch skillName {
 		case "C":
 			profile.SkillC = proficiency

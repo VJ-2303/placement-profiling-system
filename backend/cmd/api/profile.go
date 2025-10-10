@@ -9,7 +9,6 @@ import (
 )
 
 func (app *application) createStudentProfileHandler(w http.ResponseWriter, r *http.Request) {
-	// Authenticate the request
 	claims, err := app.authenticateStudent(r)
 	app.logger.Print(claims)
 	if err != nil {
@@ -18,7 +17,6 @@ func (app *application) createStudentProfileHandler(w http.ResponseWriter, r *ht
 	}
 	studentID := int64(claims.UserID)
 
-	// Parse the input
 	var input FlatProfileRequest
 	err = app.readJSON(w, r, &input)
 	if err != nil {
@@ -26,7 +24,6 @@ func (app *application) createStudentProfileHandler(w http.ResponseWriter, r *ht
 		return
 	}
 
-	// Start transaction
 	tx, err := app.models.DB.Begin()
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
@@ -34,7 +31,6 @@ func (app *application) createStudentProfileHandler(w http.ResponseWriter, r *ht
 	}
 	defer tx.Rollback()
 
-	// Update students table with roll_no and name
 	_, err = tx.Exec("UPDATE students SET roll_no = $1, name = $2 , photo = $3 WHERE id = $4",
 		input.RollNo, input.Name, input.Photo, studentID)
 	if err != nil {
@@ -42,20 +38,17 @@ func (app *application) createStudentProfileHandler(w http.ResponseWriter, r *ht
 		return
 	}
 
-	// Parse date of birth
 	dob, err := time.Parse("2006-01-02", input.DateOfBirth)
 	if err != nil {
 		app.badRequestResponse(w, r, fmt.Errorf("invalid date format for date_of_birth: %v", err))
 		return
 	}
 
-	// Handle nullable pincode
 	pincode := ""
 	if input.Pincode != nil {
 		pincode = *input.Pincode
 	}
 
-	// Insert into student_details
 	details := models.StudentDetails{
 		StudentID:             studentID,
 		DateOfBirth:           dob,
@@ -78,7 +71,6 @@ func (app *application) createStudentProfileHandler(w http.ResponseWriter, r *ht
 		return
 	}
 
-	// Insert into student_parents
 	parents := models.StudentParents{
 		StudentID:            studentID,
 		FatherName:           input.FatherName,
@@ -97,7 +89,6 @@ func (app *application) createStudentProfileHandler(w http.ResponseWriter, r *ht
 		return
 	}
 
-	// Insert into student_academics
 	academics := models.StudentAcademics{
 		StudentID:         studentID,
 		TenthPercentage:   input.TenthPercentage,
@@ -116,7 +107,6 @@ func (app *application) createStudentProfileHandler(w http.ResponseWriter, r *ht
 		return
 	}
 
-	// Insert into student_aspirations
 	aspirations := models.StudentAspirations{
 		StudentID:           studentID,
 		CompanyAim:          input.CompanyAim,
@@ -137,29 +127,25 @@ func (app *application) createStudentProfileHandler(w http.ResponseWriter, r *ht
 		return
 	}
 
-	// Handle skills - get skill mapping
 	skillMap, err := app.models.Skills.GetAllAsMap(tx)
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 		return
 	}
 
-	// Map all skill inputs to their database IDs and proficiency levels
 	skillsToInsert := map[string]string{
-		// Programming Skills
-		"C":                              input.SkillC,
-		"C++":                            input.SkillCpp,
-		"JAVA":                           input.SkillJava,
-		"PYTHON":                         input.SkillPython,
-		"Node.js":                        input.SkillNodeJs,
-		"SQL Database":                   input.SkillSql,
-		"NoSQL Database":                 input.SkillNoSql,
-		"Web Developement":               input.SkillWebDev,
-		"PHP":                            input.SkillPhp,
-		"Mobile App development-flutter": input.SkillFlutter,
-		"Aptitude level":                 input.SkillAptitude,
-		"logical and verbal Reasoning":   input.SkillReasoning,
-		// Core Concepts
+		"C":                                input.SkillC,
+		"C++":                              input.SkillCpp,
+		"JAVA":                             input.SkillJava,
+		"PYTHON":                           input.SkillPython,
+		"Node.js":                          input.SkillNodeJs,
+		"SQL Database":                     input.SkillSql,
+		"NoSQL Database":                   input.SkillNoSql,
+		"Web Developement":                 input.SkillWebDev,
+		"PHP":                              input.SkillPhp,
+		"Mobile App development-flutter":   input.SkillFlutter,
+		"Aptitude level":                   input.SkillAptitude,
+		"logical and verbal Reasoning":     input.SkillReasoning,
 		"DataStructure":                    input.ConceptDataStructures,
 		"DBMS":                             input.ConceptDbms,
 		"OOPS":                             input.ConceptOops,
@@ -167,13 +153,12 @@ func (app *application) createStudentProfileHandler(w http.ResponseWriter, r *ht
 		"Computer Networks":                input.ConceptNetworks,
 		"Operating System":                 input.ConceptOs,
 		"Design and Analysis of Algorithm": input.ConceptAlgos,
-		// Tools
-		"Git/Github":                   input.ToolGit,
-		"Linux/Unix":                   input.ToolLinux,
-		"Cloud Basics (AWS/Azure/GCP)": input.ToolCloud,
-		"Hacker Rank":                  input.ToolHackerRank,
-		"Hacker Earth":                 input.ToolHackerEarth,
-	} // Insert skills for this student
+		"Git/Github":                       input.ToolGit,
+		"Linux/Unix":                       input.ToolLinux,
+		"Cloud Basics (AWS/Azure/GCP)":     input.ToolCloud,
+		"Hacker Rank":                      input.ToolHackerRank,
+		"Hacker Earth":                     input.ToolHackerEarth,
+	}
 	for skillName, proficiency := range skillsToInsert {
 		if skillID, ok := skillMap[skillName]; ok && proficiency != "" {
 			err = app.models.StudentSkills.Insert(tx, studentID, skillID, proficiency)
@@ -190,18 +175,15 @@ func (app *application) createStudentProfileHandler(w http.ResponseWriter, r *ht
 		return
 	}
 
-	// Commit the transaction
 	if err := tx.Commit(); err != nil {
 		app.serverErrorResponse(w, r, err)
 		return
 	}
 
-	// Return success response
 	app.writeJSON(w, http.StatusCreated, envelope{"message": "Profile created successfully"}, nil)
 }
 
 func (app *application) getStudentProfileHandler(w http.ResponseWriter, r *http.Request) {
-	// Authenticate the request
 	claims, err := app.authenticateStudent(r)
 	if err != nil {
 		app.unauthorizedResponse(w, r)
@@ -209,7 +191,6 @@ func (app *application) getStudentProfileHandler(w http.ResponseWriter, r *http.
 	}
 	studentID := int64(claims.UserID)
 
-	// Get the full profile
 	profile, err := app.models.Students.GetFullProfile(studentID)
 	if err != nil {
 		switch err {
@@ -221,11 +202,5 @@ func (app *application) getStudentProfileHandler(w http.ResponseWriter, r *http.
 		return
 	}
 
-	// Return the profile
 	app.writeJSON(w, http.StatusOK, envelope{"profile": profile}, nil)
-}
-
-func (app *application) updateStudentProfileHandler(w http.ResponseWriter, r *http.Request) {
-	// This would be the same as createStudentProfileHandler since we're using UPSERT
-	app.createStudentProfileHandler(w, r)
 }

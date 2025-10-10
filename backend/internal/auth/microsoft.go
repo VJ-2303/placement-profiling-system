@@ -72,10 +72,3 @@ func (m *MicrosoftOAuth) GetUserInfo(ctx context.Context, token *oauth2.Token) (
 
 	return &userInfo, nil
 }
-
-func (m *MicrosoftOAuth) GetUserPhotoURL(ctx context.Context, token *oauth2.Token, userID string) string {
-	// Use UI Avatars service to generate placeholder images based on name
-	// This will be replaced with actual uploaded images later
-	// Returns empty string - we'll generate the placeholder URL in the backend based on name
-	return ""
-}

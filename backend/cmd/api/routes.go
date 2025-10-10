@@ -16,10 +16,9 @@ func (app *application) routes() http.Handler {
 	router.HandlerFunc(http.MethodGet, "/admin/profile", app.AdminProfileHandler)
 	router.HandlerFunc(http.MethodGet, "/admin/student/rollno/:rollno", app.SearchByRollNo)
 
-	// New comprehensive profile endpoints
 	router.HandlerFunc(http.MethodPost, "/profile/complete", app.createStudentProfileHandler)
 	router.HandlerFunc(http.MethodGet, "/profile/complete", app.getStudentProfileHandler)
-	router.HandlerFunc(http.MethodPut, "/profile/complete", app.updateStudentProfileHandler)
+	router.HandlerFunc(http.MethodPut, "/profile/complete", app.createStudentProfileHandler)
 
 	return app.enableCORS(router)
 }

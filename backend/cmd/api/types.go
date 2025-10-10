@@ -1,6 +1,5 @@
 package main
 
-// FlatProfileRequest captures the entire flat JSON payload from the frontend.
 type FlatProfileRequest struct {
 	RollNo               string  `json:"roll_no"`
 	Name                 string  `json:"name"`
@@ -66,19 +65,17 @@ type FlatProfileRequest struct {
 	ToolCloud       string `json:"tool_cloud"`
 	ToolHackerRank  string `json:"tool_hacker_rank"`
 	ToolHackerEarth string `json:"tool_hacker_earth"`
-	// Communication and other skills
+
 	CommunicationSkills string `json:"communication_skills"`
-	// Missing fields that need to be added
-	HackathonsAttended string `json:"hackathons_attended,omitempty"`
-	Extracurriculars   string `json:"extracurriculars,omitempty"`
-	ClubParticipation  string `json:"club_participation,omitempty"`
-	FuturePath         string `json:"future_path,omitempty"`
-	Strength           string `json:"strength,omitempty"`
-	Weakness           string `json:"weakness,omitempty"`
-	Remarks            string `json:"remarks,omitempty"`
+	HackathonsAttended  string `json:"hackathons_attended,omitempty"`
+	Extracurriculars    string `json:"extracurriculars,omitempty"`
+	ClubParticipation   string `json:"club_participation,omitempty"`
+	FuturePath          string `json:"future_path,omitempty"`
+	Strength            string `json:"strength,omitempty"`
+	Weakness            string `json:"weakness,omitempty"`
+	Remarks             string `json:"remarks,omitempty"`
 }
 
-// FlatProfileResponse is identical to the request struct for consistency
 type FlatProfileResponse struct {
 	RollNo                string  `json:"roll_no"`
 	Name                  string  `json:"name"`

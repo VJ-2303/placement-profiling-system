@@ -46,12 +46,10 @@ func main() {
 	cfg.port = getEnvWithDefault("PORT", "4000")
 	cfg.env = getEnvWithDefault("ENV", "production")
 
-	// Load config from environment variables
 	cfg.db.dsn = os.Getenv("DB_DSN")
 	cfg.oauth.clientID = os.Getenv("CLIENT_ID")
 	cfg.oauth.clientSecret = os.Getenv("CLIENT_SECRET")
 
-	// Set redirect URL based on environment
 	if cfg.env == "production" {
 		cfg.oauth.redirectURL = "https://placement-profiling-system-production.up.railway.app/auth/callback"
 	} else {
@@ -62,7 +60,6 @@ func main() {
 	cfg.frontend.successURLStudent = getEnvWithDefault("FRONTEND_SUCCESS_STUDENT_URL", "")
 	cfg.frontend.successURLAdmin = getEnvWithDefault("FRONTEND_SUCCESS_ADMIN_URL", "")
 
-	// Validate required environment variables
 	if cfg.db.dsn == "" {
 		log.Fatal("DB_DSN environment variable is required")
 	}

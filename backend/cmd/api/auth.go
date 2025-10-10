@@ -11,7 +11,6 @@ import (
 )
 
 func (app *application) loginHandler(w http.ResponseWriter, r *http.Request) {
-	// Generate a random state for CSRF protection
 	b := make([]byte, 32)
 	_, err := rand.Read(b)
 	if err != nil {
@@ -20,24 +19,21 @@ func (app *application) loginHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	state := base64.URLEncoding.EncodeToString(b)
 
-	// Store state in a secure HTTP-only cookie
 	http.SetCookie(w, &http.Cookie{
 		Name:     "oauth_state",
 		Value:    state,
 		MaxAge:   300, // 5 minutes
 		HttpOnly: true,
-		Secure:   false, // Set to true in production with HTTPS
+		Secure:   false,
 		SameSite: http.SameSiteLaxMode,
 		Path:     "/",
 	})
 
-	// Get the authorization URL and redirect user to Microsoft
 	url := app.msOAuth.GetAuthURL(state)
 	http.Redirect(w, r, url, http.StatusTemporaryRedirect)
 }
 
 func (app *application) callbackHandler(w http.ResponseWriter, r *http.Request) {
-	// Verify state parameter
 	stateCookie, err := r.Cookie("oauth_state")
 	if err != nil {
 		app.badRequestResponse(w, r, errors.New("state cookie not found"))
@@ -50,7 +46,6 @@ func (app *application) callbackHandler(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	// Clear the state cookie
 	http.SetCookie(w, &http.Cookie{
 		Name:     "oauth_state",
 		Value:    "",
@@ -59,14 +54,12 @@ func (app *application) callbackHandler(w http.ResponseWriter, r *http.Request) 
 		Path:     "/",
 	})
 
-	// Get the authorization code
 	code := r.URL.Query().Get("code")
 	if code == "" {
 		app.badRequestResponse(w, r, errors.New("authorization code not found"))
 		return
 	}
 
-	// Exchange the authorization code for a token
 	token, err := app.msOAuth.Exchange(r.Context(), code)
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
@@ -81,7 +74,6 @@ func (app *application) callbackHandler(w http.ResponseWriter, r *http.Request) 
 
 	app.logger.Printf("User Info: %+v\n", userInfo)
 
-	// Determine the email to use
 	email := userInfo.Mail
 	if email == "" {
 		email = userInfo.UserPrincipalName
@@ -124,7 +116,6 @@ func (app *application) callbackHandler(w http.ResponseWriter, r *http.Request) 
 	if err != nil {
 		switch {
 		case errors.Is(err, models.ErrRecordNotFound):
-			// Create new student
 			newStudent := &models.Student{
 				Name:          userInfo.DisplayName,
 				OfficialEmail: email,
@@ -144,7 +135,6 @@ func (app *application) callbackHandler(w http.ResponseWriter, r *http.Request) 
 		}
 	}
 
-	// Generate JWT token
 	jwtToken, err := app.jwtService.GenerateToken(student.ID, student.OfficialEmail, "student")
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
@@ -156,14 +146,12 @@ func (app *application) callbackHandler(w http.ResponseWriter, r *http.Request) 
 }
 
 func (app *application) StudentprofileHandler(w http.ResponseWriter, r *http.Request) {
-	// Authenticate the request
 	claims, err := app.authenticateStudent(r)
 	if err != nil {
 		app.unauthorizedResponse(w, r)
 		return
 	}
 
-	// Get student from database
 	student, err := app.models.Students.GetByID(claims.UserID)
 	if err != nil {
 		switch {
@@ -175,7 +163,6 @@ func (app *application) StudentprofileHandler(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	// Return student profile
 	err = app.writeJSON(w, http.StatusOK, envelope{"student": student}, nil)
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
