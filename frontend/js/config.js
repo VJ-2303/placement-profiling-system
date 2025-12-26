@@ -1,7 +1,7 @@
 // ============================================
 // API CONFIGURATION
 // ============================================
-const API_BASE_URL = 'http://localhost:4000';
+const API_BASE_URL = 'https://placement-profiling-system-production-618a.up.railway.app';
 
 // ============================================
 // API CLIENT
