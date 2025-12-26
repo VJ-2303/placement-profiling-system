@@ -116,7 +116,7 @@ func (app *application) callbackHandler(w http.ResponseWriter, r *http.Request) 
 			return
 		}
 
-		redirectURL := fmt.Sprintf("%s/auth/callback.html?token=%s&role=admin", app.config.frontend.url, jwtToken)
+		redirectURL := fmt.Sprintf("%s/callback.html?token=%s&role=admin", app.config.frontend.url, jwtToken)
 		http.Redirect(w, r, redirectURL, http.StatusTemporaryRedirect)
 		return
 	}
@@ -163,7 +163,7 @@ func (app *application) callbackHandler(w http.ResponseWriter, r *http.Request) 
 
 	app.logger.Printf("Student login: %s", email)
 
-	redirectURL := fmt.Sprintf("%s/auth/callback.html?token=%s&role=student", app.config.frontend.url, jwtToken)
+	redirectURL := fmt.Sprintf("%s/callback.html?token=%s&role=student", app.config.frontend.url, jwtToken)
 	http.Redirect(w, r, redirectURL, http.StatusTemporaryRedirect)
 }
 
@@ -212,6 +212,6 @@ func (app *application) getCurrentUser(w http.ResponseWriter, r *http.Request) {
 
 // errorRedirect redirects to frontend with error message
 func (app *application) errorRedirect(w http.ResponseWriter, r *http.Request, message string) {
-	redirectURL := fmt.Sprintf("%s/auth/callback.html?error=%s", app.config.frontend.url, message)
+	redirectURL := fmt.Sprintf("%s/callback.html?error=%s", app.config.frontend.url, message)
 	http.Redirect(w, r, redirectURL, http.StatusTemporaryRedirect)
 }
