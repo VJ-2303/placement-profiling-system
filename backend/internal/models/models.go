@@ -2,32 +2,34 @@ package models
 
 import (
 	"database/sql"
+	"errors"
+)
+
+var (
+	ErrRecordNotFound  = errors.New("record not found")
+	ErrEditConflict    = errors.New("edit conflict")
+	ErrDuplicateEmail  = errors.New("duplicate email")
+	ErrDuplicateRollNo = errors.New("duplicate roll number")
 )
 
 type Models struct {
-	Students           StudentModel
-	StudentDetails     StudentDetailsModel
-	StudentParents     StudentParentsModel
-	StudentAcademics   StudentAcademicsModel
-	StudentAspirations StudentAspirationsModel
-	Skills             SkillsModel
-	StudentSkills      StudentSkillsModel
-	Admins             AdminModel
-	Analytics          AnalyticsModel
-	DB                 *sql.DB
+	Students   StudentModel
+	Admins     AdminModel
+	Skills     SkillModel
+	Companies  CompanyModel
+	Placements PlacementModel
+	Analytics  AnalyticsModel
+	DB         *sql.DB
 }
 
 func NewModels(db *sql.DB) Models {
 	return Models{
-		Students:           StudentModel{DB: db},
-		StudentDetails:     StudentDetailsModel{DB: db},
-		StudentParents:     StudentParentsModel{DB: db},
-		StudentAcademics:   StudentAcademicsModel{DB: db},
-		StudentAspirations: StudentAspirationsModel{DB: db},
-		Skills:             SkillsModel{DB: db},
-		StudentSkills:      StudentSkillsModel{DB: db},
-		Admins:             AdminModel{DB: db},
-		Analytics:          AnalyticsModel{DB: db},
-		DB:                 db,
+		Students:   StudentModel{DB: db},
+		Admins:     AdminModel{DB: db},
+		Skills:     SkillModel{DB: db},
+		Companies:  CompanyModel{DB: db},
+		Placements: PlacementModel{DB: db},
+		Analytics:  AnalyticsModel{DB: db},
+		DB:         db,
 	}
 }

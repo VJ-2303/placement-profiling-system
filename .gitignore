@@ -1,1 +1,36 @@
+# Environment variables
 .env
+.env.local
+.env.production
+*.env
+
+# Backend binaries
+backend/main
+backend/api
+*.exe
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+
+# Temporary files
+tmp/
+temp/
+*.tmp

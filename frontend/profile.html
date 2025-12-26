@@ -1,51 +1,900 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Profile</title>
-  <link rel="stylesheet" href="css/profile.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - KCT Placement</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        primary: { 50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe', 300: '#93c5fd', 400: '#60a5fa', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8', 800: '#1e40af', 900: '#1e3a8a' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .tab-active { border-bottom: 3px solid #2563eb; color: #1d4ed8; background: #eff6ff; }
+        .input-field { @apply w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 outline-none; }
+        .input-label { @apply block text-sm font-medium text-gray-700 mb-2; }
+        .btn-primary { @apply bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200; }
+        .btn-secondary { @apply bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-3 px-6 rounded-xl transition-all duration-200; }
+        .card { @apply bg-white rounded-2xl shadow-sm border border-gray-100; }
+        .progress-ring { transition: stroke-dashoffset 0.5s ease-in-out; }
+    </style>
 </head>
-
-<body>
-
-  <div class="hamburger" id="hamburger">
-    <div></div>
-    <div></div>
-    <div></div>
-  </div>
-
-  <img src="https://i.postimg.cc/5ytvTV8P/shared-image.jpg" alt="Kumaraguru Institutions Logo" class="university-logo">
-  <nav class="sidebar" id="sidebar">
-    <h2>Placement Portfolio</h2>
-    <button id="btnDashboard">Dashboard</button>
-
-    <button class="collapsible">My Details</button>
-    <div class="submenu">
-      <button id="btnPersonal">Personal Details</button>
-      <button id="btnAcademic">Academic Details</button>
-      <button id="btnSkills">Skills & Programs</button>
+<body class="font-sans bg-gray-50 min-h-screen">
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="fixed inset-0 bg-white/90 backdrop-blur-sm z-50 flex items-center justify-center">
+        <div class="text-center">
+            <div class="w-12 h-12 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p class="text-gray-600 font-medium">Loading your profile...</p>
+        </div>
     </div>
 
-    <button id="btnViewPortfolio">View Portfolio</button>
-    <button id="btnLogout">Logout</button>
-  </nav>
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-100 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-primary-600 to-primary-800 rounded-xl flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                        </svg>
+                    </div>
+                    <span class="text-xl font-bold text-gray-800 hidden sm:block">KCT Placement</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="hidden md:flex items-center gap-3">
+                        <img id="header-avatar" src="https://ui-avatars.com/api/?name=S&background=2563eb&color=fff&size=40" class="w-9 h-9 rounded-full">
+                        <div class="text-right">
+                            <p id="header-name" class="text-sm font-semibold text-gray-800">Student</p>
+                            <p id="header-email" class="text-xs text-gray-500">student@kct.ac.in</p>
+                        </div>
+                    </div>
+                    <button onclick="logout()" class="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all" title="Logout">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
 
-  <main class="main-content">
-    <div class="profile-card">
-      <img id="userPhoto" alt="User Photo">
-      <h3 id="userName"></h3>
-      <p>Email: <span id="userEmail"></span></p>
-      <p>Roll No: <span id="userRoll"></span></p>
-    </div>
-    <div></div>
-    <div class="dashboard-message">
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Profile Header Card -->
+        <div class="card p-6 mb-6">
+            <div class="flex flex-col lg:flex-row items-center lg:items-start gap-6">
+                <!-- Avatar -->
+                <div class="relative group flex-shrink-0">
+                    <img id="profile-avatar" src="https://ui-avatars.com/api/?name=S&background=2563eb&color=fff&size=128" 
+                         class="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl object-cover shadow-lg border-4 border-white">
+                    <label class="absolute inset-0 flex items-center justify-center bg-black/50 rounded-2xl opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                        <input type="file" id="photo-input" accept="image/*" class="hidden" onchange="uploadPhoto(this)">
+                    </label>
+                </div>
 
-    </div>
-  </main>
+                <!-- Info -->
+                <div class="flex-1 text-center lg:text-left">
+                    <h1 id="profile-name" class="text-2xl sm:text-3xl font-bold text-gray-800">Loading...</h1>
+                    <p id="profile-email" class="text-gray-500 mt-1">Loading email...</p>
+                    <div class="flex flex-wrap items-center justify-center lg:justify-start gap-2 mt-4">
+                        <span id="badge-roll" class="px-3 py-1.5 bg-primary-100 text-primary-700 rounded-lg text-sm font-medium">Roll No</span>
+                        <span id="badge-batch" class="px-3 py-1.5 bg-green-100 text-green-700 rounded-lg text-sm font-medium">Batch</span>
+                        <span id="badge-status" class="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium">Status</span>
+                    </div>
+                </div>
 
-  <script src="js/profile.js"></script>
+                <!-- Progress Ring -->
+                <div class="flex-shrink-0 text-center">
+                    <div class="relative w-28 h-28">
+                        <svg class="w-28 h-28 transform -rotate-90">
+                            <circle cx="56" cy="56" r="48" stroke="#e5e7eb" stroke-width="8" fill="none"/>
+                            <circle id="progress-ring" cx="56" cy="56" r="48" stroke="#2563eb" stroke-width="8" fill="none"
+                                    stroke-dasharray="301.59" stroke-dashoffset="301.59" stroke-linecap="round" class="progress-ring"/>
+                        </svg>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <span id="progress-percent" class="text-2xl font-bold text-gray-800">0%</span>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-2">Profile Complete</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs Navigation -->
+        <div class="card mb-6 overflow-hidden">
+            <div class="flex overflow-x-auto scrollbar-hide">
+                <button onclick="showTab('personal')" data-tab="personal" class="tab-btn flex-1 min-w-max px-4 sm:px-6 py-4 text-sm font-medium text-gray-600 hover:bg-gray-50 border-b-3 border-transparent transition-all tab-active">
+                    <span class="hidden sm:inline">Personal</span>
+                    <span class="sm:hidden">👤</span>
+                </button>
+                <button onclick="showTab('family')" data-tab="family" class="tab-btn flex-1 min-w-max px-4 sm:px-6 py-4 text-sm font-medium text-gray-600 hover:bg-gray-50 border-b-3 border-transparent transition-all">
+                    <span class="hidden sm:inline">Family</span>
+                    <span class="sm:hidden">👨‍👩‍👧</span>
+                </button>
+                <button onclick="showTab('academics')" data-tab="academics" class="tab-btn flex-1 min-w-max px-4 sm:px-6 py-4 text-sm font-medium text-gray-600 hover:bg-gray-50 border-b-3 border-transparent transition-all">
+                    <span class="hidden sm:inline">Academics</span>
+                    <span class="sm:hidden">📚</span>
+                </button>
+                <button onclick="showTab('achievements')" data-tab="achievements" class="tab-btn flex-1 min-w-max px-4 sm:px-6 py-4 text-sm font-medium text-gray-600 hover:bg-gray-50 border-b-3 border-transparent transition-all">
+                    <span class="hidden sm:inline">Achievements</span>
+                    <span class="sm:hidden">🏆</span>
+                </button>
+                <button onclick="showTab('skills')" data-tab="skills" class="tab-btn flex-1 min-w-max px-4 sm:px-6 py-4 text-sm font-medium text-gray-600 hover:bg-gray-50 border-b-3 border-transparent transition-all">
+                    <span class="hidden sm:inline">Skills</span>
+                    <span class="sm:hidden">💻</span>
+                </button>
+                <button onclick="showTab('career')" data-tab="career" class="tab-btn flex-1 min-w-max px-4 sm:px-6 py-4 text-sm font-medium text-gray-600 hover:bg-gray-50 border-b-3 border-transparent transition-all">
+                    <span class="hidden sm:inline">Career Goals</span>
+                    <span class="sm:hidden">🎯</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="card p-6 sm:p-8">
+            <!-- Personal Details -->
+            <div id="tab-personal" class="tab-content">
+                <h2 class="text-xl font-bold text-gray-800 mb-6">Personal Information</h2>
+                <form id="form-personal" onsubmit="saveSection(event, 'personal')">
+                    <div class="grid sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="input-label">Roll Number *</label>
+                            <input type="text" name="roll_no" class="input-field" placeholder="e.g., 22CSR001" required>
+                        </div>
+                        <div>
+                            <label class="input-label">Full Name *</label>
+                            <input type="text" name="name" class="input-field" placeholder="Enter your full name" required>
+                        </div>
+                        <div>
+                            <label class="input-label">Date of Birth</label>
+                            <input type="date" name="date_of_birth" class="input-field">
+                        </div>
+                        <div>
+                            <label class="input-label">Gender</label>
+                            <select name="gender" class="input-field">
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="input-label">Mobile Number *</label>
+                            <input type="tel" name="mobile_number" class="input-field" placeholder="10-digit mobile" pattern="[0-9]{10}" required>
+                        </div>
+                        <div>
+                            <label class="input-label">Alternate Mobile</label>
+                            <input type="tel" name="alt_mobile_number" class="input-field" placeholder="10-digit mobile" pattern="[0-9]{10}">
+                        </div>
+                        <div>
+                            <label class="input-label">Personal Email</label>
+                            <input type="email" name="personal_email" class="input-field" placeholder="your@email.com">
+                        </div>
+                        <div>
+                            <label class="input-label">Batch Year</label>
+                            <select name="batch_year" id="select-batch" class="input-field">
+                                <option value="">Select Batch</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="input-label">LinkedIn Profile</label>
+                            <input type="url" name="linkedin_url" class="input-field" placeholder="https://linkedin.com/in/...">
+                        </div>
+                        <div>
+                            <label class="input-label">GitHub Profile</label>
+                            <input type="url" name="github_url" class="input-field" placeholder="https://github.com/...">
+                        </div>
+                        <div>
+                            <label class="input-label">Portfolio Website</label>
+                            <input type="url" name="portfolio_url" class="input-field" placeholder="https://...">
+                        </div>
+                        <div>
+                            <label class="input-label">Aadhaar Number</label>
+                            <input type="text" name="aadhaar_no" class="input-field" placeholder="12-digit Aadhaar" pattern="[0-9]{12}">
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="input-label">Address</label>
+                            <textarea name="address" rows="2" class="input-field" placeholder="Enter your address"></textarea>
+                        </div>
+                        <div>
+                            <label class="input-label">City</label>
+                            <input type="text" name="city" class="input-field" placeholder="Enter city">
+                        </div>
+                        <div>
+                            <label class="input-label">Pincode</label>
+                            <input type="text" name="pincode" class="input-field" placeholder="6-digit pincode" pattern="[0-9]{6}">
+                        </div>
+                    </div>
+                    <div class="mt-8 flex justify-end">
+                        <button type="submit" class="btn-primary">Save Personal Details</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Family Details -->
+            <div id="tab-family" class="tab-content hidden">
+                <h2 class="text-xl font-bold text-gray-800 mb-6">Family Information</h2>
+                <form id="form-family" onsubmit="saveSection(event, 'family')">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-4 flex items-center gap-2">
+                        <span class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">👨</span>
+                        Father's Details
+                    </h3>
+                    <div class="grid sm:grid-cols-2 gap-6 mb-8">
+                        <div>
+                            <label class="input-label">Father's Name</label>
+                            <input type="text" name="father_name" class="input-field" placeholder="Enter father's name">
+                        </div>
+                        <div>
+                            <label class="input-label">Father's Mobile</label>
+                            <input type="tel" name="father_mobile" class="input-field" placeholder="10-digit mobile" pattern="[0-9]{10}">
+                        </div>
+                        <div>
+                            <label class="input-label">Father's Occupation</label>
+                            <input type="text" name="father_occupation" class="input-field" placeholder="Enter occupation">
+                        </div>
+                        <div>
+                            <label class="input-label">Father's Email</label>
+                            <input type="email" name="father_email" class="input-field" placeholder="email@example.com">
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="input-label">Company/Work Details</label>
+                            <input type="text" name="father_company_details" class="input-field" placeholder="Company name and designation">
+                        </div>
+                    </div>
+
+                    <h3 class="text-lg font-semibold text-gray-700 mb-4 flex items-center gap-2">
+                        <span class="w-8 h-8 bg-pink-100 rounded-lg flex items-center justify-center text-pink-600">👩</span>
+                        Mother's Details
+                    </h3>
+                    <div class="grid sm:grid-cols-2 gap-6 mb-8">
+                        <div>
+                            <label class="input-label">Mother's Name</label>
+                            <input type="text" name="mother_name" class="input-field" placeholder="Enter mother's name">
+                        </div>
+                        <div>
+                            <label class="input-label">Mother's Mobile</label>
+                            <input type="tel" name="mother_mobile" class="input-field" placeholder="10-digit mobile" pattern="[0-9]{10}">
+                        </div>
+                        <div>
+                            <label class="input-label">Mother's Occupation</label>
+                            <input type="text" name="mother_occupation" class="input-field" placeholder="Enter occupation">
+                        </div>
+                        <div>
+                            <label class="input-label">Mother's Email</label>
+                            <input type="email" name="mother_email" class="input-field" placeholder="email@example.com">
+                        </div>
+                    </div>
+
+                    <h3 class="text-lg font-semibold text-gray-700 mb-4 flex items-center gap-2">
+                        <span class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center text-green-600">🏠</span>
+                        Residence Details
+                    </h3>
+                    <div class="grid sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="input-label">Residence Type</label>
+                            <select name="residence_type" class="input-field">
+                                <option value="">Select Type</option>
+                                <option value="Day Scholar">Day Scholar</option>
+                                <option value="Hosteller">Hosteller</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="input-label">Annual Family Income</label>
+                            <select name="annual_income" class="input-field">
+                                <option value="">Select Range</option>
+                                <option value="Below 2.5 LPA">Below 2.5 LPA</option>
+                                <option value="2.5 - 5 LPA">2.5 - 5 LPA</option>
+                                <option value="5 - 10 LPA">5 - 10 LPA</option>
+                                <option value="Above 10 LPA">Above 10 LPA</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mt-8 flex justify-end">
+                        <button type="submit" class="btn-primary">Save Family Details</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Academics -->
+            <div id="tab-academics" class="tab-content hidden">
+                <h2 class="text-xl font-bold text-gray-800 mb-6">Academic Information</h2>
+                <form id="form-academics" onsubmit="saveSection(event, 'academics')">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-4">10th Standard</h3>
+                    <div class="grid sm:grid-cols-3 gap-6 mb-8">
+                        <div>
+                            <label class="input-label">Board</label>
+                            <select name="tenth_board" class="input-field">
+                                <option value="">Select Board</option>
+                                <option value="CBSE">CBSE</option>
+                                <option value="State Board">State Board</option>
+                                <option value="ICSE">ICSE</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="input-label">Percentage</label>
+                            <input type="number" step="0.01" name="tenth_percentage" class="input-field" placeholder="e.g., 95.5" min="0" max="100">
+                        </div>
+                        <div>
+                            <label class="input-label">Year of Passing</label>
+                            <input type="number" name="tenth_year" class="input-field" placeholder="e.g., 2020" min="2000" max="2030">
+                        </div>
+                    </div>
+
+                    <h3 class="text-lg font-semibold text-gray-700 mb-4">12th Standard / Diploma</h3>
+                    <div class="grid sm:grid-cols-3 gap-6 mb-8">
+                        <div>
+                            <label class="input-label">Board/University</label>
+                            <select name="twelfth_board" class="input-field">
+                                <option value="">Select Board</option>
+                                <option value="CBSE">CBSE</option>
+                                <option value="State Board">State Board</option>
+                                <option value="ICSE">ICSE</option>
+                                <option value="Diploma">Diploma</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="input-label">Percentage</label>
+                            <input type="number" step="0.01" name="twelfth_percentage" class="input-field" placeholder="e.g., 92.0" min="0" max="100">
+                        </div>
+                        <div>
+                            <label class="input-label">Year of Passing</label>
+                            <input type="number" name="twelfth_year" class="input-field" placeholder="e.g., 2022" min="2000" max="2030">
+                        </div>
+                    </div>
+
+                    <h3 class="text-lg font-semibold text-gray-700 mb-4">Semester-wise CGPA</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+                        <div>
+                            <label class="input-label">Sem 1</label>
+                            <input type="number" step="0.01" name="cgpa_sem1" class="input-field" placeholder="0-10" min="0" max="10">
+                        </div>
+                        <div>
+                            <label class="input-label">Sem 2</label>
+                            <input type="number" step="0.01" name="cgpa_sem2" class="input-field" placeholder="0-10" min="0" max="10">
+                        </div>
+                        <div>
+                            <label class="input-label">Sem 3</label>
+                            <input type="number" step="0.01" name="cgpa_sem3" class="input-field" placeholder="0-10" min="0" max="10">
+                        </div>
+                        <div>
+                            <label class="input-label">Sem 4</label>
+                            <input type="number" step="0.01" name="cgpa_sem4" class="input-field" placeholder="0-10" min="0" max="10">
+                        </div>
+                        <div>
+                            <label class="input-label">Sem 5</label>
+                            <input type="number" step="0.01" name="cgpa_sem5" class="input-field" placeholder="0-10" min="0" max="10">
+                        </div>
+                        <div>
+                            <label class="input-label">Sem 6</label>
+                            <input type="number" step="0.01" name="cgpa_sem6" class="input-field" placeholder="0-10" min="0" max="10">
+                        </div>
+                        <div>
+                            <label class="input-label">Sem 7</label>
+                            <input type="number" step="0.01" name="cgpa_sem7" class="input-field" placeholder="0-10" min="0" max="10">
+                        </div>
+                        <div>
+                            <label class="input-label">Sem 8</label>
+                            <input type="number" step="0.01" name="cgpa_sem8" class="input-field" placeholder="0-10" min="0" max="10">
+                        </div>
+                    </div>
+
+                    <div class="grid sm:grid-cols-3 gap-6">
+                        <div>
+                            <label class="input-label">Overall CGPA *</label>
+                            <input type="number" step="0.01" name="cgpa_overall" class="input-field" placeholder="0-10" min="0" max="10" required>
+                        </div>
+                        <div>
+                            <label class="input-label">Current Backlogs</label>
+                            <input type="number" name="current_backlogs" class="input-field" placeholder="0" min="0" value="0">
+                        </div>
+                        <div>
+                            <label class="input-label">Backlog History</label>
+                            <select name="has_backlog_history" class="input-field">
+                                <option value="false">No</option>
+                                <option value="true">Yes</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mt-8 flex justify-end">
+                        <button type="submit" class="btn-primary">Save Academic Details</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Achievements -->
+            <div id="tab-achievements" class="tab-content hidden">
+                <h2 class="text-xl font-bold text-gray-800 mb-6">Achievements & Experience</h2>
+                <form id="form-achievements" onsubmit="saveSection(event, 'achievements')">
+                    <div class="space-y-6">
+                        <div>
+                            <label class="input-label">Certifications</label>
+                            <textarea name="certifications" rows="3" class="input-field" placeholder="List your certifications (AWS, Google Cloud, etc.)"></textarea>
+                        </div>
+                        <div>
+                            <label class="input-label">Awards & Achievements</label>
+                            <textarea name="awards" rows="3" class="input-field" placeholder="List your awards and achievements"></textarea>
+                        </div>
+                        <div>
+                            <label class="input-label">Workshops & Training</label>
+                            <textarea name="workshops" rows="3" class="input-field" placeholder="Workshops and training programs attended"></textarea>
+                        </div>
+                        <div>
+                            <label class="input-label">Internships</label>
+                            <textarea name="internships" rows="3" class="input-field" placeholder="Describe your internship experiences"></textarea>
+                        </div>
+                        <div>
+                            <label class="input-label">Projects</label>
+                            <textarea name="projects" rows="3" class="input-field" placeholder="List your major projects with brief descriptions"></textarea>
+                        </div>
+                        <div>
+                            <label class="input-label">Extra Curricular Activities</label>
+                            <textarea name="extra_curriculars" rows="3" class="input-field" placeholder="Sports, clubs, events, etc."></textarea>
+                        </div>
+                    </div>
+                    <div class="mt-8 flex justify-end">
+                        <button type="submit" class="btn-primary">Save Achievements</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Skills -->
+            <div id="tab-skills" class="tab-content hidden">
+                <h2 class="text-xl font-bold text-gray-800 mb-2">Technical Skills</h2>
+                <p class="text-gray-500 mb-6">Rate your proficiency: 1 (Beginner) to 5 (Expert)</p>
+                <form id="form-skills" onsubmit="saveSection(event, 'skills')">
+                    <div id="skills-container" class="space-y-6">
+                        <!-- Skills will be loaded dynamically -->
+                        <div class="text-center py-8 text-gray-400">
+                            <div class="w-10 h-10 border-4 border-gray-300 border-t-primary-500 rounded-full animate-spin mx-auto mb-4"></div>
+                            Loading skills...
+                        </div>
+                    </div>
+                    <div class="mt-8 flex justify-end">
+                        <button type="submit" class="btn-primary">Save Skills</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Career Goals -->
+            <div id="tab-career" class="tab-content hidden">
+                <h2 class="text-xl font-bold text-gray-800 mb-6">Career Goals & Aspirations</h2>
+                <form id="form-career" onsubmit="saveSection(event, 'aspirations')">
+                    <div class="grid sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="input-label">Dream Company</label>
+                            <input type="text" name="dream_company" class="input-field" placeholder="e.g., Google, Microsoft">
+                        </div>
+                        <div>
+                            <label class="input-label">Preferred Job Roles</label>
+                            <input type="text" name="preferred_roles" class="input-field" placeholder="e.g., Software Developer">
+                        </div>
+                        <div>
+                            <label class="input-label">Expected Package (LPA)</label>
+                            <input type="number" step="0.5" name="expected_package" class="input-field" placeholder="e.g., 8" min="0">
+                        </div>
+                        <div>
+                            <label class="input-label">Preferred Locations</label>
+                            <input type="text" name="preferred_locations" class="input-field" placeholder="e.g., Bangalore, Chennai">
+                        </div>
+                        <div>
+                            <label class="input-label">Higher Studies Plans</label>
+                            <select name="higher_studies" class="input-field">
+                                <option value="">Select Option</option>
+                                <option value="No">Not planning</option>
+                                <option value="MS Abroad">MS Abroad</option>
+                                <option value="MBA">MBA</option>
+                                <option value="GATE/MTech">GATE/MTech</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="input-label">Willing to Relocate?</label>
+                            <select name="willing_to_relocate" class="input-field">
+                                <option value="">Select Option</option>
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                            </select>
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="input-label">Career Goals & Aspirations</label>
+                            <textarea name="career_goals" rows="4" class="input-field" placeholder="Describe your career goals..."></textarea>
+                        </div>
+                    </div>
+                    <div class="mt-8 flex justify-end">
+                        <button type="submit" class="btn-primary">Save Career Goals</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Submit Profile Section -->
+        <div id="submit-section" class="card p-6 mt-6 bg-gradient-to-r from-green-50 to-emerald-50 border-green-200 hidden">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="text-center sm:text-left">
+                    <h3 class="text-lg font-semibold text-green-800">Your profile is ready!</h3>
+                    <p class="text-green-600">Submit it to make it visible to placement coordinators.</p>
+                </div>
+                <button onclick="submitProfile()" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-8 rounded-xl shadow-lg transition-all">
+                    Submit Profile
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Global state
+        let profileData = {};
+        let skillsList = [];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!requireAuth('student')) return;
+            await Promise.all([loadProfile(), loadSkills(), loadBatches()]);
+            hideLoading();
+        });
+
+        // Load profile
+        async function loadProfile() {
+            try {
+                const data = await api.get('/api/student/profile');
+                profileData = data.profile || {};
+                populateProfile();
+            } catch (err) {
+                console.error('Failed to load profile:', err);
+                utils.showToast('Failed to load profile', 'error');
+            }
+        }
+
+        // Load skills
+        async function loadSkills() {
+            try {
+                const data = await api.get('/api/skills');
+                skillsList = data.skills || [];
+                renderSkillsForm();
+            } catch (err) {
+                console.error('Failed to load skills:', err);
+            }
+        }
+
+        // Load batches
+        async function loadBatches() {
+            try {
+                const data = await api.get('/api/batches');
+                const select = document.getElementById('select-batch');
+                (data.batches || []).forEach(b => {
+                    const opt = document.createElement('option');
+                    opt.value = b;
+                    opt.textContent = b;
+                    select.appendChild(opt);
+                });
+            } catch (err) {
+                console.error('Failed to load batches:', err);
+            }
+        }
+
+        // Populate profile data
+        function populateProfile() {
+            const s = profileData.student || {};
+            const p = profileData.personal_details || {};
+            const f = profileData.family_details || {};
+            const a = profileData.academics || {};
+            const ach = profileData.achievements || {};
+            const asp = profileData.aspirations || {};
+
+            // Header
+            const name = s.name || 'Student';
+            document.getElementById('profile-name').textContent = name;
+            document.getElementById('profile-email').textContent = s.official_email || '';
+            document.getElementById('header-name').textContent = name;
+            document.getElementById('header-email').textContent = s.official_email || '';
+
+            // Avatar
+            const avatarUrl = s.photo_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=2563eb&color=fff&size=128`;
+            document.getElementById('profile-avatar').src = avatarUrl;
+            document.getElementById('header-avatar').src = avatarUrl;
+
+            // Badges
+            document.getElementById('badge-roll').textContent = s.roll_no || 'No Roll No';
+            document.getElementById('badge-batch').textContent = s.batch_year ? `Batch ${s.batch_year}` : 'No Batch';
+            
+            const statusColors = {
+                'not_placed': 'bg-gray-100 text-gray-700',
+                'placed': 'bg-green-100 text-green-700',
+                'opted_out': 'bg-yellow-100 text-yellow-700',
+                'not_eligible': 'bg-red-100 text-red-700'
+            };
+            const status = s.placement_status || 'not_placed';
+            document.getElementById('badge-status').className = `px-3 py-1.5 rounded-lg text-sm font-medium ${statusColors[status]}`;
+            document.getElementById('badge-status').textContent = status.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+
+            // Progress
+            updateProgress();
+
+            // Form: Personal
+            setFormValues('form-personal', {
+                roll_no: s.roll_no,
+                name: s.name,
+                batch_year: s.batch_year,
+                date_of_birth: p.date_of_birth,
+                gender: p.gender,
+                mobile_number: p.mobile_number,
+                alt_mobile_number: p.alt_mobile_number,
+                personal_email: p.personal_email,
+                linkedin_url: p.linkedin_url,
+                github_url: p.github_url,
+                portfolio_url: p.portfolio_url,
+                aadhaar_no: p.aadhaar_no,
+                address: p.address,
+                city: p.city,
+                pincode: p.pincode
+            });
+
+            // Form: Family
+            setFormValues('form-family', {
+                father_name: f.father_name,
+                father_mobile: f.father_mobile,
+                father_occupation: f.father_occupation,
+                father_email: f.father_email,
+                father_company_details: f.father_company_details,
+                mother_name: f.mother_name,
+                mother_mobile: f.mother_mobile,
+                mother_occupation: f.mother_occupation,
+                mother_email: f.mother_email,
+                residence_type: f.residence_type,
+                annual_income: f.annual_income
+            });
+
+            // Form: Academics
+            setFormValues('form-academics', {
+                tenth_board: a.tenth_board,
+                tenth_percentage: a.tenth_percentage,
+                tenth_year: a.tenth_year,
+                twelfth_board: a.twelfth_board,
+                twelfth_percentage: a.twelfth_percentage,
+                twelfth_year: a.twelfth_year,
+                cgpa_sem1: a.cgpa_sem1,
+                cgpa_sem2: a.cgpa_sem2,
+                cgpa_sem3: a.cgpa_sem3,
+                cgpa_sem4: a.cgpa_sem4,
+                cgpa_sem5: a.cgpa_sem5,
+                cgpa_sem6: a.cgpa_sem6,
+                cgpa_sem7: a.cgpa_sem7,
+                cgpa_sem8: a.cgpa_sem8,
+                cgpa_overall: a.cgpa_overall,
+                current_backlogs: a.current_backlogs,
+                has_backlog_history: a.has_backlog_history ? 'true' : 'false'
+            });
+
+            // Form: Achievements
+            setFormValues('form-achievements', {
+                certifications: ach.certifications,
+                awards: ach.awards,
+                workshops: ach.workshops,
+                internships: ach.internships,
+                projects: ach.projects,
+                extra_curriculars: ach.extra_curriculars
+            });
+
+            // Form: Career
+            setFormValues('form-career', {
+                dream_company: asp.dream_company,
+                preferred_roles: asp.preferred_roles,
+                expected_package: asp.expected_package,
+                preferred_locations: asp.preferred_locations,
+                higher_studies: asp.higher_studies,
+                career_goals: asp.career_goals,
+                willing_to_relocate: asp.willing_to_relocate ? 'true' : ''
+            });
+
+            // Store skills for form
+            profileData.studentSkills = profileData.skills || [];
+            renderSkillsForm();
+        }
+
+        function setFormValues(formId, values) {
+            const form = document.getElementById(formId);
+            if (!form) return;
+            Object.entries(values).forEach(([name, value]) => {
+                const input = form.querySelector(`[name="${name}"]`);
+                if (input && value != null) {
+                    input.value = value;
+                }
+            });
+        }
+
+        function renderSkillsForm() {
+            const container = document.getElementById('skills-container');
+            if (!skillsList.length) return;
+
+            // Group by category
+            const grouped = {};
+            skillsList.forEach(skill => {
+                const cat = skill.category || 'Other';
+                if (!grouped[cat]) grouped[cat] = [];
+                grouped[cat].push(skill);
+            });
+
+            container.innerHTML = '';
+            Object.entries(grouped).forEach(([category, skills]) => {
+                const section = document.createElement('div');
+                section.innerHTML = `
+                    <h3 class="text-lg font-semibold text-gray-700 mb-4">${category}</h3>
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        ${skills.map(skill => {
+                            const studentSkill = (profileData.studentSkills || []).find(s => s.skill_id === skill.id);
+                            const level = studentSkill ? studentSkill.proficiency_level : 0;
+                            return `
+                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+                                    <span class="font-medium text-gray-700">${skill.name}</span>
+                                    <select name="skill_${skill.id}" class="text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white">
+                                        <option value="0" ${level === 0 ? 'selected' : ''}>-</option>
+                                        <option value="1" ${level === 1 ? 'selected' : ''}>1</option>
+                                        <option value="2" ${level === 2 ? 'selected' : ''}>2</option>
+                                        <option value="3" ${level === 3 ? 'selected' : ''}>3</option>
+                                        <option value="4" ${level === 4 ? 'selected' : ''}>4</option>
+                                        <option value="5" ${level === 5 ? 'selected' : ''}>5</option>
+                                    </select>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+                container.appendChild(section);
+            });
+        }
+
+        function updateProgress() {
+            const s = profileData.student || {};
+            const p = profileData.personal_details || {};
+            const a = profileData.academics || {};
+
+            let filled = 0, total = 10;
+            if (s.roll_no) filled++;
+            if (s.name) filled++;
+            if (p.mobile_number) filled++;
+            if (p.date_of_birth) filled++;
+            if (a.cgpa_overall) filled++;
+            if (a.tenth_percentage) filled++;
+            if (a.twelfth_percentage) filled++;
+            if ((profileData.skills || []).length > 0) filled++;
+            if (profileData.achievements?.certifications || profileData.achievements?.projects) filled++;
+            if (profileData.aspirations?.dream_company) filled++;
+
+            const percent = Math.round((filled / total) * 100);
+            const offset = 301.59 - (301.59 * percent / 100);
+
+            document.getElementById('progress-ring').style.strokeDashoffset = offset;
+            document.getElementById('progress-percent').textContent = `${percent}%`;
+
+            // Show submit button
+            const submitSection = document.getElementById('submit-section');
+            if (percent >= 80 && !s.is_profile_completed) {
+                submitSection.classList.remove('hidden');
+            } else {
+                submitSection.classList.add('hidden');
+            }
+        }
+
+        // Tab navigation
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('tab-active'));
+            
+            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('tab-active');
+        }
+
+        // Save section
+        async function saveSection(event, section) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            const data = {};
+
+            if (section === 'skills') {
+                // Special handling for skills
+                const skills = [];
+                formData.forEach((value, key) => {
+                    if (key.startsWith('skill_')) {
+                        const skillId = parseInt(key.replace('skill_', ''));
+                        const level = parseInt(value);
+                        if (level > 0) {
+                            skills.push({ skill_id: skillId, proficiency_level: level });
+                        }
+                    }
+                });
+                try {
+                    await api.put('/api/student/profile/skills', { skills });
+                    utils.showToast('Skills saved successfully!', 'success');
+                    await loadProfile();
+                } catch (err) {
+                    utils.showToast(err.message || 'Failed to save', 'error');
+                }
+                return;
+            }
+
+            formData.forEach((value, key) => {
+                if (value !== '') data[key] = value;
+            });
+
+            // Type conversions
+            if (section === 'academics') {
+                ['tenth_percentage', 'twelfth_percentage', 'cgpa_sem1', 'cgpa_sem2', 'cgpa_sem3', 'cgpa_sem4',
+                 'cgpa_sem5', 'cgpa_sem6', 'cgpa_sem7', 'cgpa_sem8', 'cgpa_overall', 'current_backlogs',
+                 'tenth_year', 'twelfth_year'].forEach(f => {
+                    if (data[f]) data[f] = parseFloat(data[f]);
+                });
+                if (data.has_backlog_history) data.has_backlog_history = data.has_backlog_history === 'true';
+            }
+            if (section === 'aspirations') {
+                if (data.expected_package) data.expected_package = parseFloat(data.expected_package);
+                if (data.willing_to_relocate) data.willing_to_relocate = data.willing_to_relocate === 'true';
+            }
+
+            try {
+                await api.put(`/api/student/profile/${section}`, data);
+                utils.showToast('Saved successfully!', 'success');
+                await loadProfile();
+            } catch (err) {
+                utils.showToast(err.message || 'Failed to save', 'error');
+            }
+        }
+
+        // Upload photo
+        async function uploadPhoto(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            if (!file.type.startsWith('image/')) {
+                utils.showToast('Please select an image file', 'error');
+                return;
+            }
+            if (file.size > 5 * 1024 * 1024) {
+                utils.showToast('File must be less than 5MB', 'error');
+                return;
+            }
+
+            try {
+                utils.showToast('Uploading photo...', 'info');
+                await api.uploadPhoto('/api/student/profile/photo', file);
+                utils.showToast('Photo uploaded!', 'success');
+                await loadProfile();
+            } catch (err) {
+                utils.showToast('Upload failed', 'error');
+            }
+        }
+
+        // Submit profile
+        async function submitProfile() {
+            try {
+                await api.post('/api/student/profile/complete', {});
+                utils.showToast('Profile submitted successfully!', 'success');
+                await loadProfile();
+            } catch (err) {
+                utils.showToast(err.message || 'Submission failed', 'error');
+            }
+        }
+
+        function hideLoading() {
+            document.getElementById('loading-overlay').classList.add('hidden');
+        }
+    </script>
 </body>
-
 </html>

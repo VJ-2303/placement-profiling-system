@@ -21,15 +21,16 @@ type config struct {
 	oauth struct {
 		clientID     string
 		clientSecret string
+		tenantID     string
 		redirectURL  string
 	}
 	jwt struct {
 		secret string
 	}
 	frontend struct {
-		successURLStudent string
-		successURLAdmin   string
+		url string
 	}
+	allowedDomain string // e.g., kct.ac.in
 }
 
 type application struct {
@@ -44,58 +45,68 @@ func main() {
 	var cfg config
 
 	cfg.port = getEnvWithDefault("PORT", "4000")
-	cfg.env = getEnvWithDefault("ENV", "production")
+	cfg.env = getEnvWithDefault("ENV", "development")
+	cfg.allowedDomain = getEnvWithDefault("ALLOWED_DOMAIN", "kct.ac.in")
 
-	cfg.db.dsn = os.Getenv("DB_DSN")
-	cfg.oauth.clientID = os.Getenv("CLIENT_ID")
-	cfg.oauth.clientSecret = os.Getenv("CLIENT_SECRET")
+	// Database - support both DATABASE_URL (Neon/Railway style) and DB_DSN
+	cfg.db.dsn = os.Getenv("DATABASE_URL")
+	if cfg.db.dsn == "" {
+		cfg.db.dsn = os.Getenv("DB_DSN")
+	}
 
-	if cfg.env == "production" {
-		cfg.oauth.redirectURL = "https://placement-profiling-system-production.up.railway.app/auth/callback"
-	} else {
-		cfg.oauth.redirectURL = "http://localhost:4000/auth/callback"
+	// Microsoft OAuth - support both naming conventions
+	cfg.oauth.clientID = os.Getenv("MICROSOFT_CLIENT_ID")
+	if cfg.oauth.clientID == "" {
+		cfg.oauth.clientID = os.Getenv("CLIENT_ID")
+	}
+
+	cfg.oauth.clientSecret = os.Getenv("MICROSOFT_CLIENT_SECRET")
+	if cfg.oauth.clientSecret == "" {
+		cfg.oauth.clientSecret = os.Getenv("CLIENT_SECRET")
+	}
+
+	cfg.oauth.tenantID = os.Getenv("MICROSOFT_TENANT_ID")
+
+	cfg.oauth.redirectURL = os.Getenv("MICROSOFT_REDIRECT_URL")
+	if cfg.oauth.redirectURL == "" {
+		cfg.oauth.redirectURL = getEnvWithDefault("OAUTH_REDIRECT_URL", "http://localhost:4000/auth/callback")
 	}
 
 	cfg.jwt.secret = os.Getenv("JWT_SECRET")
-	cfg.frontend.successURLStudent = getEnvWithDefault("FRONTEND_SUCCESS_STUDENT_URL", "")
-	cfg.frontend.successURLAdmin = getEnvWithDefault("FRONTEND_SUCCESS_ADMIN_URL", "")
+	cfg.frontend.url = getEnvWithDefault("FRONTEND_URL", "http://localhost:5500")
 
+	// Validate required env vars
 	if cfg.db.dsn == "" {
-		log.Fatal("DB_DSN environment variable is required")
+		log.Fatal("DATABASE_URL or DB_DSN environment variable is required")
 	}
 	if cfg.oauth.clientID == "" {
-		log.Fatal("CLIENT_ID environment variable is required")
+		log.Fatal("MICROSOFT_CLIENT_ID or CLIENT_ID environment variable is required")
 	}
 	if cfg.oauth.clientSecret == "" {
-		log.Fatal("CLIENT_SECRET environment variable is required")
+		log.Fatal("MICROSOFT_CLIENT_SECRET or CLIENT_SECRET environment variable is required")
 	}
 	if cfg.jwt.secret == "" {
 		log.Fatal("JWT_SECRET environment variable is required")
 	}
-	if cfg.frontend.successURLAdmin == "" {
-		log.Fatal("FRONTEND_SUCCESS_ADMIN_URL environment variable is required")
-	}
-	if cfg.frontend.successURLStudent == "" {
-		log.Fatal("FRONTEND_SUCCESS_STUDENT_URL environment variable is required")
-	}
 
 	// Initialize logger
-	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
+	logger := log.New(os.Stdout, "[PPS] ", log.Ldate|log.Ltime|log.Lshortfile)
 
-	logger.Printf("Starting server with config:")
-	logger.Printf("- Port: %s", cfg.port)
-	logger.Printf("- Environment: %s", cfg.env)
-	logger.Printf("- Frontend URL: %s", cfg.frontend.successURLStudent)
-	logger.Printf("- OAuth Redirect: %s", cfg.oauth.redirectURL)
+	logger.Println("=== Placement Profiling System ===")
+	logger.Printf("Environment: %s", cfg.env)
+	logger.Printf("Port: %s", cfg.port)
+	logger.Printf("Allowed Domain: %s", cfg.allowedDomain)
+	logger.Printf("Frontend URL: %s", cfg.frontend.url)
+	logger.Printf("OAuth Redirect: %s", cfg.oauth.redirectURL)
 
-	// Open database connection, defined under internal/data/data.go
+	// Open database connection
 	db, err := data.OpenDB(cfg.db.dsn)
 	if err != nil {
 		logger.Fatal(err)
 	}
 	defer db.Close()
 
-	logger.Printf("database connection pool established")
+	logger.Println("Database connection established")
 
 	// Initialize application struct
 	app := &application{
@@ -111,11 +122,11 @@ func main() {
 		Addr:         fmt.Sprintf(":%s", cfg.port),
 		Handler:      app.routes(),
 		IdleTimeout:  time.Minute,
-		ReadTimeout:  10 * time.Second,
-		WriteTimeout: 30 * time.Second,
+		ReadTimeout:  30 * time.Second,
+		WriteTimeout: 60 * time.Second,
 	}
 
-	logger.Printf("starting %s server on %s", cfg.env, srv.Addr)
+	logger.Printf("Starting %s server on port %s", cfg.env, cfg.port)
 	err = srv.ListenAndServe()
 	logger.Fatal(err)
 }

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - KCT Placement</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        primary: { 50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe', 300: '#93c5fd', 400: '#60a5fa', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8', 800: '#1e40af', 900: '#1e3a8a' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .card { background: white; border-radius: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #f3f4f6; }
+        .stat-card { transition: all 0.2s; }
+        .stat-card:hover { transform: translateY(-2px); box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); }
+        .sidebar-link { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; border-radius: 0.75rem; color: #6b7280; transition: all 0.2s; }
+        .sidebar-link:hover { background: #f3f4f6; color: #1f2937; }
+        .sidebar-link.active { background: #2563eb; color: white; }
+    </style>
+</head>
+<body class="font-sans bg-gray-50 min-h-screen">
+    <!-- Loading -->
+    <div id="loading-overlay" class="fixed inset-0 bg-white/90 backdrop-blur-sm z-50 flex items-center justify-center">
+        <div class="text-center">
+            <div class="w-12 h-12 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p class="text-gray-600 font-medium">Loading dashboard...</p>
+        </div>
+    </div>
+
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 z-40 w-64 bg-white border-r border-gray-100 transform -translate-x-full lg:translate-x-0 transition-transform duration-200">
+            <div class="flex flex-col h-full">
+                <!-- Logo -->
+                <div class="p-6 border-b border-gray-100">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-gradient-to-br from-primary-600 to-primary-800 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h1 class="font-bold text-gray-800">KCT Placement</h1>
+                            <p class="text-xs text-gray-500">Admin Panel</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation -->
+                <nav class="flex-1 p-4 space-y-2">
+                    <a href="admin-dashboard.html" class="sidebar-link active">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                        </svg>
+                        Dashboard
+                    </a>
+                    <a href="admin-students.html" class="sidebar-link">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        </svg>
+                        Students
+                    </a>
+                    <a href="admin-placements.html" class="sidebar-link">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                        Placements
+                    </a>
+                    <a href="admin-companies.html" class="sidebar-link">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                        </svg>
+                        Companies
+                    </a>
+                </nav>
+
+                <!-- User -->
+                <div class="p-4 border-t border-gray-100">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
+                            <span id="admin-initial" class="text-primary-600 font-semibold">A</span>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p id="admin-name" class="font-medium text-gray-800 truncate">Admin</p>
+                            <p id="admin-email" class="text-xs text-gray-500 truncate">admin@kct.ac.in</p>
+                        </div>
+                    </div>
+                    <button onclick="logout()" class="w-full flex items-center justify-center gap-2 py-2 px-4 text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                        </svg>
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Sidebar Overlay -->
+        <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-30 lg:hidden hidden"></div>
+
+        <!-- Main Content -->
+        <main class="flex-1 lg:ml-0">
+            <!-- Top Bar -->
+            <header class="bg-white border-b border-gray-100 sticky top-0 z-20">
+                <div class="flex items-center justify-between px-4 sm:px-6 h-16">
+                    <button onclick="toggleSidebar()" class="lg:hidden p-2 text-gray-500 hover:bg-gray-100 rounded-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                    <h1 class="text-xl font-bold text-gray-800">Dashboard</h1>
+                    <div class="flex items-center gap-4">
+                        <select id="batch-filter" onchange="filterByBatch()" class="text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white">
+                            <option value="">All Batches</option>
+                        </select>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div class="p-4 sm:p-6 lg:p-8">
+                <!-- Stats Grid -->
+                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
+                    <div class="card stat-card p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-500 font-medium">Total Students</p>
+                                <p id="stat-total" class="text-3xl font-bold text-gray-800 mt-1">-</p>
+                            </div>
+                            <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card stat-card p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-500 font-medium">Placed Students</p>
+                                <p id="stat-placed" class="text-3xl font-bold text-green-600 mt-1">-</p>
+                            </div>
+                            <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-2"><span id="stat-placed-percent">0</span>% placement rate</p>
+                    </div>
+                    <div class="card stat-card p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-500 font-medium">Avg. Package</p>
+                                <p id="stat-avg-pkg" class="text-3xl font-bold text-purple-600 mt-1">-</p>
+                            </div>
+                            <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+                                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-2">Max: <span id="stat-max-pkg">-</span></p>
+                    </div>
+                    <div class="card stat-card p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-500 font-medium">Companies</p>
+                                <p id="stat-companies" class="text-3xl font-bold text-orange-600 mt-1">-</p>
+                            </div>
+                            <div class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center">
+                                <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="grid lg:grid-cols-2 gap-6 mb-8">
+                    <!-- Placement Status -->
+                    <div class="card p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Placement Status</h3>
+                        <div id="status-chart" class="space-y-4">
+                            <!-- Dynamic content -->
+                        </div>
+                    </div>
+
+                    <!-- CGPA Distribution -->
+                    <div class="card p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">CGPA Distribution</h3>
+                        <div id="cgpa-chart" class="space-y-3">
+                            <!-- Dynamic content -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Row -->
+                <div class="grid lg:grid-cols-2 gap-6">
+                    <!-- Top Companies -->
+                    <div class="card p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Top Recruiting Companies</h3>
+                        <div id="companies-list" class="space-y-3">
+                            <!-- Dynamic content -->
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="card p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Recent Activity</h3>
+                        <div id="activity-list" class="space-y-3 max-h-80 overflow-y-auto">
+                            <!-- Dynamic content -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        let dashboardData = {};
+        let currentBatch = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!requireAuth('admin')) return;
+            setupAdmin();
+            await Promise.all([loadDashboard(), loadBatches()]);
+            hideLoading();
+        });
+
+        function setupAdmin() {
+            const user = getCurrentUser();
+            if (user) {
+                document.getElementById('admin-name').textContent = user.name || 'Admin';
+                document.getElementById('admin-email').textContent = user.email || '';
+                document.getElementById('admin-initial').textContent = (user.name || 'A')[0].toUpperCase();
+            }
+        }
+
+        async function loadBatches() {
+            try {
+                const data = await api.get('/api/batches');
+                const select = document.getElementById('batch-filter');
+                (data.batches || []).forEach(b => {
+                    const opt = document.createElement('option');
+                    opt.value = b;
+                    opt.textContent = `Batch ${b}`;
+                    select.appendChild(opt);
+                });
+            } catch (err) {
+                console.error('Failed to load batches:', err);
+            }
+        }
+
+        async function loadDashboard() {
+            try {
+                const endpoint = currentBatch ? `/api/admin/dashboard?batch=${currentBatch}` : '/api/admin/dashboard';
+                const data = await api.get(endpoint);
+                dashboardData = data;
+                renderDashboard();
+            } catch (err) {
+                console.error('Failed to load dashboard:', err);
+                utils.showToast('Failed to load dashboard', 'error');
+            }
+        }
+
+        function filterByBatch() {
+            const select = document.getElementById('batch-filter');
+            currentBatch = select.value || null;
+            loadDashboard();
+        }
+
+        function renderDashboard() {
+            const stats = dashboardData.stats || {};
+
+            // Stats
+            document.getElementById('stat-total').textContent = stats.total_students || 0;
+            document.getElementById('stat-placed').textContent = stats.placed_students || 0;
+            document.getElementById('stat-placed-percent').textContent = stats.total_students ? Math.round((stats.placed_students / stats.total_students) * 100) : 0;
+            document.getElementById('stat-avg-pkg').textContent = stats.avg_package ? `${stats.avg_package.toFixed(1)} LPA` : '-';
+            document.getElementById('stat-max-pkg').textContent = stats.max_package ? `${stats.max_package.toFixed(1)} LPA` : '-';
+            document.getElementById('stat-companies').textContent = stats.total_companies || 0;
+
+            // Status chart
+            const statusChart = document.getElementById('status-chart');
+            const total = stats.total_students || 1;
+            const statusData = [
+                { label: 'Placed', value: stats.placed_students || 0, color: 'bg-green-500' },
+                { label: 'Not Placed', value: stats.not_placed_students || 0, color: 'bg-gray-400' },
+                { label: 'Opted Out', value: stats.opted_out_students || 0, color: 'bg-yellow-500' }
+            ];
+            statusChart.innerHTML = statusData.map(s => `
+                <div>
+                    <div class="flex justify-between text-sm mb-1">
+                        <span class="text-gray-600">${s.label}</span>
+                        <span class="font-semibold">${s.value}</span>
+                    </div>
+                    <div class="h-3 bg-gray-100 rounded-full overflow-hidden">
+                        <div class="${s.color} h-full rounded-full transition-all duration-500" style="width: ${(s.value / total * 100)}%"></div>
+                    </div>
+                </div>
+            `).join('');
+
+            // CGPA Distribution (mock - would need real data from analytics endpoint)
+            const cgpaChart = document.getElementById('cgpa-chart');
+            cgpaChart.innerHTML = `
+                <div class="text-sm text-gray-500 text-center py-8">
+                    CGPA distribution analytics coming soon
+                </div>
+            `;
+
+            // Top Companies
+            const companiesList = document.getElementById('companies-list');
+            const companies = dashboardData.company_stats || [];
+            if (companies.length > 0) {
+                companiesList.innerHTML = companies.slice(0, 5).map((c, i) => `
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 bg-primary-100 text-primary-600 rounded-lg flex items-center justify-center font-semibold text-sm">${i + 1}</span>
+                            <div>
+                                <p class="font-medium text-gray-800">${c.company_name}</p>
+                                <p class="text-xs text-gray-500">${c.total_placements} placements</p>
+                            </div>
+                        </div>
+                        <span class="text-sm font-semibold text-green-600">${c.avg_package ? c.avg_package.toFixed(1) + ' LPA' : '-'}</span>
+                    </div>
+                `).join('');
+            } else {
+                companiesList.innerHTML = '<p class="text-gray-500 text-center py-4">No company data available</p>';
+            }
+
+            // Recent Activity
+            const activityList = document.getElementById('activity-list');
+            const activities = dashboardData.activity || [];
+            if (activities.length > 0) {
+                activityList.innerHTML = activities.map(a => `
+                    <div class="flex items-start gap-3 p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm text-gray-800">${a.description || a.activity_type}</p>
+                            <p class="text-xs text-gray-500">${utils.formatDate(a.created_at)}</p>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                activityList.innerHTML = '<p class="text-gray-500 text-center py-4">No recent activity</p>';
+            }
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
+
+        function hideLoading() {
+            document.getElementById('loading-overlay').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>

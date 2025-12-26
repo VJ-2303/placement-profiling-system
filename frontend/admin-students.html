@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Students - KCT Placement Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        primary: { 50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe', 300: '#93c5fd', 400: '#60a5fa', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8', 800: '#1e40af', 900: '#1e3a8a' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .card { background: white; border-radius: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #f3f4f6; }
+        .sidebar-link { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; border-radius: 0.75rem; color: #6b7280; transition: all 0.2s; }
+        .sidebar-link:hover { background: #f3f4f6; color: #1f2937; }
+        .sidebar-link.active { background: #2563eb; color: white; }
+        .table-row:hover { background: #f9fafb; }
+        .status-badge { padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; }
+    </style>
+</head>
+<body class="font-sans bg-gray-50 min-h-screen">
+    <!-- Loading -->
+    <div id="loading-overlay" class="fixed inset-0 bg-white/90 backdrop-blur-sm z-50 flex items-center justify-center">
+        <div class="text-center">
+            <div class="w-12 h-12 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p class="text-gray-600 font-medium">Loading students...</p>
+        </div>
+    </div>
+
+    <div class="flex min-h-screen">
+        <!-- Sidebar (same as dashboard) -->
+        <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 z-40 w-64 bg-white border-r border-gray-100 transform -translate-x-full lg:translate-x-0 transition-transform duration-200">
+            <div class="flex flex-col h-full">
+                <div class="p-6 border-b border-gray-100">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-gradient-to-br from-primary-600 to-primary-800 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h1 class="font-bold text-gray-800">KCT Placement</h1>
+                            <p class="text-xs text-gray-500">Admin Panel</p>
+                        </div>
+                    </div>
+                </div>
+                <nav class="flex-1 p-4 space-y-2">
+                    <a href="admin-dashboard.html" class="sidebar-link">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                        Dashboard
+                    </a>
+                    <a href="admin-students.html" class="sidebar-link active">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                        Students
+                    </a>
+                    <a href="admin-placements.html" class="sidebar-link">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        Placements
+                    </a>
+                    <a href="admin-companies.html" class="sidebar-link">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                        Companies
+                    </a>
+                </nav>
+                <div class="p-4 border-t border-gray-100">
+                    <button onclick="logout()" class="w-full flex items-center justify-center gap-2 py-2 px-4 text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-30 lg:hidden hidden"></div>
+
+        <!-- Main Content -->
+        <main class="flex-1">
+            <!-- Top Bar -->
+            <header class="bg-white border-b border-gray-100 sticky top-0 z-20">
+                <div class="flex items-center justify-between px-4 sm:px-6 h-16">
+                    <div class="flex items-center gap-4">
+                        <button onclick="toggleSidebar()" class="lg:hidden p-2 text-gray-500 hover:bg-gray-100 rounded-lg">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                        </button>
+                        <h1 class="text-xl font-bold text-gray-800">Students</h1>
+                    </div>
+                    <button onclick="exportStudents()" class="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                        Export CSV
+                    </button>
+                </div>
+            </header>
+
+            <div class="p-4 sm:p-6 lg:p-8">
+                <!-- Filters -->
+                <div class="card p-4 sm:p-6 mb-6">
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                        <div class="lg:col-span-2">
+                            <div class="relative">
+                                <svg class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                                <input type="text" id="search-input" placeholder="Search by name, roll no, email..." class="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none">
+                            </div>
+                        </div>
+                        <select id="filter-batch" class="border border-gray-200 rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-primary-500 outline-none">
+                            <option value="">All Batches</option>
+                        </select>
+                        <select id="filter-status" class="border border-gray-200 rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-primary-500 outline-none">
+                            <option value="">All Status</option>
+                            <option value="not_placed">Not Placed</option>
+                            <option value="placed">Placed</option>
+                            <option value="opted_out">Opted Out</option>
+                        </select>
+                        <button onclick="applyFilters()" class="bg-primary-600 hover:bg-primary-700 text-white py-2.5 px-4 rounded-lg font-medium transition-colors">
+                            Apply Filters
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Results Count -->
+                <div class="flex items-center justify-between mb-4">
+                    <p class="text-sm text-gray-600">Showing <span id="results-count" class="font-semibold">0</span> students</p>
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm text-gray-500">Per page:</span>
+                        <select id="per-page" onchange="changePerPage()" class="text-sm border border-gray-200 rounded-lg px-2 py-1">
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Students Table -->
+                <div class="card overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50 border-b border-gray-100">
+                                <tr>
+                                    <th class="text-left py-4 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Student</th>
+                                    <th class="text-left py-4 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Roll No</th>
+                                    <th class="text-left py-4 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden md:table-cell">Batch</th>
+                                    <th class="text-left py-4 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden lg:table-cell">CGPA</th>
+                                    <th class="text-left py-4 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="text-left py-4 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden xl:table-cell">Profile</th>
+                                    <th class="text-right py-4 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="students-body" class="divide-y divide-gray-100">
+                                <tr><td colspan="7" class="py-8 text-center text-gray-500">Loading...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="flex items-center justify-between px-4 py-4 border-t border-gray-100">
+                        <button id="prev-btn" onclick="prevPage()" disabled class="flex items-center gap-1 px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                            Previous
+                        </button>
+                        <span id="page-info" class="text-sm text-gray-600">Page 1 of 1</span>
+                        <button id="next-btn" onclick="nextPage()" disabled class="flex items-center gap-1 px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+                            Next
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Student Detail Modal -->
+    <div id="student-modal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/50" onclick="closeModal()"></div>
+        <div class="absolute inset-4 sm:inset-8 lg:inset-16 bg-white rounded-2xl overflow-hidden flex flex-col">
+            <div class="flex items-center justify-between p-4 sm:p-6 border-b border-gray-100">
+                <h2 id="modal-title" class="text-xl font-bold text-gray-800">Student Details</h2>
+                <button onclick="closeModal()" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                    <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div id="modal-content" class="flex-1 overflow-y-auto p-4 sm:p-6">
+                <!-- Dynamic content -->
+            </div>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        let students = [];
+        let currentPage = 1;
+        let totalPages = 1;
+        let perPage = 20;
+        let filters = { search: '', batch: '', status: '' };
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!requireAuth('admin')) return;
+            await loadBatches();
+            await loadStudents();
+            setupSearch();
+            hideLoading();
+        });
+
+        async function loadBatches() {
+            try {
+                const data = await api.get('/api/batches');
+                const select = document.getElementById('filter-batch');
+                (data.batches || []).forEach(b => {
+                    const opt = document.createElement('option');
+                    opt.value = b;
+                    opt.textContent = `Batch ${b}`;
+                    select.appendChild(opt);
+                });
+            } catch (err) {
+                console.error('Failed to load batches:', err);
+            }
+        }
+
+        async function loadStudents() {
+            try {
+                let endpoint = `/api/admin/students?page=${currentPage}&limit=${perPage}`;
+                if (filters.search) endpoint += `&search=${encodeURIComponent(filters.search)}`;
+                if (filters.batch) endpoint += `&batch=${filters.batch}`;
+                if (filters.status) endpoint += `&status=${filters.status}`;
+
+                const data = await api.get(endpoint);
+                students = data.students || [];
+                totalPages = data.total_pages || 1;
+                renderStudents();
+                updatePagination();
+            } catch (err) {
+                console.error('Failed to load students:', err);
+                utils.showToast('Failed to load students', 'error');
+            }
+        }
+
+        function setupSearch() {
+            const input = document.getElementById('search-input');
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') applyFilters();
+            });
+        }
+
+        function applyFilters() {
+            filters.search = document.getElementById('search-input').value;
+            filters.batch = document.getElementById('filter-batch').value;
+            filters.status = document.getElementById('filter-status').value;
+            currentPage = 1;
+            loadStudents();
+        }
+
+        function renderStudents() {
+            const tbody = document.getElementById('students-body');
+            document.getElementById('results-count').textContent = students.length;
+
+            if (students.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="py-8 text-center text-gray-500">No students found</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = students.map(s => {
+                const statusColors = {
+                    'not_placed': 'bg-gray-100 text-gray-700',
+                    'placed': 'bg-green-100 text-green-700',
+                    'opted_out': 'bg-yellow-100 text-yellow-700',
+                    'not_eligible': 'bg-red-100 text-red-700'
+                };
+                const statusText = (s.placement_status || 'not_placed').replace(/_/g, ' ');
+                const avatarUrl = s.photo_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(s.name || 'S')}&background=2563eb&color=fff&size=40`;
+
+                return `
+                    <tr class="table-row">
+                        <td class="py-4 px-4">
+                            <div class="flex items-center gap-3">
+                                <img src="${avatarUrl}" class="w-10 h-10 rounded-full object-cover" alt="">
+                                <div>
+                                    <p class="font-medium text-gray-800">${s.name || '-'}</p>
+                                    <p class="text-sm text-gray-500">${s.official_email || '-'}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="py-4 px-4 font-medium text-gray-700">${s.roll_no || '-'}</td>
+                        <td class="py-4 px-4 text-gray-600 hidden md:table-cell">${s.batch_year || '-'}</td>
+                        <td class="py-4 px-4 text-gray-600 hidden lg:table-cell">${s.cgpa_overall ? s.cgpa_overall.toFixed(2) : '-'}</td>
+                        <td class="py-4 px-4">
+                            <span class="status-badge ${statusColors[s.placement_status] || statusColors.not_placed}">${statusText}</span>
+                        </td>
+                        <td class="py-4 px-4 hidden xl:table-cell">
+                            <div class="flex items-center gap-1">
+                                <div class="w-20 h-2 bg-gray-100 rounded-full overflow-hidden">
+                                    <div class="h-full bg-primary-500 rounded-full" style="width: ${s.profile_completion || 0}%"></div>
+                                </div>
+                                <span class="text-xs text-gray-500">${s.profile_completion || 0}%</span>
+                            </div>
+                        </td>
+                        <td class="py-4 px-4">
+                            <div class="flex items-center justify-end gap-2">
+                                <button onclick="viewStudent(${s.id})" class="p-2 text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors" title="View">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                </button>
+                                <button onclick="updateStatus(${s.id})" class="p-2 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors" title="Update Status">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function updatePagination() {
+            document.getElementById('page-info').textContent = `Page ${currentPage} of ${totalPages}`;
+            document.getElementById('prev-btn').disabled = currentPage <= 1;
+            document.getElementById('next-btn').disabled = currentPage >= totalPages;
+        }
+
+        function prevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                loadStudents();
+            }
+        }
+
+        function nextPage() {
+            if (currentPage < totalPages) {
+                currentPage++;
+                loadStudents();
+            }
+        }
+
+        function changePerPage() {
+            perPage = parseInt(document.getElementById('per-page').value);
+            currentPage = 1;
+            loadStudents();
+        }
+
+        async function viewStudent(id) {
+            try {
+                const data = await api.get(`/api/admin/students/${id}`);
+                const profile = data.profile || {};
+                const s = profile.student || {};
+                const p = profile.personal_details || {};
+                const a = profile.academics || {};
+                const f = profile.family_details || {};
+                const ach = profile.achievements || {};
+                const asp = profile.aspirations || {};
+
+                document.getElementById('modal-title').textContent = s.name || 'Student Details';
+
+                const avatarUrl = s.photo_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(s.name || 'S')}&background=2563eb&color=fff&size=128`;
+
+                document.getElementById('modal-content').innerHTML = `
+                    <div class="grid lg:grid-cols-3 gap-6">
+                        <div class="lg:col-span-1">
+                            <div class="text-center">
+                                <img src="${avatarUrl}" class="w-32 h-32 rounded-2xl mx-auto mb-4 object-cover shadow-lg">
+                                <h3 class="text-xl font-bold text-gray-800">${s.name || '-'}</h3>
+                                <p class="text-gray-500">${s.roll_no || '-'}</p>
+                                <p class="text-sm text-gray-400">${s.official_email || '-'}</p>
+                            </div>
+                            <div class="mt-6 space-y-3">
+                                <div class="flex justify-between py-2 border-b border-gray-100">
+                                    <span class="text-gray-500">Batch</span>
+                                    <span class="font-medium">${s.batch_year || '-'}</span>
+                                </div>
+                                <div class="flex justify-between py-2 border-b border-gray-100">
+                                    <span class="text-gray-500">CGPA</span>
+                                    <span class="font-medium">${a.cgpa_overall ? a.cgpa_overall.toFixed(2) : '-'}</span>
+                                </div>
+                                <div class="flex justify-between py-2 border-b border-gray-100">
+                                    <span class="text-gray-500">Backlogs</span>
+                                    <span class="font-medium">${a.current_backlogs || 0}</span>
+                                </div>
+                                <div class="flex justify-between py-2 border-b border-gray-100">
+                                    <span class="text-gray-500">Mobile</span>
+                                    <span class="font-medium">${p.mobile_number || '-'}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lg:col-span-2 space-y-6">
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-3">Academic Details</h4>
+                                <div class="grid sm:grid-cols-2 gap-4 bg-gray-50 rounded-xl p-4">
+                                    <div><span class="text-gray-500 text-sm">10th:</span> <span class="font-medium">${a.tenth_percentage ? a.tenth_percentage + '%' : '-'}</span></div>
+                                    <div><span class="text-gray-500 text-sm">12th:</span> <span class="font-medium">${a.twelfth_percentage ? a.twelfth_percentage + '%' : '-'}</span></div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-3">Semester CGPAs</h4>
+                                <div class="grid grid-cols-4 gap-2">
+                                    ${[1,2,3,4,5,6,7,8].map(i => `
+                                        <div class="bg-gray-50 rounded-lg p-2 text-center">
+                                            <span class="text-xs text-gray-500">Sem ${i}</span>
+                                            <p class="font-medium">${a[`cgpa_sem${i}`] || '-'}</p>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-3">Career Aspirations</h4>
+                                <div class="bg-gray-50 rounded-xl p-4 space-y-2">
+                                    <div><span class="text-gray-500 text-sm">Dream Company:</span> <span class="font-medium">${asp.dream_company || '-'}</span></div>
+                                    <div><span class="text-gray-500 text-sm">Preferred Roles:</span> <span class="font-medium">${asp.preferred_roles || '-'}</span></div>
+                                    <div><span class="text-gray-500 text-sm">Expected Package:</span> <span class="font-medium">${asp.expected_package ? asp.expected_package + ' LPA' : '-'}</span></div>
+                                </div>
+                            </div>
+                            ${ach.certifications || ach.projects ? `
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-3">Achievements</h4>
+                                <div class="bg-gray-50 rounded-xl p-4 space-y-2 text-sm">
+                                    ${ach.certifications ? `<div><span class="text-gray-500">Certifications:</span> ${ach.certifications}</div>` : ''}
+                                    ${ach.projects ? `<div><span class="text-gray-500">Projects:</span> ${ach.projects}</div>` : ''}
+                                </div>
+                            </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('student-modal').classList.remove('hidden');
+            } catch (err) {
+                utils.showToast('Failed to load student details', 'error');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('student-modal').classList.add('hidden');
+        }
+
+        async function updateStatus(id) {
+            const student = students.find(s => s.id === id);
+            if (!student) return;
+
+            const newStatus = prompt(`Update status for ${student.name}:\n\nCurrent: ${student.placement_status}\n\nOptions:\n- not_placed\n- placed\n- opted_out\n- not_eligible`, student.placement_status);
+
+            if (!newStatus || newStatus === student.placement_status) return;
+            if (!['not_placed', 'placed', 'opted_out', 'not_eligible'].includes(newStatus)) {
+                utils.showToast('Invalid status', 'error');
+                return;
+            }
+
+            try {
+                await api.patch(`/api/admin/students/${id}/status`, { placement_status: newStatus });
+                utils.showToast('Status updated', 'success');
+                loadStudents();
+            } catch (err) {
+                utils.showToast('Failed to update status', 'error');
+            }
+        }
+
+        async function exportStudents() {
+            try {
+                let endpoint = '/api/admin/students/export?';
+                if (filters.batch) endpoint += `batch=${filters.batch}&`;
+                if (filters.status) endpoint += `status=${filters.status}&`;
+
+                const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+
+                if (!response.ok) throw new Error('Export failed');
+
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `students_${new Date().toISOString().split('T')[0]}.csv`;
+                a.click();
+                window.URL.revokeObjectURL(url);
+                utils.showToast('Export successful', 'success');
+            } catch (err) {
+                utils.showToast('Export failed', 'error');
+            }
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
+
+        function hideLoading() {
+            document.getElementById('loading-overlay').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
