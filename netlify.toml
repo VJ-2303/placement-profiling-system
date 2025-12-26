@@ -1,10 +1,8 @@
 [build]
-  # If deploying from root of repo, use: publish = "frontend"
-  # If base directory is set to "frontend" in Netlify, use: publish = "."
-  publish = "."
+  base = "frontend"
+  publish = "frontend"
 
-# Handle direct access to HTML pages (no catch-all redirect needed for multi-page site)
-# Only redirect 404s to index.html
+# Handle 404s - redirect to index.html
 [[redirects]]
   from = "/*"
   to = "/index.html"
@@ -20,17 +18,17 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
 
 [[headers]]
-  for = "*.html"
+  for = "/*.html"
   [headers.values]
     Cache-Control = "no-cache, no-store, must-revalidate"
 
 [[headers]]
-  for = "*.js"
+  for = "/*.js"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
 [[headers]]
-  for = "*.css"
+  for = "/*.css"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
