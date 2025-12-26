@@ -4,8 +4,8 @@ go 1.25.1
 
 require (
 	github.com/golang-jwt/jwt/v5 v5.3.0
+	github.com/gorilla/mux v1.8.1
 	github.com/jackc/pgx/v5 v5.7.6
-	github.com/julienschmidt/httprouter v1.3.0
 	golang.org/x/oauth2 v0.31.0
 )
 

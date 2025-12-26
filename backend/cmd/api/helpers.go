@@ -10,7 +10,7 @@ import (
 	"strings"
 
 	"github.com/VJ-2303/placement-profiling-system/internal/auth"
-	"github.com/julienschmidt/httprouter"
+	"github.com/gorilla/mux"
 )
 
 type envelope map[string]interface{}
@@ -188,8 +188,8 @@ func (app *application) authenticateAdmin(r *http.Request) (*auth.Claims, error)
 // ============================================
 
 func (app *application) readIDParam(r *http.Request, paramName string) (int64, error) {
-	params := httprouter.ParamsFromContext(r.Context())
-	idStr := params.ByName(paramName)
+	vars := mux.Vars(r)
+	idStr := vars[paramName]
 	if idStr == "" {
 		return 0, fmt.Errorf("missing %s parameter", paramName)
 	}
@@ -203,8 +203,8 @@ func (app *application) readIDParam(r *http.Request, paramName string) (int64, e
 }
 
 func (app *application) readStringParam(r *http.Request, paramName string) string {
-	params := httprouter.ParamsFromContext(r.Context())
-	return params.ByName(paramName)
+	vars := mux.Vars(r)
+	return vars[paramName]
 }
 
 // ============================================
