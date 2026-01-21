@@ -523,8 +523,14 @@ func (app *application) updateSkills(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Custom skill input struct to accept frontend field names
+	type SkillInput struct {
+		SkillID          int `json:"skill_id"`
+		ProficiencyLevel int `json:"proficiency_level"` // Frontend sends proficiency_level as 1-5
+	}
+
 	var input struct {
-		Skills []models.StudentSkill `json:"skills"`
+		Skills []SkillInput `json:"skills"`
 	}
 	if err := app.readJSON(w, r, &input); err != nil {
 		app.badRequestResponse(w, r, err)
@@ -538,7 +544,30 @@ func (app *application) updateSkills(w http.ResponseWriter, r *http.Request) {
 	}
 	defer tx.Rollback()
 
-	if err := app.models.Students.UpsertSkills(tx, claims.UserID, input.Skills); err != nil {
+	// Convert input to models.StudentSkill with proficiency conversion
+	var skills []models.StudentSkill
+	for _, s := range input.Skills {
+		// Convert proficiency_level (1-5) to proficiency enum
+		var proficiency models.ProficiencyLevel
+		switch s.ProficiencyLevel {
+		case 1:
+			proficiency = models.ProficiencyBeginner
+		case 2:
+			proficiency = models.ProficiencyIntermediate
+		case 3, 4:
+			proficiency = models.ProficiencyAdvanced
+		case 5:
+			proficiency = models.ProficiencyExpert
+		default:
+			proficiency = models.ProficiencyBeginner
+		}
+		skills = append(skills, models.StudentSkill{
+			SkillID:     s.SkillID,
+			Proficiency: proficiency,
+		})
+	}
+
+	if err := app.models.Students.UpsertSkills(tx, claims.UserID, skills); err != nil {
 		app.serverErrorResponse(w, r, err)
 		return
 	}

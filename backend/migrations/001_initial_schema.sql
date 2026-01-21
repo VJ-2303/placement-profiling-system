@@ -308,7 +308,7 @@ CREATE INDEX idx_student_skills_proficiency ON student_skills(proficiency);
 
 CREATE TABLE student_achievements (
     id SERIAL PRIMARY KEY,
-    student_id INTEGER NOT NULL REFERENCES students(id) ON DELETE CASCADE,
+    student_id INTEGER NOT NULL UNIQUE REFERENCES students(id) ON DELETE CASCADE,
     
     -- Certifications
     certifications TEXT,
