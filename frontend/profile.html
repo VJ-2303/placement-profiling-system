@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,20 +20,45 @@
         }
     </script>
     <style>
-        .tab-active { border-bottom: 3px solid #2563eb; color: #1d4ed8; background: #eff6ff; }
-        .input-field { @apply w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 outline-none; }
-        .input-label { @apply block text-sm font-medium text-gray-700 mb-2; }
-        .btn-primary { @apply bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200; }
-        .btn-secondary { @apply bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-3 px-6 rounded-xl transition-all duration-200; }
-        .card { @apply bg-white rounded-2xl shadow-sm border border-gray-100; }
-        .progress-ring { transition: stroke-dashoffset 0.5s ease-in-out; }
+        .tab-active {
+            border-bottom: 3px solid #2563eb;
+            color: #1d4ed8;
+            background: #eff6ff;
+        }
+
+        .input-field {
+            @apply w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 outline-none;
+        }
+
+        .input-label {
+            @apply block text-sm font-medium text-gray-700 mb-2;
+        }
+
+        .btn-primary {
+            @apply bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200;
+        }
+
+        .btn-secondary {
+            @apply bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-3 px-6 rounded-xl transition-all duration-200;
+        }
+
+        .card {
+            @apply bg-white rounded-2xl shadow-sm border border-gray-100;
+        }
+
+        .progress-ring {
+            transition: stroke-dashoffset 0.5s ease-in-out;
+        }
     </style>
 </head>
+
 <body class="font-sans bg-gray-50 min-h-screen">
     <!-- Loading Overlay -->
     <div id="loading-overlay" class="fixed inset-0 bg-white/90 backdrop-blur-sm z-50 flex items-center justify-center">
         <div class="text-center">
-            <div class="w-12 h-12 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <div
+                class="w-12 h-12 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto mb-4">
+            </div>
             <p class="text-gray-600 font-medium">Loading your profile...</p>
         </div>
     </div>
@@ -42,24 +68,31 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-gradient-to-br from-primary-600 to-primary-800 rounded-xl flex items-center justify-center">
+                    <div
+                        class="w-10 h-10 bg-gradient-to-br from-primary-600 to-primary-800 rounded-xl flex items-center justify-center">
                         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                         </svg>
                     </div>
                     <span class="text-xl font-bold text-gray-800 hidden sm:block">KCT Placement</span>
                 </div>
                 <div class="flex items-center gap-4">
                     <div class="hidden md:flex items-center gap-3">
-                        <img id="header-avatar" src="https://ui-avatars.com/api/?name=S&background=2563eb&color=fff&size=40" class="w-9 h-9 rounded-full">
+                        <img id="header-avatar"
+                            src="https://ui-avatars.com/api/?name=S&background=2563eb&color=fff&size=40"
+                            class="w-9 h-9 rounded-full">
                         <div class="text-right">
                             <p id="header-name" class="text-sm font-semibold text-gray-800">Student</p>
                             <p id="header-email" class="text-xs text-gray-500">student@kct.ac.in</p>
                         </div>
                     </div>
-                    <button onclick="logout()" class="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all" title="Logout">
+                    <button onclick="logout()"
+                        class="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all"
+                        title="Logout">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                         </svg>
                     </button>
                 </div>
@@ -74,14 +107,19 @@
             <div class="flex flex-col lg:flex-row items-center lg:items-start gap-6">
                 <!-- Avatar -->
                 <div class="relative group flex-shrink-0">
-                    <img id="profile-avatar" src="https://ui-avatars.com/api/?name=S&background=2563eb&color=fff&size=128" 
-                         class="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl object-cover shadow-lg border-4 border-white">
-                    <label class="absolute inset-0 flex items-center justify-center bg-black/50 rounded-2xl opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity">
+                    <img id="profile-avatar"
+                        src="https://ui-avatars.com/api/?name=S&background=2563eb&color=fff&size=128"
+                        class="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl object-cover shadow-lg border-4 border-white">
+                    <label
+                        class="absolute inset-0 flex items-center justify-center bg-black/50 rounded-2xl opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity">
                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
-                        <input type="file" id="photo-input" accept="image/*" class="hidden" onchange="uploadPhoto(this)">
+                        <input type="file" id="photo-input" accept="image/*" class="hidden"
+                            onchange="uploadPhoto(this)">
                     </label>
                 </div>
 
@@ -90,9 +128,13 @@
                     <h1 id="profile-name" class="text-2xl sm:text-3xl font-bold text-gray-800">Loading...</h1>
                     <p id="profile-email" class="text-gray-500 mt-1">Loading email...</p>
                     <div class="flex flex-wrap items-center justify-center lg:justify-start gap-2 mt-4">
-                        <span id="badge-roll" class="px-3 py-1.5 bg-primary-100 text-primary-700 rounded-lg text-sm font-medium">Roll No</span>
-                        <span id="badge-batch" class="px-3 py-1.5 bg-green-100 text-green-700 rounded-lg text-sm font-medium">Batch</span>
-                        <span id="badge-status" class="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium">Status</span>
+                        <span id="badge-roll"
+                            class="px-3 py-1.5 bg-primary-100 text-primary-700 rounded-lg text-sm font-medium">Roll
+                            No</span>
+                        <span id="badge-batch"
+                            class="px-3 py-1.5 bg-green-100 text-green-700 rounded-lg text-sm font-medium">Batch</span>
+                        <span id="badge-status"
+                            class="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium">Status</span>
                     </div>
                 </div>
 
@@ -100,9 +142,10 @@
                 <div class="flex-shrink-0 text-center">
                     <div class="relative w-28 h-28">
                         <svg class="w-28 h-28 transform -rotate-90">
-                            <circle cx="56" cy="56" r="48" stroke="#e5e7eb" stroke-width="8" fill="none"/>
-                            <circle id="progress-ring" cx="56" cy="56" r="48" stroke="#2563eb" stroke-width="8" fill="none"
-                                    stroke-dasharray="301.59" stroke-dashoffset="301.59" stroke-linecap="round" class="progress-ring"/>
+                            <circle cx="56" cy="56" r="48" stroke="#e5e7eb" stroke-width="8" fill="none" />
+                            <circle id="progress-ring" cx="56" cy="56" r="48" stroke="#2563eb" stroke-width="8"
+                                fill="none" stroke-dasharray="301.59" stroke-dashoffset="301.59" stroke-linecap="round"
+                                class="progress-ring" />
                         </svg>
                         <div class="absolute inset-0 flex flex-col items-center justify-center">
                             <span id="progress-percent" class="text-2xl font-bold text-gray-800">0%</span>
@@ -116,27 +159,33 @@
         <!-- Tabs Navigation -->
         <div class="card mb-6 overflow-hidden">
             <div class="flex overflow-x-auto scrollbar-hide">
-                <button onclick="showTab('personal')" data-tab="personal" class="tab-btn flex-1 min-w-max px-4 sm:px-6 py-4 text-sm font-medium text-gray-600 hover:bg-gray-50 border-b-3 border-transparent transition-all tab-active">
+                <button onclick="showTab('personal')" data-tab="personal"
+                    class="tab-btn flex-1 min-w-max px-4 sm:px-6 py-4 text-sm font-medium text-gray-600 hover:bg-gray-50 border-b-3 border-transparent transition-all tab-active">
                     <span class="hidden sm:inline">Personal</span>
                     <span class="sm:hidden">👤</span>
                 </button>
-                <button onclick="showTab('family')" data-tab="family" class="tab-btn flex-1 min-w-max px-4 sm:px-6 py-4 text-sm font-medium text-gray-600 hover:bg-gray-50 border-b-3 border-transparent transition-all">
+                <button onclick="showTab('family')" data-tab="family"
+                    class="tab-btn flex-1 min-w-max px-4 sm:px-6 py-4 text-sm font-medium text-gray-600 hover:bg-gray-50 border-b-3 border-transparent transition-all">
                     <span class="hidden sm:inline">Family</span>
                     <span class="sm:hidden">👨‍👩‍👧</span>
                 </button>
-                <button onclick="showTab('academics')" data-tab="academics" class="tab-btn flex-1 min-w-max px-4 sm:px-6 py-4 text-sm font-medium text-gray-600 hover:bg-gray-50 border-b-3 border-transparent transition-all">
+                <button onclick="showTab('academics')" data-tab="academics"
+                    class="tab-btn flex-1 min-w-max px-4 sm:px-6 py-4 text-sm font-medium text-gray-600 hover:bg-gray-50 border-b-3 border-transparent transition-all">
                     <span class="hidden sm:inline">Academics</span>
                     <span class="sm:hidden">📚</span>
                 </button>
-                <button onclick="showTab('achievements')" data-tab="achievements" class="tab-btn flex-1 min-w-max px-4 sm:px-6 py-4 text-sm font-medium text-gray-600 hover:bg-gray-50 border-b-3 border-transparent transition-all">
+                <button onclick="showTab('achievements')" data-tab="achievements"
+                    class="tab-btn flex-1 min-w-max px-4 sm:px-6 py-4 text-sm font-medium text-gray-600 hover:bg-gray-50 border-b-3 border-transparent transition-all">
                     <span class="hidden sm:inline">Achievements</span>
                     <span class="sm:hidden">🏆</span>
                 </button>
-                <button onclick="showTab('skills')" data-tab="skills" class="tab-btn flex-1 min-w-max px-4 sm:px-6 py-4 text-sm font-medium text-gray-600 hover:bg-gray-50 border-b-3 border-transparent transition-all">
+                <button onclick="showTab('skills')" data-tab="skills"
+                    class="tab-btn flex-1 min-w-max px-4 sm:px-6 py-4 text-sm font-medium text-gray-600 hover:bg-gray-50 border-b-3 border-transparent transition-all">
                     <span class="hidden sm:inline">Skills</span>
                     <span class="sm:hidden">💻</span>
                 </button>
-                <button onclick="showTab('career')" data-tab="career" class="tab-btn flex-1 min-w-max px-4 sm:px-6 py-4 text-sm font-medium text-gray-600 hover:bg-gray-50 border-b-3 border-transparent transition-all">
+                <button onclick="showTab('career')" data-tab="career"
+                    class="tab-btn flex-1 min-w-max px-4 sm:px-6 py-4 text-sm font-medium text-gray-600 hover:bg-gray-50 border-b-3 border-transparent transition-all">
                     <span class="hidden sm:inline">Career Goals</span>
                     <span class="sm:hidden">🎯</span>
                 </button>
@@ -156,7 +205,8 @@
                         </div>
                         <div>
                             <label class="input-label">Full Name *</label>
-                            <input type="text" name="name" class="input-field" placeholder="Enter your full name" required>
+                            <input type="text" name="name" class="input-field" placeholder="Enter your full name"
+                                required>
                         </div>
                         <div>
                             <label class="input-label">Date of Birth</label>
@@ -173,11 +223,13 @@
                         </div>
                         <div>
                             <label class="input-label">Mobile Number *</label>
-                            <input type="tel" name="mobile_number" class="input-field" placeholder="10-digit mobile" pattern="[0-9]{10}" required>
+                            <input type="tel" name="mobile_number" class="input-field" placeholder="10-digit mobile"
+                                pattern="[0-9]{10}" required>
                         </div>
                         <div>
                             <label class="input-label">Alternate Mobile</label>
-                            <input type="tel" name="alt_mobile_number" class="input-field" placeholder="10-digit mobile" pattern="[0-9]{10}">
+                            <input type="tel" name="alt_mobile_number" class="input-field" placeholder="10-digit mobile"
+                                pattern="[0-9]{10}">
                         </div>
                         <div>
                             <label class="input-label">Personal Email</label>
@@ -191,11 +243,13 @@
                         </div>
                         <div>
                             <label class="input-label">LinkedIn Profile</label>
-                            <input type="url" name="linkedin_url" class="input-field" placeholder="https://linkedin.com/in/...">
+                            <input type="url" name="linkedin_url" class="input-field"
+                                placeholder="https://linkedin.com/in/...">
                         </div>
                         <div>
                             <label class="input-label">GitHub Profile</label>
-                            <input type="url" name="github_url" class="input-field" placeholder="https://github.com/...">
+                            <input type="url" name="github_url" class="input-field"
+                                placeholder="https://github.com/...">
                         </div>
                         <div>
                             <label class="input-label">Portfolio Website</label>
@@ -203,11 +257,13 @@
                         </div>
                         <div>
                             <label class="input-label">Aadhaar Number</label>
-                            <input type="text" name="aadhaar_no" class="input-field" placeholder="12-digit Aadhaar" pattern="[0-9]{12}">
+                            <input type="text" name="aadhaar_no" class="input-field" placeholder="12-digit Aadhaar"
+                                pattern="[0-9]{12}">
                         </div>
                         <div class="sm:col-span-2">
                             <label class="input-label">Address</label>
-                            <textarea name="address" rows="2" class="input-field" placeholder="Enter your address"></textarea>
+                            <textarea name="address" rows="2" class="input-field"
+                                placeholder="Enter your address"></textarea>
                         </div>
                         <div>
                             <label class="input-label">City</label>
@@ -215,7 +271,8 @@
                         </div>
                         <div>
                             <label class="input-label">Pincode</label>
-                            <input type="text" name="pincode" class="input-field" placeholder="6-digit pincode" pattern="[0-9]{6}">
+                            <input type="text" name="pincode" class="input-field" placeholder="6-digit pincode"
+                                pattern="[0-9]{6}">
                         </div>
                     </div>
                     <div class="mt-8 flex justify-end">
@@ -229,7 +286,8 @@
                 <h2 class="text-xl font-bold text-gray-800 mb-6">Family Information</h2>
                 <form id="form-family" onsubmit="saveSection(event, 'family')">
                     <h3 class="text-lg font-semibold text-gray-700 mb-4 flex items-center gap-2">
-                        <span class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">👨</span>
+                        <span
+                            class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">👨</span>
                         Father's Details
                     </h3>
                     <div class="grid sm:grid-cols-2 gap-6 mb-8">
@@ -239,11 +297,13 @@
                         </div>
                         <div>
                             <label class="input-label">Father's Mobile</label>
-                            <input type="tel" name="father_mobile" class="input-field" placeholder="10-digit mobile" pattern="[0-9]{10}">
+                            <input type="tel" name="father_mobile" class="input-field" placeholder="10-digit mobile"
+                                pattern="[0-9]{10}">
                         </div>
                         <div>
                             <label class="input-label">Father's Occupation</label>
-                            <input type="text" name="father_occupation" class="input-field" placeholder="Enter occupation">
+                            <input type="text" name="father_occupation" class="input-field"
+                                placeholder="Enter occupation">
                         </div>
                         <div>
                             <label class="input-label">Father's Email</label>
@@ -251,12 +311,14 @@
                         </div>
                         <div class="sm:col-span-2">
                             <label class="input-label">Company/Work Details</label>
-                            <input type="text" name="father_company_details" class="input-field" placeholder="Company name and designation">
+                            <input type="text" name="father_company_details" class="input-field"
+                                placeholder="Company name and designation">
                         </div>
                     </div>
 
                     <h3 class="text-lg font-semibold text-gray-700 mb-4 flex items-center gap-2">
-                        <span class="w-8 h-8 bg-pink-100 rounded-lg flex items-center justify-center text-pink-600">👩</span>
+                        <span
+                            class="w-8 h-8 bg-pink-100 rounded-lg flex items-center justify-center text-pink-600">👩</span>
                         Mother's Details
                     </h3>
                     <div class="grid sm:grid-cols-2 gap-6 mb-8">
@@ -266,11 +328,13 @@
                         </div>
                         <div>
                             <label class="input-label">Mother's Mobile</label>
-                            <input type="tel" name="mother_mobile" class="input-field" placeholder="10-digit mobile" pattern="[0-9]{10}">
+                            <input type="tel" name="mother_mobile" class="input-field" placeholder="10-digit mobile"
+                                pattern="[0-9]{10}">
                         </div>
                         <div>
                             <label class="input-label">Mother's Occupation</label>
-                            <input type="text" name="mother_occupation" class="input-field" placeholder="Enter occupation">
+                            <input type="text" name="mother_occupation" class="input-field"
+                                placeholder="Enter occupation">
                         </div>
                         <div>
                             <label class="input-label">Mother's Email</label>
@@ -279,7 +343,8 @@
                     </div>
 
                     <h3 class="text-lg font-semibold text-gray-700 mb-4 flex items-center gap-2">
-                        <span class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center text-green-600">🏠</span>
+                        <span
+                            class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center text-green-600">🏠</span>
                         Residence Details
                     </h3>
                     <div class="grid sm:grid-cols-2 gap-6">
@@ -326,11 +391,13 @@
                         </div>
                         <div>
                             <label class="input-label">Percentage</label>
-                            <input type="number" step="0.01" name="tenth_percentage" class="input-field" placeholder="e.g., 95.5" min="0" max="100">
+                            <input type="number" step="0.01" name="tenth_percentage" class="input-field"
+                                placeholder="e.g., 95.5" min="0" max="100">
                         </div>
                         <div>
                             <label class="input-label">Year of Passing</label>
-                            <input type="number" name="tenth_year" class="input-field" placeholder="e.g., 2020" min="2000" max="2030">
+                            <input type="number" name="tenth_year" class="input-field" placeholder="e.g., 2020"
+                                min="2000" max="2030">
                         </div>
                     </div>
 
@@ -349,11 +416,13 @@
                         </div>
                         <div>
                             <label class="input-label">Percentage</label>
-                            <input type="number" step="0.01" name="twelfth_percentage" class="input-field" placeholder="e.g., 92.0" min="0" max="100">
+                            <input type="number" step="0.01" name="twelfth_percentage" class="input-field"
+                                placeholder="e.g., 92.0" min="0" max="100">
                         </div>
                         <div>
                             <label class="input-label">Year of Passing</label>
-                            <input type="number" name="twelfth_year" class="input-field" placeholder="e.g., 2022" min="2000" max="2030">
+                            <input type="number" name="twelfth_year" class="input-field" placeholder="e.g., 2022"
+                                min="2000" max="2030">
                         </div>
                     </div>
 
@@ -361,46 +430,56 @@
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
                         <div>
                             <label class="input-label">Sem 1</label>
-                            <input type="number" step="0.01" name="cgpa_sem1" class="input-field" placeholder="0-10" min="0" max="10">
+                            <input type="number" step="0.01" name="cgpa_sem1" class="input-field" placeholder="0-10"
+                                min="0" max="10">
                         </div>
                         <div>
                             <label class="input-label">Sem 2</label>
-                            <input type="number" step="0.01" name="cgpa_sem2" class="input-field" placeholder="0-10" min="0" max="10">
+                            <input type="number" step="0.01" name="cgpa_sem2" class="input-field" placeholder="0-10"
+                                min="0" max="10">
                         </div>
                         <div>
                             <label class="input-label">Sem 3</label>
-                            <input type="number" step="0.01" name="cgpa_sem3" class="input-field" placeholder="0-10" min="0" max="10">
+                            <input type="number" step="0.01" name="cgpa_sem3" class="input-field" placeholder="0-10"
+                                min="0" max="10">
                         </div>
                         <div>
                             <label class="input-label">Sem 4</label>
-                            <input type="number" step="0.01" name="cgpa_sem4" class="input-field" placeholder="0-10" min="0" max="10">
+                            <input type="number" step="0.01" name="cgpa_sem4" class="input-field" placeholder="0-10"
+                                min="0" max="10">
                         </div>
                         <div>
                             <label class="input-label">Sem 5</label>
-                            <input type="number" step="0.01" name="cgpa_sem5" class="input-field" placeholder="0-10" min="0" max="10">
+                            <input type="number" step="0.01" name="cgpa_sem5" class="input-field" placeholder="0-10"
+                                min="0" max="10">
                         </div>
                         <div>
                             <label class="input-label">Sem 6</label>
-                            <input type="number" step="0.01" name="cgpa_sem6" class="input-field" placeholder="0-10" min="0" max="10">
+                            <input type="number" step="0.01" name="cgpa_sem6" class="input-field" placeholder="0-10"
+                                min="0" max="10">
                         </div>
                         <div>
                             <label class="input-label">Sem 7</label>
-                            <input type="number" step="0.01" name="cgpa_sem7" class="input-field" placeholder="0-10" min="0" max="10">
+                            <input type="number" step="0.01" name="cgpa_sem7" class="input-field" placeholder="0-10"
+                                min="0" max="10">
                         </div>
                         <div>
                             <label class="input-label">Sem 8</label>
-                            <input type="number" step="0.01" name="cgpa_sem8" class="input-field" placeholder="0-10" min="0" max="10">
+                            <input type="number" step="0.01" name="cgpa_sem8" class="input-field" placeholder="0-10"
+                                min="0" max="10">
                         </div>
                     </div>
 
                     <div class="grid sm:grid-cols-3 gap-6">
                         <div>
                             <label class="input-label">Overall CGPA *</label>
-                            <input type="number" step="0.01" name="cgpa_overall" class="input-field" placeholder="0-10" min="0" max="10" required>
+                            <input type="number" step="0.01" name="cgpa_overall" class="input-field" placeholder="0-10"
+                                min="0" max="10" required>
                         </div>
                         <div>
                             <label class="input-label">Current Backlogs</label>
-                            <input type="number" name="current_backlogs" class="input-field" placeholder="0" min="0" value="0">
+                            <input type="number" name="current_backlogs" class="input-field" placeholder="0" min="0"
+                                value="0">
                         </div>
                         <div>
                             <label class="input-label">Backlog History</label>
@@ -423,27 +502,33 @@
                     <div class="space-y-6">
                         <div>
                             <label class="input-label">Certifications</label>
-                            <textarea name="certifications" rows="3" class="input-field" placeholder="List your certifications (AWS, Google Cloud, etc.)"></textarea>
+                            <textarea name="certifications" rows="3" class="input-field"
+                                placeholder="List your certifications (AWS, Google Cloud, etc.)"></textarea>
                         </div>
                         <div>
                             <label class="input-label">Awards & Achievements</label>
-                            <textarea name="awards" rows="3" class="input-field" placeholder="List your awards and achievements"></textarea>
+                            <textarea name="awards" rows="3" class="input-field"
+                                placeholder="List your awards and achievements"></textarea>
                         </div>
                         <div>
                             <label class="input-label">Workshops & Training</label>
-                            <textarea name="workshops" rows="3" class="input-field" placeholder="Workshops and training programs attended"></textarea>
+                            <textarea name="workshops" rows="3" class="input-field"
+                                placeholder="Workshops and training programs attended"></textarea>
                         </div>
                         <div>
                             <label class="input-label">Internships</label>
-                            <textarea name="internships" rows="3" class="input-field" placeholder="Describe your internship experiences"></textarea>
+                            <textarea name="internships" rows="3" class="input-field"
+                                placeholder="Describe your internship experiences"></textarea>
                         </div>
                         <div>
                             <label class="input-label">Projects</label>
-                            <textarea name="projects" rows="3" class="input-field" placeholder="List your major projects with brief descriptions"></textarea>
+                            <textarea name="projects" rows="3" class="input-field"
+                                placeholder="List your major projects with brief descriptions"></textarea>
                         </div>
                         <div>
                             <label class="input-label">Extra Curricular Activities</label>
-                            <textarea name="extra_curriculars" rows="3" class="input-field" placeholder="Sports, clubs, events, etc."></textarea>
+                            <textarea name="extra_curriculars" rows="3" class="input-field"
+                                placeholder="Sports, clubs, events, etc."></textarea>
                         </div>
                     </div>
                     <div class="mt-8 flex justify-end">
@@ -460,7 +545,9 @@
                     <div id="skills-container" class="space-y-6">
                         <!-- Skills will be loaded dynamically -->
                         <div class="text-center py-8 text-gray-400">
-                            <div class="w-10 h-10 border-4 border-gray-300 border-t-primary-500 rounded-full animate-spin mx-auto mb-4"></div>
+                            <div
+                                class="w-10 h-10 border-4 border-gray-300 border-t-primary-500 rounded-full animate-spin mx-auto mb-4">
+                            </div>
                             Loading skills...
                         </div>
                     </div>
@@ -477,19 +564,23 @@
                     <div class="grid sm:grid-cols-2 gap-6">
                         <div>
                             <label class="input-label">Dream Company</label>
-                            <input type="text" name="dream_company" class="input-field" placeholder="e.g., Google, Microsoft">
+                            <input type="text" name="dream_company" class="input-field"
+                                placeholder="e.g., Google, Microsoft">
                         </div>
                         <div>
                             <label class="input-label">Preferred Job Roles</label>
-                            <input type="text" name="preferred_roles" class="input-field" placeholder="e.g., Software Developer">
+                            <input type="text" name="preferred_roles" class="input-field"
+                                placeholder="e.g., Software Developer">
                         </div>
                         <div>
                             <label class="input-label">Expected Package (LPA)</label>
-                            <input type="number" step="0.5" name="expected_package" class="input-field" placeholder="e.g., 8" min="0">
+                            <input type="number" step="0.5" name="expected_package" class="input-field"
+                                placeholder="e.g., 8" min="0">
                         </div>
                         <div>
                             <label class="input-label">Preferred Locations</label>
-                            <input type="text" name="preferred_locations" class="input-field" placeholder="e.g., Bangalore, Chennai">
+                            <input type="text" name="preferred_locations" class="input-field"
+                                placeholder="e.g., Bangalore, Chennai">
                         </div>
                         <div>
                             <label class="input-label">Higher Studies Plans</label>
@@ -512,7 +603,8 @@
                         </div>
                         <div class="sm:col-span-2">
                             <label class="input-label">Career Goals & Aspirations</label>
-                            <textarea name="career_goals" rows="4" class="input-field" placeholder="Describe your career goals..."></textarea>
+                            <textarea name="career_goals" rows="4" class="input-field"
+                                placeholder="Describe your career goals..."></textarea>
                         </div>
                     </div>
                     <div class="mt-8 flex justify-end">
@@ -523,13 +615,15 @@
         </div>
 
         <!-- Submit Profile Section -->
-        <div id="submit-section" class="card p-6 mt-6 bg-gradient-to-r from-green-50 to-emerald-50 border-green-200 hidden">
+        <div id="submit-section"
+            class="card p-6 mt-6 bg-gradient-to-r from-green-50 to-emerald-50 border-green-200 hidden">
             <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div class="text-center sm:text-left">
                     <h3 class="text-lg font-semibold text-green-800">Your profile is ready!</h3>
                     <p class="text-green-600">Submit it to make it visible to placement coordinators.</p>
                 </div>
-                <button onclick="submitProfile()" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-8 rounded-xl shadow-lg transition-all">
+                <button onclick="submitProfile()"
+                    class="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-8 rounded-xl shadow-lg transition-all">
                     Submit Profile
                 </button>
             </div>
@@ -580,8 +674,8 @@
                 const select = document.getElementById('select-batch');
                 (data.batches || []).forEach(b => {
                     const opt = document.createElement('option');
-                    opt.value = b;
-                    opt.textContent = b;
+                    opt.value = b.year;
+                    opt.textContent = b.year;
                     select.appendChild(opt);
                 });
             } catch (err) {
@@ -613,7 +707,7 @@
             // Badges
             document.getElementById('badge-roll').textContent = s.roll_no || 'No Roll No';
             document.getElementById('badge-batch').textContent = s.batch_year ? `Batch ${s.batch_year}` : 'No Batch';
-            
+
             const statusColors = {
                 'not_placed': 'bg-gray-100 text-gray-700',
                 'placed': 'bg-green-100 text-green-700',
@@ -738,9 +832,9 @@
                     <h3 class="text-lg font-semibold text-gray-700 mb-4">${category}</h3>
                     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         ${skills.map(skill => {
-                            const studentSkill = (profileData.studentSkills || []).find(s => s.skill_id === skill.id);
-                            const level = studentSkill ? studentSkill.proficiency_level : 0;
-                            return `
+                    const studentSkill = (profileData.studentSkills || []).find(s => s.skill_id === skill.id);
+                    const level = studentSkill ? studentSkill.proficiency_level : 0;
+                    return `
                                 <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
                                     <span class="font-medium text-gray-700">${skill.name}</span>
                                     <select name="skill_${skill.id}" class="text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white">
@@ -753,7 +847,7 @@
                                     </select>
                                 </div>
                             `;
-                        }).join('')}
+                }).join('')}
                     </div>
                 `;
                 container.appendChild(section);
@@ -796,7 +890,7 @@
         function showTab(tabName) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('tab-active'));
-            
+
             document.getElementById(`tab-${tabName}`).classList.remove('hidden');
             document.querySelector(`[data-tab="${tabName}"]`).classList.add('tab-active');
         }
@@ -837,10 +931,10 @@
             // Type conversions
             if (section === 'academics') {
                 ['tenth_percentage', 'twelfth_percentage', 'cgpa_sem1', 'cgpa_sem2', 'cgpa_sem3', 'cgpa_sem4',
-                 'cgpa_sem5', 'cgpa_sem6', 'cgpa_sem7', 'cgpa_sem8', 'cgpa_overall', 'current_backlogs',
-                 'tenth_year', 'twelfth_year'].forEach(f => {
-                    if (data[f]) data[f] = parseFloat(data[f]);
-                });
+                    'cgpa_sem5', 'cgpa_sem6', 'cgpa_sem7', 'cgpa_sem8', 'cgpa_overall', 'current_backlogs',
+                    'tenth_year', 'twelfth_year'].forEach(f => {
+                        if (data[f]) data[f] = parseFloat(data[f]);
+                    });
                 if (data.has_backlog_history) data.has_backlog_history = data.has_backlog_history === 'true';
             }
             if (section === 'aspirations') {
@@ -897,4 +991,5 @@
         }
     </script>
 </body>
+
 </html>
