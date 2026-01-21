@@ -458,19 +458,19 @@ func (app *application) updateAspirations(w http.ResponseWriter, r *http.Request
 
 	// Custom input struct with frontend field aliases
 	var input struct {
-		DreamCompanies     *string `json:"dream_company"` // Frontend uses dream_company (singular)
-		PreferredRoles     *string `json:"preferred_roles"`
-		PreferredLocations *string `json:"preferred_locations"`
-		ExpectedSalary     *string `json:"expected_package"` // Frontend uses expected_package
-		WillingToRelocate  bool    `json:"willing_to_relocate"`
-		CareerObjective    *string `json:"career_goals"` // Frontend uses career_goals
-		ShortTermGoals     *string `json:"short_term_goals"`
-		LongTermGoals      *string `json:"long_term_goals"`
-		HigherStudies      *string `json:"higher_studies"` // Extra field from frontend
-		Strengths          *string `json:"strengths"`
-		Weaknesses         *string `json:"weaknesses"`
-		Hobbies            *string `json:"hobbies"`
-		LanguagesKnown     *string `json:"languages_known"`
+		DreamCompanies     *string  `json:"dream_company"` // Frontend uses dream_company (singular)
+		PreferredRoles     *string  `json:"preferred_roles"`
+		PreferredLocations *string  `json:"preferred_locations"`
+		ExpectedPackage    *float64 `json:"expected_package"` // Frontend sends as number
+		WillingToRelocate  bool     `json:"willing_to_relocate"`
+		CareerObjective    *string  `json:"career_goals"` // Frontend uses career_goals
+		ShortTermGoals     *string  `json:"short_term_goals"`
+		LongTermGoals      *string  `json:"long_term_goals"`
+		HigherStudies      *string  `json:"higher_studies"` // Extra field from frontend
+		Strengths          *string  `json:"strengths"`
+		Weaknesses         *string  `json:"weaknesses"`
+		Hobbies            *string  `json:"hobbies"`
+		LanguagesKnown     *string  `json:"languages_known"`
 	}
 
 	if err := app.readJSON(w, r, &input); err != nil {
@@ -485,13 +485,19 @@ func (app *application) updateAspirations(w http.ResponseWriter, r *http.Request
 	}
 	defer tx.Rollback()
 
-	// Convert expected_package (number) to string for expected_salary
+	// Convert expected_package (float) to string for expected_salary
+	var expectedSalary *string
+	if input.ExpectedPackage != nil {
+		s := fmt.Sprintf("%.1f LPA", *input.ExpectedPackage)
+		expectedSalary = &s
+	}
+
 	aspirations := &models.StudentAspirations{
 		StudentID:          claims.UserID,
 		DreamCompanies:     input.DreamCompanies,
 		PreferredRoles:     input.PreferredRoles,
 		PreferredLocations: input.PreferredLocations,
-		ExpectedSalary:     input.ExpectedSalary,
+		ExpectedSalary:     expectedSalary,
 		WillingToRelocate:  input.WillingToRelocate,
 		CareerObjective:    input.CareerObjective,
 		ShortTermGoals:     input.ShortTermGoals,

@@ -833,7 +833,7 @@
                     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         ${skills.map(skill => {
                     const studentSkill = (profileData.studentSkills || []).find(s => s.skill_id === skill.id);
-                    const level = studentSkill ? studentSkill.proficiency_level : 0;
+                    const level = studentSkill ? studentSkill.proficiency_level : 1;
                     return `
                                 <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
                                     <span class="font-medium text-gray-700">${skill.name}</span>
