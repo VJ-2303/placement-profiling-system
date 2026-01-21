@@ -148,10 +148,11 @@ func (m PlacementModel) Verify(id int64, adminID int64) error {
 // GetAllPlacements retrieves all placement records with student info
 type PlacementWithStudent struct {
 	PlacementRecord
-	StudentName  string  `json:"student_name"`
-	StudentRoll  *string `json:"student_roll"`
-	StudentEmail string  `json:"student_email"`
-	BatchYear    *int    `json:"batch_year"`
+	StudentName     string  `json:"student_name"`
+	StudentRoll     *string `json:"student_roll"`
+	StudentEmail    string  `json:"student_email"`
+	StudentPhotoURL *string `json:"student_photo_url"`
+	BatchYear       *int    `json:"batch_year"`
 }
 
 func (m PlacementModel) GetAll() ([]PlacementWithStudent, error) {
@@ -161,7 +162,7 @@ func (m PlacementModel) GetAll() ([]PlacementWithStudent, error) {
 		       p.package_ctc, p.joining_date::text, p.offer_date::text, p.offer_type,
 		       p.job_location, p.is_accepted, p.verified_by, p.verified_at,
 		       p.offer_letter_url, p.remarks, p.created_at, p.updated_at,
-		       s.name, s.roll_no, s.official_email, b.year
+		       s.name, s.roll_no, s.official_email, s.photo_url, b.year
 		FROM placements p
 		JOIN students s ON p.student_id = s.id
 		LEFT JOIN companies c ON p.company_id = c.id
@@ -185,7 +186,7 @@ func (m PlacementModel) GetAll() ([]PlacementWithStudent, error) {
 			&p.ID, &p.StudentID, &p.CompanyID, &p.CompanyName, &p.JobRole, &p.PackageLPA,
 			&p.PackageCTC, &p.JoiningDate, &p.OfferDate, &p.OfferType, &p.JobLocation,
 			&p.IsAccepted, &p.VerifiedBy, &p.VerifiedAt, &p.OfferLetterURL, &p.Remarks,
-			&p.CreatedAt, &p.UpdatedAt, &p.StudentName, &p.StudentRoll, &p.StudentEmail, &p.BatchYear,
+			&p.CreatedAt, &p.UpdatedAt, &p.StudentName, &p.StudentRoll, &p.StudentEmail, &p.StudentPhotoURL, &p.BatchYear,
 		); err != nil {
 			return nil, err
 		}
