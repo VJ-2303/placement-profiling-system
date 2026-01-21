@@ -24,12 +24,12 @@ func (app *application) routes() http.Handler {
 	// ============================================
 	router.HandleFunc("/api/student/profile", app.getStudentProfile).Methods(http.MethodGet)
 	router.HandleFunc("/api/student/profile", app.updateStudentProfile).Methods(http.MethodPut)
-	router.HandleFunc("/api/student/profile/personal", app.updatePersonalDetails).Methods(http.MethodPost)
-	router.HandleFunc("/api/student/profile/family", app.updateFamilyDetails).Methods(http.MethodPost)
-	router.HandleFunc("/api/student/profile/academics", app.updateAcademics).Methods(http.MethodPost)
-	router.HandleFunc("/api/student/profile/achievements", app.updateAchievements).Methods(http.MethodPost)
-	router.HandleFunc("/api/student/profile/aspirations", app.updateAspirations).Methods(http.MethodPost)
-	router.HandleFunc("/api/student/profile/skills", app.updateSkills).Methods(http.MethodPost)
+	router.HandleFunc("/api/student/profile/personal", app.updatePersonalDetails).Methods(http.MethodPut)
+	router.HandleFunc("/api/student/profile/family", app.updateFamilyDetails).Methods(http.MethodPut)
+	router.HandleFunc("/api/student/profile/academics", app.updateAcademics).Methods(http.MethodPut)
+	router.HandleFunc("/api/student/profile/achievements", app.updateAchievements).Methods(http.MethodPut)
+	router.HandleFunc("/api/student/profile/aspirations", app.updateAspirations).Methods(http.MethodPut)
+	router.HandleFunc("/api/student/profile/skills", app.updateSkills).Methods(http.MethodPut)
 	router.HandleFunc("/api/student/profile/complete", app.completeProfile).Methods(http.MethodPost)
 	router.HandleFunc("/api/student/photo", app.uploadPhoto).Methods(http.MethodPost)
 
