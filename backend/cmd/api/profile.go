@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"time"
 
@@ -109,11 +110,12 @@ func (app *application) updatePersonalDetails(w http.ResponseWriter, r *http.Req
 	}
 
 	// Custom input struct that accepts both Student and PersonalDetails fields
+	// All numeric fields accept strings since HTML forms always send strings
 	var input struct {
 		// Student fields (will update Student table)
 		Name      string  `json:"name"`
 		RollNo    *string `json:"roll_no"`
-		BatchYear *int    `json:"batch_year"`
+		BatchYear *string `json:"batch_year"` // Accept as string from form
 
 		// Personal details fields (with frontend aliases)
 		DateOfBirth     *string `json:"date_of_birth"`
@@ -158,11 +160,13 @@ func (app *application) updatePersonalDetails(w http.ResponseWriter, r *http.Req
 	if input.RollNo != nil {
 		student.RollNo = input.RollNo
 	}
-	if input.BatchYear != nil {
-		// Need to find batch ID from year
-		batchID, err := app.models.Students.GetBatchIDByYear(*input.BatchYear)
-		if err == nil && batchID > 0 {
-			student.BatchID = &batchID
+	if input.BatchYear != nil && *input.BatchYear != "" {
+		// Convert string to int and find batch ID
+		if batchYear, err := strconv.Atoi(*input.BatchYear); err == nil {
+			batchID, err := app.models.Students.GetBatchIDByYear(batchYear)
+			if err == nil && batchID > 0 {
+				student.BatchID = &batchID
+			}
 		}
 	}
 
