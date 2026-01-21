@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Students - KCT Placement Admin</title>
+    <title>Student Management - SalesForce Style</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script>
@@ -13,288 +13,312 @@
                 extend: {
                     fontFamily: { sans: ['Inter', 'sans-serif'] },
                     colors: {
-                        primary: { 50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe', 300: '#93c5fd', 400: '#60a5fa', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8', 800: '#1e40af', 900: '#1e3a8a' }
+                        primary: { 50: '#eef2ff', 100: '#e0e7ff', 200: '#c7d2fe', 300: '#a5b4fc', 400: '#818cf8', 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca', 800: '#3730a3', 900: '#312e81' },
+                        slate: { 850: '#151e32', 900: '#0f172a' }
+                    },
+                    boxShadow: {
+                        'glass': '0 4px 30px rgba(0, 0, 0, 0.1)',
+                        'subtle': '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+                        'drawer': '-4px 0 24px rgba(0,0,0,0.15)'
                     }
                 }
             }
         }
     </script>
     <style>
-        .card {
-            background: white;
-            border-radius: 1rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            border: 1px solid #f3f4f6;
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
         }
 
-        .sidebar-link {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem 1rem;
-            border-radius: 0.75rem;
-            color: #6b7280;
-            transition: all 0.2s;
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
         }
 
-        .sidebar-link:hover {
-            background: #f3f4f6;
-            color: #1f2937;
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
         }
 
         .sidebar-link.active {
-            background: #2563eb;
-            color: white;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            border-left: 3px solid #6366f1;
         }
 
-        .table-row:hover {
-            background: #f9fafb;
+        /* Table Styles */
+        .table-row-hover:hover td {
+            background-color: #f8fafc;
         }
 
-        .status-badge {
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 500;
+        .slide-over-enter {
+            transform: translateX(100%);
+        }
+
+        .slide-over-enter-active {
+            transform: translateX(0);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .slide-over-exit {
+            transform: translateX(0);
+        }
+
+        .slide-over-exit-active {
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
     </style>
 </head>
 
-<body class="font-sans bg-gray-50 min-h-screen">
-    <!-- Loading -->
-    <div id="loading-overlay" class="fixed inset-0 bg-white/90 backdrop-blur-sm z-50 flex items-center justify-center">
-        <div class="text-center">
-            <div
-                class="w-12 h-12 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto mb-4">
-            </div>
-            <p class="text-gray-600 font-medium">Loading students...</p>
+<body class="text-slate-800 antialiased bg-[#f8fafc]">
+    <!-- Loading Overlay -->
+    <div id="loading-overlay"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm transition-opacity duration-300">
+        <div class="flex flex-col items-center">
+            <div class="w-10 h-10 border-3 border-primary-600 border-t-transparent rounded-full animate-spin"></div>
         </div>
     </div>
 
-    <div class="flex min-h-screen">
-        <!-- Sidebar (same as dashboard) -->
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
         <aside id="sidebar"
-            class="fixed lg:static inset-y-0 left-0 z-40 w-64 bg-white border-r border-gray-100 transform -translate-x-full lg:translate-x-0 transition-transform duration-200">
-            <div class="flex flex-col h-full">
-                <div class="p-6 border-b border-gray-100">
-                    <div class="flex items-center gap-3">
-                        <div
-                            class="w-10 h-10 bg-gradient-to-br from-primary-600 to-primary-800 rounded-xl flex items-center justify-center">
-                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                            </svg>
-                        </div>
-                        <div>
-                            <h1 class="font-bold text-gray-800">KCT Placement</h1>
-                            <p class="text-xs text-gray-500">Admin Panel</p>
-                        </div>
+            class="fixed inset-y-0 left-0 z-40 w-72 bg-slate-900 text-slate-300 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out border-r border-slate-800 flex flex-col">
+            <div class="h-16 flex items-center px-6 border-b border-slate-800 bg-slate-900/50 backdrop-blur-md">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center text-white shadow-lg shadow-primary-500/30">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-white font-bold text-lg tracking-tight leading-none">KCT Placement</h1>
+                        <p class="text-[11px] font-medium text-slate-500 uppercase tracking-wider mt-0.5">Admin Console
+                        </p>
                     </div>
                 </div>
-                <nav class="flex-1 p-4 space-y-2">
-                    <a href="admin-dashboard.html" class="sidebar-link">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                        </svg>
-                        Dashboard
-                    </a>
-                    <a href="admin-students.html" class="sidebar-link active">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                        </svg>
-                        Students
-                    </a>
-                    <a href="admin-placements.html" class="sidebar-link">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                        </svg>
-                        Placements
-                    </a>
-                    <a href="admin-companies.html" class="sidebar-link">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                        </svg>
-                        Companies
-                    </a>
-                </nav>
-                <div class="p-4 border-t border-gray-100">
-                    <button onclick="logout()"
-                        class="w-full flex items-center justify-center gap-2 py-2 px-4 text-red-600 hover:bg-red-50 rounded-lg transition-colors">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                        </svg>
-                        Logout
-                    </button>
+            </div>
+            <div class="flex-1 overflow-y-auto py-6 px-3 space-y-1">
+                <p class="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Overview</p>
+                <a href="admin-dashboard.html"
+                    class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-white/5 hover:text-white group transition-colors">
+                    <svg class="w-5 h-5 text-slate-400 group-hover:text-primary-400 transition-colors" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                    </svg>
+                    Dashboard
+                </a>
+                <p class="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mt-6 mb-2">Management</p>
+                <a href="admin-students.html"
+                    class="sidebar-link active flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-white/5 hover:text-white group transition-colors">
+                    <svg class="w-5 h-5 text-slate-400 group-hover:text-primary-400 transition-colors" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    Students
+                </a>
+                <a href="admin-placements.html"
+                    class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-white/5 hover:text-white group transition-colors">
+                    <svg class="w-5 h-5 text-slate-400 group-hover:text-primary-400 transition-colors" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    Placements
+                </a>
+                <a href="admin-companies.html"
+                    class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-white/5 hover:text-white group transition-colors">
+                    <svg class="w-5 h-5 text-slate-400 group-hover:text-primary-400 transition-colors" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                    Companies
+                </a>
+            </div>
+            <!-- User Profile Bottom -->
+            <div class="p-4 border-t border-slate-800 bg-slate-900/50">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="w-9 h-9 rounded-full bg-slate-700 flex items-center justify-center text-white font-medium text-sm">
+                        A</div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-semibold text-white truncate">Admin</p>
+                        <button onclick="logout()"
+                            class="text-[11px] text-slate-400 hover:text-red-400 transition-colors uppercase tracking-wide font-medium">Sign
+                            Out</button>
+                    </div>
                 </div>
             </div>
         </aside>
 
-        <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-30 lg:hidden hidden">
-        </div>
-
         <!-- Main Content -->
-        <main class="flex-1">
-            <!-- Top Bar -->
-            <header class="bg-white border-b border-gray-100 sticky top-0 z-20">
-                <div class="flex items-center justify-between px-4 sm:px-6 h-16">
-                    <div class="flex items-center gap-4">
-                        <button onclick="toggleSidebar()"
-                            class="lg:hidden p-2 text-gray-500 hover:bg-gray-100 rounded-lg">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4 6h16M4 12h16M4 18h16" />
-                            </svg>
-                        </button>
-                        <h1 class="text-xl font-bold text-gray-800">Students</h1>
-                    </div>
-                    <button onclick="exportStudents()"
-                        class="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <main class="flex-1 lg:ml-72 flex flex-col h-screen overflow-hidden bg-[#f8fafc]">
+            <!-- Header -->
+            <header
+                class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 z-10 sticky top-0">
+                <div class="flex items-center gap-4">
+                    <button onclick="toggleSidebar()"
+                        class="lg:hidden p-2 text-slate-500 hover:bg-slate-100 rounded-lg">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
-                        Export CSV
                     </button>
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-800 tracking-tight">Student Directory</h2>
+                        <div class="flex items-center gap-2 text-xs text-slate-500 font-medium">
+                            <span>Total Records: <span id="results-count" class="text-slate-900">...</span></span>
+                        </div>
+                    </div>
                 </div>
+                <button onclick="exportStudents()"
+                    class="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors shadow-sm ring-1 ring-emerald-700/10">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Export CSV
+                </button>
             </header>
 
-            <div class="p-4 sm:p-6 lg:p-8">
-                <!-- Filters -->
-                <div class="card p-4 sm:p-6 mb-6">
-                    <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
-                        <div class="lg:col-span-2">
-                            <div class="relative">
-                                <svg class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none"
-                                    stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                </svg>
-                                <input type="text" id="search-input" placeholder="Search by name, roll no, email..."
-                                    class="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none">
-                            </div>
-                        </div>
-                        <select id="filter-batch"
-                            class="border border-gray-200 rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-primary-500 outline-none">
-                            <option value="">All Batches</option>
-                        </select>
-                        <select id="filter-status"
-                            class="border border-gray-200 rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-primary-500 outline-none">
-                            <option value="">All Status</option>
-                            <option value="not_placed">Not Placed</option>
-                            <option value="placed">Placed</option>
-                            <option value="opted_out">Opted Out</option>
-                        </select>
-                        <button onclick="applyFilters()"
-                            class="bg-primary-600 hover:bg-primary-700 text-white py-2.5 px-4 rounded-lg font-medium transition-colors">
-                            Apply Filters
-                        </button>
-                    </div>
+            <!-- Filter Toolbar -->
+            <div
+                class="px-6 py-4 bg-white border-b border-slate-200 flex flex-col sm:flex-row gap-4 items-center justify-between shadow-[0_1px_2px_rgba(0,0,0,0.02)] relative z-0">
+                <div class="flex-1 w-full sm:w-auto relative group">
+                    <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 group-focus-within:text-primary-500 transition-colors"
+                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    <input type="text" id="search-input"
+                        class="w-full sm:w-80 pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all placeholder:text-slate-400"
+                        placeholder="Search by name, roll no...">
                 </div>
-
-                <!-- Results Count -->
-                <div class="flex items-center justify-between mb-4">
-                    <p class="text-sm text-gray-600">Showing <span id="results-count" class="font-semibold">0</span>
-                        students</p>
-                    <div class="flex items-center gap-2">
-                        <span class="text-sm text-gray-500">Per page:</span>
-                        <select id="per-page" onchange="changePerPage()"
-                            class="text-sm border border-gray-200 rounded-lg px-2 py-1">
-                            <option value="20">20</option>
-                            <option value="50">50</option>
-                            <option value="100">100</option>
-                        </select>
-                    </div>
+                <div class="flex items-center gap-3 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0">
+                    <select id="filter-batch"
+                        class="px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 focus:ring-2 focus:ring-primary-500 outline-none cursor-pointer hover:border-slate-300 transition-colors">
+                        <option value="">All Batches</option>
+                    </select>
+                    <select id="filter-status"
+                        class="px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 focus:ring-2 focus:ring-primary-500 outline-none cursor-pointer hover:border-slate-300 transition-colors">
+                        <option value="">All Status</option>
+                        <option value="not_placed">Not Placed</option>
+                        <option value="placed">Placed</option>
+                        <option value="opted_out">Opted Out</option>
+                    </select>
+                    <button onclick="applyFilters()"
+                        class="p-2 text-slate-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
+                        title="Refresh">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                    </button>
                 </div>
+            </div>
 
-                <!-- Students Table -->
-                <div class="card overflow-hidden">
-                    <div class="overflow-x-auto">
-                        <table class="w-full">
-                            <thead class="bg-gray-50 border-b border-gray-100">
-                                <tr>
+            <!-- Table Content -->
+            <div class="flex-1 overflow-auto p-6">
+                <div
+                    class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden min-h-[500px] flex flex-col">
+                    <div class="overflow-x-auto flex-1">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-slate-200 bg-slate-50/50">
                                     <th
-                                        class="text-left py-4 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                                        Student</th>
-                                    <th
-                                        class="text-left py-4 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                                        Roll No</th>
-                                    <th
-                                        class="text-left py-4 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden md:table-cell">
-                                        Batch</th>
-                                    <th
-                                        class="text-left py-4 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden lg:table-cell">
-                                        CGPA</th>
-                                    <th
-                                        class="text-left py-4 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                                        class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider w-16">
+                                        #</th>
+                                    <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                                        Student Profile</th>
+                                    <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                                        Academic Info</th>
+                                    <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
                                         Status</th>
+                                    <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                                        Completion</th>
                                     <th
-                                        class="text-left py-4 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden xl:table-cell">
-                                        Profile</th>
-                                    <th
-                                        class="text-right py-4 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                                        class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider text-right">
                                         Actions</th>
                                 </tr>
                             </thead>
-                            <tbody id="students-body" class="divide-y divide-gray-100">
-                                <tr>
-                                    <td colspan="7" class="py-8 text-center text-gray-500">Loading...</td>
-                                </tr>
+                            <tbody id="students-body" class="divide-y divide-slate-100">
+                                <!-- Dynamic -->
                             </tbody>
                         </table>
                     </div>
 
-                    <!-- Pagination -->
-                    <div class="flex items-center justify-between px-4 py-4 border-t border-gray-100">
-                        <button id="prev-btn" onclick="prevPage()" disabled
-                            class="flex items-center gap-1 px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M15 19l-7-7 7-7" />
-                            </svg>
-                            Previous
-                        </button>
-                        <span id="page-info" class="text-sm text-gray-600">Page 1 of 1</span>
-                        <button id="next-btn" onclick="nextPage()" disabled
-                            class="flex items-center gap-1 px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
-                            Next
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 5l7 7-7 7" />
-                            </svg>
-                        </button>
+                    <!-- Pagination Footer -->
+                    <div class="border-t border-slate-200 p-4 bg-slate-50/30 flex justify-between items-center">
+                        <div class="text-sm text-slate-500" id="page-info">Page 1 of 1</div>
+                        <div class="flex gap-2">
+                            <button id="prev-btn" onclick="prevPage()"
+                                class="px-3 py-1.5 text-sm font-medium text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm">Previous</button>
+                            <button id="next-btn" onclick="nextPage()"
+                                class="px-3 py-1.5 text-sm font-medium text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm">Next</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </main>
-    </div>
 
-    <!-- Student Detail Modal -->
-    <div id="student-modal" class="fixed inset-0 z-50 hidden">
-        <div class="absolute inset-0 bg-black/50" onclick="closeModal()"></div>
-        <div class="absolute inset-4 sm:inset-8 lg:inset-16 bg-white rounded-2xl overflow-hidden flex flex-col">
-            <div class="flex items-center justify-between p-4 sm:p-6 border-b border-gray-100">
-                <h2 id="modal-title" class="text-xl font-bold text-gray-800">Student Details</h2>
-                <button onclick="closeModal()" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                    <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
-            <div id="modal-content" class="flex-1 overflow-y-auto p-4 sm:p-6">
-                <!-- Dynamic content -->
+        <!-- Use a backdrop for mobile sidebar -->
+        <div id="sidebar-overlay" onclick="toggleSidebar()"
+            class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-30 lg:hidden hidden"></div>
+
+        <!-- Student Drawer (Slide-over) -->
+        <div id="student-drawer" class="fixed inset-0 z-50 pointer-events-none hidden">
+            <!-- Backdrop -->
+            <div id="drawer-backdrop"
+                class="absolute inset-0 bg-slate-900/20 backdrop-blur-[2px] transition-opacity duration-300 opacity-0 pointer-events-auto"
+                onclick="closeDrawer()"></div>
+
+            <!-- Panel -->
+            <div id="drawer-panel"
+                class="absolute inset-y-0 right-0 max-w-2xl w-full bg-white shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out pointer-events-auto flex flex-col h-full border-l border-slate-200">
+                <!-- Drawer Header -->
+                <div class="h-16 flex items-center justify-between px-6 border-b border-slate-100 bg-slate-50/50">
+                    <h3 class="text-lg font-bold text-slate-800">Student Profile</h3>
+                    <button onclick="closeDrawer()"
+                        class="p-2 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100 transition-colors">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Drawer Content -->
+                <div id="drawer-content" class="flex-1 overflow-y-auto p-6 md:p-8 space-y-8">
+                    <!-- Dynamic Loading -->
+                </div>
+
+                <!-- Drawer Footer Actions -->
+                <div class="p-4 border-t border-slate-100 bg-white flex justify-end gap-3 z-10">
+                    <button onclick="closeDrawer()"
+                        class="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 rounded-lg transition-colors">Close</button>
+                    <button id="drawer-update-btn"
+                        class="px-4 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 rounded-lg shadow-sm transition-colors shadow-primary-500/30">
+                        Update Status
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- Scripts -->
     <script src="js/config.js"></script>
     <script src="js/auth.js"></script>
     <script>
+        // State
         let students = [];
         let currentPage = 1;
         let totalPages = 1;
@@ -306,9 +330,12 @@
             await loadBatches();
             await loadStudents();
             setupSearch();
-            hideLoading();
+
+            // Initial animation fix for backdrop
+            document.getElementById('loading-overlay').classList.add('hidden');
         });
 
+        // --- Data Fetching ---
         async function loadBatches() {
             try {
                 const data = await api.get('/api/batches');
@@ -319,9 +346,7 @@
                     opt.textContent = `Batch ${b.year}`;
                     select.appendChild(opt);
                 });
-            } catch (err) {
-                console.error('Failed to load batches:', err);
-            }
+            } catch (err) { console.error(err); }
         }
 
         async function loadStudents() {
@@ -337,11 +362,84 @@
                 renderStudents();
                 updatePagination();
             } catch (err) {
-                console.error('Failed to load students:', err);
-                utils.showToast('Failed to load students', 'error');
+                console.error(err);
+                utils.showToast('Failed to load records', 'error');
             }
         }
 
+        // --- UI Rendering ---
+        function renderStudents() {
+            const tbody = document.getElementById('students-body');
+            document.getElementById('results-count').textContent = students.length;
+
+            if (students.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="py-12 text-center">
+                            <div class="flex flex-col items-center justify-center text-slate-400">
+                                <svg class="w-12 h-12 mb-3 text-slate-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                                <p class="text-sm">No students match your filters</p>
+                            </div>
+                        </td>
+                    </tr>`;
+                return;
+            }
+
+            tbody.innerHTML = students.map((s, idx) => {
+                const statusConfig = {
+                    'not_placed': { class: 'bg-slate-100 text-slate-600 ring-slate-500/30 ring-1', label: 'Unplaced' },
+                    'placed': { class: 'bg-emerald-50 text-emerald-700 ring-emerald-600/30 ring-1', label: 'Placed' },
+                    'opted_out': { class: 'bg-amber-50 text-amber-700 ring-amber-600/30 ring-1', label: 'Opted Out' },
+                    'not_eligible': { class: 'bg-rose-50 text-rose-700 ring-rose-600/30 ring-1', label: 'Ineligible' }
+                };
+
+                const status = statusConfig[s.placement_status] || statusConfig.not_placed;
+                const avatarUrl = s.photo_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(s.name || 'S')}&background=6366f1&color=fff&size=64`;
+                const completion = s.profile_completion || 0;
+                const completionColor = completion === 100 ? 'bg-emerald-500' : (completion > 50 ? 'bg-blue-500' : 'bg-amber-500');
+
+                return `
+                    <tr class="table-row-hover group border-b border-slate-50 last:border-0 transition-colors cursor-pointer" onclick="openDrawer(${s.id})">
+                        <td class="px-6 py-4 text-xs font-mono text-slate-400">${(currentPage - 1) * perPage + idx + 1}</td>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-3">
+                                <img src="${avatarUrl}" class="w-10 h-10 rounded-full object-cover ring-2 ring-white shadow-sm" alt="${s.name}">
+                                <div>
+                                    <p class="font-semibold text-slate-800 text-sm group-hover:text-primary-600 transition-colors">${s.name || 'Unknown'}</p>
+                                    <p class="text-xs text-slate-500 font-mono">${s.official_email || '-'}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="text-sm text-slate-600">
+                                <p><span class="text-slate-400 text-xs uppercase mr-1">Roll:</span> <span class="font-medium font-mono">${s.roll_no || '-'}</span></p>
+                                <p><span class="text-slate-400 text-xs uppercase mr-1">Batch:</span> <span class="font-medium">${s.batch_year || '-'}</span></p>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${status.class}">
+                                ${status.label}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-3">
+                                <div class="flex-1 bg-slate-100 rounded-full h-1.5 w-24 overflow-hidden">
+                                    <div class="${completionColor} h-1.5 rounded-full" style="width: ${completion}%"></div>
+                                </div>
+                                <span class="text-xs font-medium text-slate-500 w-8 text-right">${completion}%</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                             <button onclick="event.stopPropagation(); openDrawer(${s.id})" class="text-slate-400 hover:text-primary-600 p-2 hover:bg-slate-50 rounded-lg transition-colors">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // --- Filters & Search ---
         function setupSearch() {
             const input = document.getElementById('search-input');
             input.addEventListener('keydown', (e) => {
@@ -357,65 +455,6 @@
             loadStudents();
         }
 
-        function renderStudents() {
-            const tbody = document.getElementById('students-body');
-            document.getElementById('results-count').textContent = students.length;
-
-            if (students.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="7" class="py-8 text-center text-gray-500">No students found</td></tr>';
-                return;
-            }
-
-            tbody.innerHTML = students.map(s => {
-                const statusColors = {
-                    'not_placed': 'bg-gray-100 text-gray-700',
-                    'placed': 'bg-green-100 text-green-700',
-                    'opted_out': 'bg-yellow-100 text-yellow-700',
-                    'not_eligible': 'bg-red-100 text-red-700'
-                };
-                const statusText = (s.placement_status || 'not_placed').replace(/_/g, ' ');
-                const avatarUrl = s.photo_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(s.name || 'S')}&background=2563eb&color=fff&size=40`;
-
-                return `
-                    <tr class="table-row">
-                        <td class="py-4 px-4">
-                            <div class="flex items-center gap-3">
-                                <img src="${avatarUrl}" class="w-10 h-10 rounded-full object-cover" alt="">
-                                <div>
-                                    <p class="font-medium text-gray-800">${s.name || '-'}</p>
-                                    <p class="text-sm text-gray-500">${s.official_email || '-'}</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="py-4 px-4 font-medium text-gray-700">${s.roll_no || '-'}</td>
-                        <td class="py-4 px-4 text-gray-600 hidden md:table-cell">${s.batch_year || '-'}</td>
-                        <td class="py-4 px-4 text-gray-600 hidden lg:table-cell">${s.cgpa_overall ? s.cgpa_overall.toFixed(2) : '-'}</td>
-                        <td class="py-4 px-4">
-                            <span class="status-badge ${statusColors[s.placement_status] || statusColors.not_placed}">${statusText}</span>
-                        </td>
-                        <td class="py-4 px-4 hidden xl:table-cell">
-                            <div class="flex items-center gap-1">
-                                <div class="w-20 h-2 bg-gray-100 rounded-full overflow-hidden">
-                                    <div class="h-full bg-primary-500 rounded-full" style="width: ${s.profile_completion || 0}%"></div>
-                                </div>
-                                <span class="text-xs text-gray-500">${s.profile_completion || 0}%</span>
-                            </div>
-                        </td>
-                        <td class="py-4 px-4">
-                            <div class="flex items-center justify-end gap-2">
-                                <button onclick="viewStudent(${s.id})" class="p-2 text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors" title="View">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                                </button>
-                                <button onclick="updateStatus(${s.id})" class="p-2 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors" title="Update Status">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
         function updatePagination() {
             document.getElementById('page-info').textContent = `Page ${currentPage} of ${totalPages}`;
             document.getElementById('prev-btn').disabled = currentPage <= 1;
@@ -423,173 +462,168 @@
         }
 
         function prevPage() {
-            if (currentPage > 1) {
-                currentPage--;
-                loadStudents();
-            }
+            if (currentPage > 1) { currentPage--; loadStudents(); }
         }
-
         function nextPage() {
-            if (currentPage < totalPages) {
-                currentPage++;
-                loadStudents();
-            }
+            if (currentPage < totalPages) { currentPage++; loadStudents(); }
         }
 
-        function changePerPage() {
-            perPage = parseInt(document.getElementById('per-page').value);
-            currentPage = 1;
-            loadStudents();
-        }
+        // --- Drawer Logic ---
+        async function openDrawer(id) {
+            const drawer = document.getElementById('student-drawer');
+            const backdrop = document.getElementById('drawer-backdrop');
+            const panel = document.getElementById('drawer-panel');
+            const content = document.getElementById('drawer-content');
+            const updateBtn = document.getElementById('drawer-update-btn');
 
-        async function viewStudent(id) {
+            // Show drawer container
+            drawer.classList.remove('hidden');
+
+            // Animation In
+            requestAnimationFrame(() => {
+                backdrop.classList.remove('opacity-0');
+                panel.classList.remove('translate-x-full');
+            });
+
+            // Loading State
+            content.innerHTML = `
+                <div class="flex items-center justify-center h-64 text-slate-400">
+                     <svg class="w-8 h-8 animate-spin text-primary-500" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                </div>
+            `;
+
             try {
                 const data = await api.get(`/api/admin/students/${id}`);
-                const profile = data.profile || {};
-                const s = profile.student || {};
-                const p = profile.personal || {}; // Backend returns 'personal' not 'personal_details'
-                const a = profile.academics || {};
-                const f = profile.family || {}; // Backend returns 'family' not 'family_details'
-                const ach = profile.achievements || {};
-                const asp = profile.aspirations || {};
+                const s = data.profile.student;
+                const p = data.profile.personal || {};
+                const a = data.profile.academics || {};
+                const ach = data.profile.achievements || {};
+                const asp = data.profile.aspirations || {};
+                const avatarUrl = s.photo_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(s.name)}&background=6366f1&color=fff&size=128`;
 
-                document.getElementById('modal-title').textContent = s.name || 'Student Details';
+                // Setup Update Button
+                updateBtn.onclick = () => updateStatus(id, s.placement_status);
 
-                const avatarUrl = s.photo_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(s.name || 'S')}&background=2563eb&color=fff&size=128`;
-
-                document.getElementById('modal-content').innerHTML = `
-                    <div class="grid lg:grid-cols-3 gap-6">
-                        <div class="lg:col-span-1">
-                            <div class="text-center">
-                                <img src="${avatarUrl}" class="w-32 h-32 rounded-2xl mx-auto mb-4 object-cover shadow-lg">
-                                <h3 class="text-xl font-bold text-gray-800">${s.name || '-'}</h3>
-                                <p class="text-gray-500">${s.roll_no || '-'}</p>
-                                <p class="text-sm text-gray-400">${s.official_email || '-'}</p>
+                content.innerHTML = `
+                    <div class="flex items-start gap-6 border-b border-slate-100 pb-8">
+                        <img src="${avatarUrl}" class="w-24 h-24 rounded-2xl object-cover shadow-lg ring-4 ring-white">
+                        <div class="flex-1 pt-1">
+                            <h2 class="text-2xl font-bold text-slate-800">${s.name}</h2>
+                            <p class="text-slate-500 font-mono text-sm mt-1">${s.roll_no} • ${s.official_email}</p>
+                            <div class="flex gap-2 mt-4">
+                                <span class="px-2.5 py-1 rounded-md text-xs font-semibold bg-slate-100 text-slate-600 border border-slate-200">
+                                    Batch ${s.batch_year}
+                                </span>
+                                <span class="px-2.5 py-1 rounded-md text-xs font-semibold bg-blue-50 text-blue-600 border border-blue-100">
+                                    CGPA ${a.cgpa_overall ? a.cgpa_overall.toFixed(2) : 'N/A'}
+                                </span>
                             </div>
-                            <div class="mt-6 space-y-3">
-                                <div class="flex justify-between py-2 border-b border-gray-100">
-                                    <span class="text-gray-500">Batch</span>
-                                    <span class="font-medium">${s.batch_year || '-'}</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-x-8 gap-y-6">
+                        <!-- Left Col -->
+                        <div class="space-y-6">
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Academic Performance</h4>
+                                <div class="bg-slate-50 rounded-xl p-4 space-y-3 border border-slate-100">
+                                    <div class="flex justify-between text-sm"><span class="text-slate-500">10th Grade</span> <span class="font-medium text-slate-800">${a.tenth_percentage ? a.tenth_percentage + '%' : 'N/A'}</span></div>
+                                    <div class="flex justify-between text-sm"><span class="text-slate-500">12th Grade</span> <span class="font-medium text-slate-800">${a.twelfth_percentage ? a.twelfth_percentage + '%' : 'N/A'}</span></div>
+                                    <div class="flex justify-between text-sm"><span class="text-slate-500">Active Backlogs</span> <span class="font-bold text-rose-500">${a.current_backlogs || 0}</span></div>
                                 </div>
-                                <div class="flex justify-between py-2 border-b border-gray-100">
-                                    <span class="text-gray-500">CGPA</span>
-                                    <span class="font-medium">${a.cgpa_overall ? a.cgpa_overall.toFixed(2) : '-'}</span>
-                                </div>
-                                <div class="flex justify-between py-2 border-b border-gray-100">
-                                    <span class="text-gray-500">Backlogs</span>
-                                    <span class="font-medium">${a.current_backlogs || 0}</span>
-                                </div>
-                                <div class="flex justify-between py-2 border-b border-gray-100">
-                                    <span class="text-gray-500">Mobile</span>
-                                    <span class="font-medium">${p.mobile_number || '-'}</span>
+                            </div>
+                            
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Career Goals</h4>
+                                <div class="space-y-3 text-sm">
+                                    <div>
+                                        <p class="text-slate-500 text-xs">Dream Companies</p>
+                                        <p class="font-medium text-slate-800">${asp.dream_companies || 'Not specified'}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-slate-500 text-xs">Expected Package</p>
+                                        <p class="font-medium text-slate-800 text-emerald-600">${asp.expected_salary || 'Not specified'}</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="lg:col-span-2 space-y-6">
+
+                        <!-- Right Col -->
+                        <div class="space-y-6">
                             <div>
-                                <h4 class="font-semibold text-gray-800 mb-3">Academic Details</h4>
-                                <div class="grid sm:grid-cols-2 gap-4 bg-gray-50 rounded-xl p-4">
-                                    <div><span class="text-gray-500 text-sm">10th:</span> <span class="font-medium">${a.tenth_percentage ? a.tenth_percentage + '%' : '-'}</span></div>
-                                    <div><span class="text-gray-500 text-sm">12th:</span> <span class="font-medium">${a.twelfth_percentage ? a.twelfth_percentage + '%' : '-'}</span></div>
-                                </div>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold text-gray-800 mb-3">Semester CGPAs</h4>
+                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Semester History</h4>
                                 <div class="grid grid-cols-4 gap-2">
-                                    ${[1, 2, 3, 4, 5, 6, 7, 8].map(i => `
-                                        <div class="bg-gray-50 rounded-lg p-2 text-center">
-                                            <span class="text-xs text-gray-500">Sem ${i}</span>
-                                            <p class="font-medium">${a[`cgpa_sem${i}`] || '-'}</p>
+                                     ${[1, 2, 3, 4, 5, 6, 7, 8].map(i => `
+                                        <div class="text-center p-2 rounded bg-white border border-slate-100">
+                                            <div class="text-[10px] text-slate-400">S${i}</div>
+                                            <div class="font-bold text-slate-700 text-sm">${a[`cgpa_sem${i}`] || '-'}</div>
                                         </div>
                                     `).join('')}
                                 </div>
                             </div>
+
                             <div>
-                                <h4 class="font-semibold text-gray-800 mb-3">Career Aspirations</h4>
-                                <div class="bg-gray-50 rounded-xl p-4 space-y-2">
-                                    <div><span class="text-gray-500 text-sm">Dream Company:</span> <span class="font-medium">${asp.dream_companies || '-'}</span></div>
-                                    <div><span class="text-gray-500 text-sm">Preferred Roles:</span> <span class="font-medium">${asp.preferred_roles || '-'}</span></div>
-                                    <div><span class="text-gray-500 text-sm">Expected Package:</span> <span class="font-medium">${asp.expected_salary || '-'}</span></div>
+                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Contact</h4>
+                                <div class="space-y-3 text-sm">
+                                    <div class="flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+                                        <span class="text-slate-700 font-medium">${p.mobile_number || 'N/A'}</span>
+                                    </div>
                                 </div>
                             </div>
-                            ${ach.certifications || ach.projects ? `
-                            <div>
-                                <h4 class="font-semibold text-gray-800 mb-3">Achievements</h4>
-                                <div class="bg-gray-50 rounded-xl p-4 space-y-2 text-sm">
-                                    ${ach.certifications ? `<div><span class="text-gray-500">Certifications:</span> ${ach.certifications}</div>` : ''}
-                                    ${ach.projects ? `<div><span class="text-gray-500">Projects:</span> ${ach.projects}</div>` : ''}
-                                </div>
-                            </div>
-                            ` : ''}
                         </div>
                     </div>
                 `;
-
-                document.getElementById('student-modal').classList.remove('hidden');
             } catch (err) {
-                utils.showToast('Failed to load student details', 'error');
+                console.error(err);
+                content.innerHTML = `<div class="text-red-500 text-center py-10">Failed to load student details</div>`;
             }
         }
 
-        function closeModal() {
-            document.getElementById('student-modal').classList.add('hidden');
+        function closeDrawer() {
+            const backdrop = document.getElementById('drawer-backdrop');
+            const panel = document.getElementById('drawer-panel');
+
+            backdrop.classList.add('opacity-0');
+            panel.classList.add('translate-x-full');
+
+            setTimeout(() => {
+                document.getElementById('student-drawer').classList.add('hidden');
+            }, 300);
         }
 
-        async function updateStatus(id) {
-            const student = students.find(s => s.id === id);
-            if (!student) return;
-
-            const newStatus = prompt(`Update status for ${student.name}:\n\nCurrent: ${student.placement_status}\n\nOptions:\n- not_placed\n- placed\n- opted_out\n- not_eligible`, student.placement_status);
-
-            if (!newStatus || newStatus === student.placement_status) return;
-            if (!['not_placed', 'placed', 'opted_out', 'not_eligible'].includes(newStatus)) {
-                utils.showToast('Invalid status', 'error');
-                return;
-            }
+        // --- Actions ---
+        async function updateStatus(id, currentStatus) {
+            const newStatus = prompt(
+                `Change status from ${currentStatus} to:\n(not_placed, placed, opted_out, not_eligible)`,
+                currentStatus
+            );
+            if (!newStatus || newStatus === currentStatus) return;
 
             try {
                 await api.patch(`/api/admin/students/${id}/status`, { placement_status: newStatus });
                 utils.showToast('Status updated', 'success');
+                closeDrawer();
                 loadStudents();
             } catch (err) {
                 utils.showToast('Failed to update status', 'error');
             }
         }
 
-        async function exportStudents() {
-            try {
-                let endpoint = '/api/admin/students/export?';
-                if (filters.batch) endpoint += `batch=${filters.batch}&`;
-                if (filters.status) endpoint += `status=${filters.status}&`;
-
-                const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-                });
-
-                if (!response.ok) throw new Error('Export failed');
-
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `students_${new Date().toISOString().split('T')[0]}.csv`;
-                a.click();
-                window.URL.revokeObjectURL(url);
-                utils.showToast('Export successful', 'success');
-            } catch (err) {
-                utils.showToast('Export failed', 'error');
-            }
+        function exportStudents() {
+            utils.showToast('Preparing export...', 'info');
+            // Existing logic
+            let endpoint = '/api/admin/students/export?';
+            if (filters.batch) endpoint += `batch=${filters.batch}&`;
+            if (filters.status) endpoint += `status=${filters.status}&`;
+            window.location.href = `${API_BASE_URL}${endpoint}`;
         }
 
         function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
-            sidebar.classList.toggle('-translate-x-full');
-            overlay.classList.toggle('hidden');
-        }
-
-        function hideLoading() {
-            document.getElementById('loading-overlay').classList.add('hidden');
+            const sb = document.getElementById('sidebar');
+            const ov = document.getElementById('sidebar-overlay');
+            sb.classList.toggle('-translate-x-full');
+            ov.classList.toggle('hidden');
         }
     </script>
 </body>

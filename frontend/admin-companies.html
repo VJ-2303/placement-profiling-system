@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Companies - KCT Placement Admin</title>
+    <title>Company Directory - SalesForce Style</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script>
@@ -13,288 +13,305 @@
                 extend: {
                     fontFamily: { sans: ['Inter', 'sans-serif'] },
                     colors: {
-                        primary: { 50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe', 300: '#93c5fd', 400: '#60a5fa', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8', 800: '#1e40af', 900: '#1e3a8a' }
+                        primary: { 50: '#eef2ff', 100: '#e0e7ff', 200: '#c7d2fe', 300: '#a5b4fc', 400: '#818cf8', 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca', 800: '#3730a3', 900: '#312e81' },
+                        slate: { 850: '#151e32', 900: '#0f172a' }
                     }
                 }
             }
         }
     </script>
     <style>
-        .card {
-            background: white;
-            border-radius: 1rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            border: 1px solid #f3f4f6;
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
         }
 
-        .sidebar-link {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem 1rem;
-            border-radius: 0.75rem;
-            color: #6b7280;
-            transition: all 0.2s;
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
         }
 
-        .sidebar-link:hover {
-            background: #f3f4f6;
-            color: #1f2937;
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
         }
 
         .sidebar-link.active {
-            background: #2563eb;
-            color: white;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            border-left: 3px solid #6366f1;
         }
 
-        .company-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        .table-row-hover:hover td {
+            background-color: #f8fafc;
         }
     </style>
 </head>
 
-<body class="font-sans bg-gray-50 min-h-screen">
-    <!-- Loading -->
-    <div id="loading-overlay" class="fixed inset-0 bg-white/90 backdrop-blur-sm z-50 flex items-center justify-center">
-        <div class="text-center">
-            <div
-                class="w-12 h-12 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto mb-4">
-            </div>
-            <p class="text-gray-600 font-medium">Loading companies...</p>
+<body class="text-slate-800 antialiased bg-[#f8fafc]">
+    <!-- Loading Overlay -->
+    <div id="loading-overlay"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm transition-opacity duration-300">
+        <div class="flex flex-col items-center">
+            <div class="w-10 h-10 border-3 border-primary-600 border-t-transparent rounded-full animate-spin"></div>
         </div>
     </div>
 
-    <div class="flex min-h-screen">
+    <div class="flex h-screen overflow-hidden">
         <!-- Sidebar -->
         <aside id="sidebar"
-            class="fixed lg:static inset-y-0 left-0 z-40 w-64 bg-white border-r border-gray-100 transform -translate-x-full lg:translate-x-0 transition-transform duration-200">
-            <div class="flex flex-col h-full">
-                <div class="p-6 border-b border-gray-100">
-                    <div class="flex items-center gap-3">
-                        <div
-                            class="w-10 h-10 bg-gradient-to-br from-primary-600 to-primary-800 rounded-xl flex items-center justify-center">
-                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                            </svg>
-                        </div>
-                        <div>
-                            <h1 class="font-bold text-gray-800">KCT Placement</h1>
-                            <p class="text-xs text-gray-500">Admin Panel</p>
-                        </div>
+            class="fixed inset-y-0 left-0 z-40 w-72 bg-slate-900 text-slate-300 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out border-r border-slate-800 flex flex-col">
+            <div class="h-16 flex items-center px-6 border-b border-slate-800 bg-slate-900/50 backdrop-blur-md">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center text-white shadow-lg shadow-primary-500/30">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-white font-bold text-lg tracking-tight leading-none">KCT Placement</h1>
+                        <p class="text-[11px] font-medium text-slate-500 uppercase tracking-wider mt-0.5">Admin Console
+                        </p>
                     </div>
                 </div>
-                <nav class="flex-1 p-4 space-y-2">
-                    <a href="admin-dashboard.html" class="sidebar-link">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                        </svg>
-                        Dashboard
-                    </a>
-                    <a href="admin-students.html" class="sidebar-link">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                        </svg>
-                        Students
-                    </a>
-                    <a href="admin-placements.html" class="sidebar-link">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                        </svg>
-                        Placements
-                    </a>
-                    <a href="admin-companies.html" class="sidebar-link active">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                        </svg>
-                        Companies
-                    </a>
-                </nav>
-                <div class="p-4 border-t border-gray-100">
-                    <button onclick="logout()"
-                        class="w-full flex items-center justify-center gap-2 py-2 px-4 text-red-600 hover:bg-red-50 rounded-lg transition-colors">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                        </svg>
-                        Logout
-                    </button>
+            </div>
+            <div class="flex-1 overflow-y-auto py-6 px-3 space-y-1">
+                <p class="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Overview</p>
+                <a href="admin-dashboard.html"
+                    class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-white/5 hover:text-white group transition-colors">
+                    <svg class="w-5 h-5 text-slate-400 group-hover:text-primary-400 transition-colors" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                    </svg>
+                    Dashboard
+                </a>
+                <p class="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mt-6 mb-2">Management</p>
+                <a href="admin-students.html"
+                    class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-white/5 hover:text-white group transition-colors">
+                    <svg class="w-5 h-5 text-slate-400 group-hover:text-primary-400 transition-colors" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    Students
+                </a>
+                <a href="admin-placements.html"
+                    class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-white/5 hover:text-white group transition-colors">
+                    <svg class="w-5 h-5 text-slate-400 group-hover:text-primary-400 transition-colors" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    Placements
+                </a>
+                <a href="admin-companies.html"
+                    class="sidebar-link active flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-white/5 hover:text-white group transition-colors">
+                    <svg class="w-5 h-5 text-slate-400 group-hover:text-primary-400 transition-colors" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                    Companies
+                </a>
+            </div>
+            <div class="p-4 border-t border-slate-800 bg-slate-900/50">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="w-9 h-9 rounded-full bg-slate-700 flex items-center justify-center text-white font-medium text-sm">
+                        A</div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-semibold text-white truncate">Admin</p>
+                        <button onclick="logout()"
+                            class="text-[11px] text-slate-400 hover:text-red-400 transition-colors uppercase tracking-wide font-medium">Sign
+                            Out</button>
+                    </div>
                 </div>
             </div>
         </aside>
 
-        <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-30 lg:hidden hidden">
-        </div>
-
         <!-- Main Content -->
-        <main class="flex-1">
-            <!-- Top Bar -->
-            <header class="bg-white border-b border-gray-100 sticky top-0 z-20">
-                <div class="flex items-center justify-between px-4 sm:px-6 h-16">
-                    <div class="flex items-center gap-4">
-                        <button onclick="toggleSidebar()"
-                            class="lg:hidden p-2 text-gray-500 hover:bg-gray-100 rounded-lg">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4 6h16M4 12h16M4 18h16" />
-                            </svg>
-                        </button>
-                        <h1 class="text-xl font-bold text-gray-800">Companies</h1>
-                    </div>
-                    <button onclick="openAddModal()"
-                        class="flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        <main class="flex-1 lg:ml-72 flex flex-col h-screen overflow-hidden bg-[#f8fafc]">
+            <!-- Header -->
+            <header
+                class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 z-10 sticky top-0">
+                <div class="flex items-center gap-4">
+                    <button onclick="toggleSidebar()"
+                        class="lg:hidden p-2 text-slate-500 hover:bg-slate-100 rounded-lg">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
-                        Add Company
                     </button>
+                    <div class="flex items-center gap-3">
+                        <h2 class="text-lg font-bold text-slate-800 tracking-tight">Company Directory</h2>
+                        <span id="results-count"
+                            class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-xs font-bold ring-1 ring-slate-500/10">0</span>
+                    </div>
                 </div>
+                <button onclick="openDrawer()"
+                    class="flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors shadow-sm ring-1 ring-primary-700/10 hover:shadow-md">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                    </svg>
+                    Register Company
+                </button>
             </header>
 
-            <div class="p-4 sm:p-6 lg:p-8">
-                <!-- Search -->
-                <div class="card p-4 mb-6">
-                    <div class="relative">
-                        <svg class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none"
-                            stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                        </svg>
-                        <input type="text" id="search-input" placeholder="Search companies..."
-                            oninput="searchCompanies()"
-                            class="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none">
-                    </div>
+            <!-- Toolbar -->
+            <div class="px-6 py-4 bg-white border-b border-slate-200 shadow-[0_1px_2px_rgba(0,0,0,0.02)] relative z-0">
+                <div class="relative max-w-md">
+                    <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    <input type="text" id="search-input" placeholder="Search companies, industries..."
+                        oninput="searchCompanies()"
+                        class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all placeholder:text-slate-400">
                 </div>
+            </div>
 
-                <!-- Companies Grid -->
-                <div id="companies-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <!-- Dynamic content -->
-                </div>
-
-                <!-- Empty State -->
-                <div id="empty-state" class="hidden card p-12 text-center">
-                    <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5" />
-                        </svg>
-                    </div>
-                    <h3 class="text-lg font-semibold text-gray-800 mb-2">No companies yet</h3>
-                    <p class="text-gray-500 mb-4">Add your first company to start tracking placements</p>
-                    <button onclick="openAddModal()"
-                        class="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white py-2 px-4 rounded-lg font-medium transition-colors">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                        </svg>
-                        Add Company
-                    </button>
+            <!-- Table Content -->
+            <div class="flex-1 overflow-auto p-6">
+                <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden min-h-[400px]">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50/50">
+                                <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                                    Company</th>
+                                <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                                    Industry</th>
+                                <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                                    Location</th>
+                                <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                                    Status</th>
+                                <th
+                                    class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider text-right">
+                                    Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="companies-body" class="divide-y divide-slate-100">
+                            <!-- Dynamic Content -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </main>
-    </div>
 
-    <!-- Add/Edit Company Modal -->
-    <div id="company-modal" class="fixed inset-0 z-50 hidden">
-        <div class="absolute inset-0 bg-black/50" onclick="closeModal()"></div>
-        <div
-            class="absolute inset-4 sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:w-full sm:max-w-lg bg-white rounded-2xl overflow-hidden flex flex-col max-h-[90vh]">
-            <div class="flex items-center justify-between p-4 sm:p-6 border-b border-gray-100">
-                <h2 id="modal-title" class="text-xl font-bold text-gray-800">Add Company</h2>
-                <button onclick="closeModal()" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                    <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
-            <form id="company-form" class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4">
-                <input type="hidden" id="company-id">
+        <!-- Mobile Backdrop -->
+        <div id="sidebar-overlay" onclick="toggleSidebar()"
+            class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-30 lg:hidden hidden"></div>
 
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Company Name <span
-                            class="text-red-500">*</span></label>
-                    <input type="text" id="form-name" required placeholder="e.g. Google, Microsoft"
-                        class="w-full border border-gray-200 rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-primary-500 outline-none">
+        <!-- Add/Edit Drawer -->
+        <div id="company-drawer" class="fixed inset-0 z-50 pointer-events-none hidden">
+            <div id="drawer-backdrop"
+                class="absolute inset-0 bg-slate-900/20 backdrop-blur-[2px] transition-opacity duration-300 opacity-0 pointer-events-auto"
+                onclick="closeDrawer()"></div>
+            <div id="drawer-panel"
+                class="absolute inset-y-0 right-0 max-w-lg w-full bg-white shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out pointer-events-auto flex flex-col h-full border-l border-slate-200">
+                <div class="h-16 flex items-center justify-between px-6 border-b border-slate-100 bg-slate-50/50">
+                    <h3 id="drawer-title" class="text-lg font-bold text-slate-800">Add Company</h3>
+                    <button onclick="closeDrawer()"
+                        class="p-2 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100 transition-colors">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
                 </div>
 
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Industry</label>
-                    <select id="form-industry"
-                        class="w-full border border-gray-200 rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-primary-500 outline-none">
-                        <option value="">Select industry</option>
-                        <option value="Technology">Technology</option>
-                        <option value="Finance">Finance / Banking</option>
-                        <option value="Consulting">Consulting</option>
-                        <option value="Healthcare">Healthcare</option>
-                        <option value="Manufacturing">Manufacturing</option>
-                        <option value="E-commerce">E-commerce</option>
-                        <option value="Automotive">Automotive</option>
-                        <option value="Telecommunications">Telecommunications</option>
-                        <option value="Education">Education</option>
-                        <option value="Other">Other</option>
-                    </select>
+                <form id="company-form" class="flex-1 overflow-y-auto p-6 space-y-5">
+                    <input type="hidden" id="company-id">
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Company
+                            Name <span class="text-rose-500">*</span></label>
+                        <input type="text" id="form-name" required placeholder="e.g. Google"
+                            class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 outline-none transition-shadow bg-slate-50 focus:bg-white text-slate-800">
+                    </div>
+
+                    <div>
+                        <label
+                            class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Industry</label>
+                        <select id="form-industry"
+                            class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 outline-none transition-shadow bg-slate-50 focus:bg-white text-slate-800">
+                            <option value="">Select Industry</option>
+                            <option value="Technology">Technology</option>
+                            <option value="Finance">Finance / Banking</option>
+                            <option value="Consulting">Consulting</option>
+                            <option value="Healthcare">Healthcare</option>
+                            <option value="Manufacturing">Manufacturing</option>
+                            <option value="E-commerce">E-commerce</option>
+                            <option value="Automotive">Automotive</option>
+                            <option value="Telecommunications">Telecommunications</option>
+                            <option value="Education">Education</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label
+                            class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Website</label>
+                        <input type="url" id="form-website" placeholder="https://..."
+                            class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 outline-none transition-shadow bg-slate-50 focus:bg-white text-slate-800">
+                    </div>
+
+                    <div>
+                        <label
+                            class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Headquarters
+                            / Locations</label>
+                        <input type="text" id="form-location" placeholder="e.g. Bangalore, Mumbai"
+                            class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 outline-none transition-shadow bg-slate-50 focus:bg-white text-slate-800">
+                    </div>
+
+                    <div>
+                        <label
+                            class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Description</label>
+                        <textarea id="form-description" rows="3"
+                            class="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 outline-none transition-shadow bg-slate-50 focus:bg-white text-slate-800 resize-none"></textarea>
+                    </div>
+
+                    <div class="flex items-center gap-3 p-4 bg-slate-50 rounded-lg border border-slate-100">
+                        <input type="checkbox" id="form-active" checked
+                            class="w-4 h-4 text-primary-600 border-slate-300 rounded focus:ring-primary-500">
+                        <label for="form-active" class="text-sm font-medium text-slate-700">Active (Currently
+                            Hiring)</label>
+                    </div>
+                </form>
+
+                <div class="p-6 border-t border-slate-100 bg-white flex justify-end gap-3 z-10">
+                    <button onclick="closeDrawer()"
+                        class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 rounded-lg transition-colors border border-slate-200">Cancel</button>
+                    <button onclick="saveCompany()"
+                        class="px-5 py-2.5 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 rounded-lg shadow-sm transition-colors shadow-primary-500/30">Save
+                        Company</button>
                 </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Website</label>
-                    <input type="url" id="form-website" placeholder="https://company.com"
-                        class="w-full border border-gray-200 rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-primary-500 outline-none">
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Location</label>
-                    <input type="text" id="form-location" placeholder="e.g. Bangalore, Chennai, Mumbai"
-                        class="w-full border border-gray-200 rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-primary-500 outline-none">
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                    <textarea id="form-description" rows="3" placeholder="Brief description about the company..."
-                        class="w-full border border-gray-200 rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-primary-500 outline-none resize-none"></textarea>
-                </div>
-
-
-
-                <div class="flex items-center gap-3">
-                    <input type="checkbox" id="form-active" checked
-                        class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
-                    <label for="form-active" class="text-sm text-gray-700">Active company (currently hiring)</label>
-                </div>
-            </form>
-            <div class="p-4 sm:p-6 border-t border-gray-100 flex gap-3">
-                <button type="button" onclick="closeModal()"
-                    class="flex-1 py-2.5 px-4 border border-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors">Cancel</button>
-                <button type="button" onclick="saveCompany()"
-                    class="flex-1 py-2.5 px-4 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition-colors">Save</button>
             </div>
         </div>
-    </div>
 
-    <!-- Delete Confirmation Modal -->
-    <div id="delete-modal" class="fixed inset-0 z-50 hidden">
-        <div class="absolute inset-0 bg-black/50" onclick="closeDeleteModal()"></div>
-        <div
-            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white rounded-2xl p-6">
-            <div class="text-center">
-                <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                    </svg>
-                </div>
-                <h3 class="text-lg font-bold text-gray-800 mb-2">Delete Company</h3>
-                <p class="text-gray-600 mb-6">Are you sure you want to delete this company? This will also remove all
-                    associated placement records.</p>
-                <div class="flex gap-3">
-                    <button onclick="closeDeleteModal()"
-                        class="flex-1 py-2.5 px-4 border border-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors">Cancel</button>
-                    <button onclick="confirmDelete()"
-                        class="flex-1 py-2.5 px-4 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors">Delete</button>
+        <!-- Delete Modal -->
+        <div id="delete-modal" class="fixed inset-0 z-50 hidden">
+            <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-[2px] transition-opacity"
+                onclick="closeDeleteModal()"></div>
+            <div
+                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-sm bg-white rounded-xl shadow-2xl p-6 transform transition-all scale-100">
+                <div class="text-center">
+                    <div class="w-12 h-12 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6 text-rose-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-2">Delete Company?</h3>
+                    <p class="text-sm text-slate-500 mb-6">This will also delete associated placement records.</p>
+                    <div class="flex gap-3">
+                        <button onclick="closeDeleteModal()"
+                            class="flex-1 py-2.5 text-sm font-medium text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50">Cancel</button>
+                        <button onclick="confirmDelete()"
+                            class="flex-1 py-2.5 text-sm font-medium text-white bg-rose-600 hover:bg-rose-700 rounded-lg shadow-sm">Delete</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -310,7 +327,7 @@
         document.addEventListener('DOMContentLoaded', async () => {
             if (!requireAuth('admin')) return;
             await loadCompanies();
-            hideLoading();
+            document.getElementById('loading-overlay').classList.add('hidden');
         });
 
         async function loadCompanies() {
@@ -319,10 +336,7 @@
                 companies = data.companies || [];
                 filteredCompanies = [...companies];
                 renderCompanies();
-            } catch (err) {
-                console.error(err);
-                utils.showToast('Failed to load companies', 'error');
-            }
+            } catch (err) { utils.showToast('Failed to load companies', 'error'); }
         }
 
         function searchCompanies() {
@@ -336,105 +350,107 @@
         }
 
         function renderCompanies() {
-            const grid = document.getElementById('companies-grid');
-            const emptyState = document.getElementById('empty-state');
+            const tbody = document.getElementById('companies-body');
+            document.getElementById('results-count').textContent = filteredCompanies.length;
 
             if (filteredCompanies.length === 0) {
-                grid.innerHTML = '';
-                emptyState.classList.remove('hidden');
+                tbody.innerHTML = `<tr><td colspan="5" class="py-12 text-center text-slate-400">No companies found</td></tr>`;
                 return;
             }
 
-            emptyState.classList.add('hidden');
-
-            grid.innerHTML = filteredCompanies.map(c => {
-                const industryColors = {
-                    'Technology': 'bg-blue-100 text-blue-700',
-                    'Finance': 'bg-green-100 text-green-700',
-                    'Consulting': 'bg-purple-100 text-purple-700',
-                    'Healthcare': 'bg-red-100 text-red-700',
-                    'Manufacturing': 'bg-orange-100 text-orange-700',
-                    'E-commerce': 'bg-pink-100 text-pink-700',
-                    'Automotive': 'bg-gray-100 text-gray-700',
-                    'Telecommunications': 'bg-cyan-100 text-cyan-700',
-                    'Education': 'bg-yellow-100 text-yellow-700'
-                };
-                const industryColor = industryColors[c.industry] || 'bg-gray-100 text-gray-700';
+            tbody.innerHTML = filteredCompanies.map(c => {
                 const initials = c.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+                const colors = ['from-blue-500 to-blue-600', 'from-emerald-500 to-emerald-600', 'from-indigo-500 to-indigo-600', 'from-purple-500 to-purple-600', 'from-rose-500 to-rose-600'];
+                const colorClass = colors[c.id % colors.length];
 
                 return `
-                    <div class="card p-5 company-card transition-all cursor-pointer" onclick="editCompany(${c.id})">
-                        <div class="flex items-start justify-between mb-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center text-white font-bold">
+                    <tr class="table-row-hover border-b border-slate-50 last:border-0 group transition-colors">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br ${colorClass} flex items-center justify-center text-white font-bold text-xs shadow-sm">
                                     ${initials}
                                 </div>
                                 <div>
-                                    <h3 class="font-semibold text-gray-800">${c.name}</h3>
-                                    ${c.industry ? `<span class="text-xs px-2 py-0.5 rounded-full ${industryColor}">${c.industry}</span>` : ''}
+                                    <p class="font-semibold text-slate-800 text-sm group-hover:text-primary-600 transition-colors">${c.name}</p>
+                                    ${c.website ? `
+                                        <a href="${c.website}" target="_blank" class="text-xs text-slate-400 hover:text-primary-500 flex items-center gap-1 mt-0.5" onclick="event.stopPropagation()">
+                                            ${new URL(c.website).hostname.replace('www.', '')}
+                                            <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                                        </a>
+                                    ` : ''}
                                 </div>
                             </div>
-                            <div class="flex items-center gap-1">
-                                <span class="w-2 h-2 rounded-full ${c.is_active !== false ? 'bg-green-500' : 'bg-gray-300'}"></span>
-                                <span class="text-xs text-gray-500">${c.is_active !== false ? 'Active' : 'Inactive'}</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            ${c.industry ? `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600">${c.industry}</span>` : '<span class="text-slate-400">-</span>'}
+                        </td>
+                         <td class="px-6 py-4 text-sm text-slate-600">
+                             ${c.locations || '-'}
+                        </td>
+                         <td class="px-6 py-4">
+                            <div class="flex items-center gap-2">
+                                <div class="w-1.5 h-1.5 rounded-full ${c.is_active !== false ? 'bg-emerald-500 ring-2 ring-emerald-500/20' : 'bg-slate-300'}"></div>
+                                <span class="text-xs font-medium text-slate-600">${c.is_active !== false ? 'Hiring' : 'Inactive'}</span>
                             </div>
-                        </div>
-                        ${c.locations ? `
-                        <div class="flex items-center gap-2 text-sm text-gray-500 mb-3">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                            ${c.locations}
-                        </div>
-                        ` : ''}
-                        <div class="flex items-center justify-end pt-3 border-t border-gray-100">
-                            <div class="flex items-center gap-1">
-                                <button onclick="event.stopPropagation(); editCompany(${c.id})" class="p-2 text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors" title="Edit">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                                </button>
-                                <button onclick="event.stopPropagation(); openDeleteModal(${c.id})" class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Delete">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                                </button>
+                        </td>
+                         <td class="px-6 py-4 text-right">
+                             <div class="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <button onclick="editCompany(${c.id})" class="p-2 text-slate-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button>
+                                <button onclick="openDeleteModal(${c.id})" class="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
                             </div>
-                        </div>
-                    </div>
+                        </td>
+                    </tr>
                 `;
             }).join('');
         }
 
-        function openAddModal() {
-            document.getElementById('modal-title').textContent = 'Add Company';
+        // --- Drawer ---
+        function openDrawer() {
+            document.getElementById('drawer-title').textContent = 'Add Company';
             document.getElementById('company-id').value = '';
             document.getElementById('company-form').reset();
             document.getElementById('form-active').checked = true;
-            document.getElementById('company-modal').classList.remove('hidden');
+            toggleDrawer(true);
         }
 
         function editCompany(id) {
             const c = companies.find(x => x.id === id);
             if (!c) return;
-
-            document.getElementById('modal-title').textContent = 'Edit Company';
+            document.getElementById('drawer-title').textContent = 'Edit Company';
             document.getElementById('company-id').value = c.id;
-            document.getElementById('form-name').value = c.name || '';
+            document.getElementById('form-name').value = c.name;
             document.getElementById('form-industry').value = c.industry || '';
             document.getElementById('form-website').value = c.website || '';
             document.getElementById('form-location').value = c.locations || '';
             document.getElementById('form-description').value = c.description || '';
             document.getElementById('form-active').checked = c.is_active !== false;
-            document.getElementById('company-modal').classList.remove('hidden');
+            toggleDrawer(true);
         }
 
-        function closeModal() {
-            document.getElementById('company-modal').classList.add('hidden');
+        function closeDrawer() { toggleDrawer(false); }
+
+        function toggleDrawer(show) {
+            const drawer = document.getElementById('company-drawer');
+            const panel = document.getElementById('drawer-panel');
+            const backdrop = document.getElementById('drawer-backdrop');
+
+            if (show) {
+                drawer.classList.remove('hidden');
+                requestAnimationFrame(() => {
+                    backdrop.classList.remove('opacity-0');
+                    panel.classList.remove('translate-x-full');
+                });
+            } else {
+                backdrop.classList.add('opacity-0');
+                panel.classList.add('translate-x-full');
+                setTimeout(() => drawer.classList.add('hidden'), 300);
+            }
         }
 
         async function saveCompany() {
             const id = document.getElementById('company-id').value;
             const name = document.getElementById('form-name').value.trim();
-
-            if (!name) {
-                utils.showToast('Company name is required', 'error');
-                return;
-            }
+            if (!name) { utils.showToast('Company name is required', 'error'); return; }
 
             const payload = {
                 name: name,
@@ -446,29 +462,16 @@
             };
 
             try {
-                if (id) {
-                    await api.put(`/api/admin/companies/${id}`, payload);
-                    utils.showToast('Company updated', 'success');
-                } else {
-                    await api.post('/api/admin/companies', payload);
-                    utils.showToast('Company added', 'success');
-                }
-                closeModal();
+                if (id) await api.put(`/api/admin/companies/${id}`, payload);
+                else await api.post('/api/admin/companies', payload);
+                utils.showToast(id ? 'Company updated' : 'Company added', 'success');
+                closeDrawer();
                 loadCompanies();
-            } catch (err) {
-                utils.showToast(err.message || 'Failed to save', 'error');
-            }
+            } catch (e) { utils.showToast('Failed to save', 'error'); }
         }
 
-        function openDeleteModal(id) {
-            deleteId = id;
-            document.getElementById('delete-modal').classList.remove('hidden');
-        }
-
-        function closeDeleteModal() {
-            document.getElementById('delete-modal').classList.add('hidden');
-            deleteId = null;
-        }
+        function openDeleteModal(id) { deleteId = id; document.getElementById('delete-modal').classList.remove('hidden'); }
+        function closeDeleteModal() { document.getElementById('delete-modal').classList.add('hidden'); deleteId = null; }
 
         async function confirmDelete() {
             if (!deleteId) return;
@@ -477,20 +480,14 @@
                 utils.showToast('Company deleted', 'success');
                 closeDeleteModal();
                 loadCompanies();
-            } catch (err) {
-                utils.showToast('Failed to delete', 'error');
-            }
+            } catch (e) { utils.showToast('Failed to delete', 'error'); }
         }
 
         function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
-            sidebar.classList.toggle('-translate-x-full');
-            overlay.classList.toggle('hidden');
-        }
-
-        function hideLoading() {
-            document.getElementById('loading-overlay').classList.add('hidden');
+            const sb = document.getElementById('sidebar');
+            const ov = document.getElementById('sidebar-overlay');
+            sb.classList.toggle('-translate-x-full');
+            ov.classList.toggle('hidden');
         }
     </script>
 </body>
