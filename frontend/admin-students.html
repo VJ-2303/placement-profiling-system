@@ -447,9 +447,9 @@
                 const data = await api.get(`/api/admin/students/${id}`);
                 const profile = data.profile || {};
                 const s = profile.student || {};
-                const p = profile.personal_details || {};
+                const p = profile.personal || {}; // Backend returns 'personal' not 'personal_details'
                 const a = profile.academics || {};
-                const f = profile.family_details || {};
+                const f = profile.family || {}; // Backend returns 'family' not 'family_details'
                 const ach = profile.achievements || {};
                 const asp = profile.aspirations || {};
 
@@ -507,9 +507,9 @@
                             <div>
                                 <h4 class="font-semibold text-gray-800 mb-3">Career Aspirations</h4>
                                 <div class="bg-gray-50 rounded-xl p-4 space-y-2">
-                                    <div><span class="text-gray-500 text-sm">Dream Company:</span> <span class="font-medium">${asp.dream_company || '-'}</span></div>
+                                    <div><span class="text-gray-500 text-sm">Dream Company:</span> <span class="font-medium">${asp.dream_companies || '-'}</span></div>
                                     <div><span class="text-gray-500 text-sm">Preferred Roles:</span> <span class="font-medium">${asp.preferred_roles || '-'}</span></div>
-                                    <div><span class="text-gray-500 text-sm">Expected Package:</span> <span class="font-medium">${asp.expected_package ? asp.expected_package + ' LPA' : '-'}</span></div>
+                                    <div><span class="text-gray-500 text-sm">Expected Package:</span> <span class="font-medium">${asp.expected_salary || '-'}</span></div>
                                 </div>
                             </div>
                             ${ach.certifications || ach.projects ? `
