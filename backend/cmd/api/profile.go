@@ -108,13 +108,35 @@ func (app *application) updatePersonalDetails(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	var input models.StudentPersonalDetails
+	// Custom input struct that accepts both Student and PersonalDetails fields
+	var input struct {
+		// Student fields (will update Student table)
+		Name      string  `json:"name"`
+		RollNo    *string `json:"roll_no"`
+		BatchYear *int    `json:"batch_year"`
+
+		// Personal details fields (with frontend aliases)
+		DateOfBirth     *string `json:"date_of_birth"`
+		Gender          *string `json:"gender"`
+		BloodGroup      *string `json:"blood_group"`
+		MobileNumber    *string `json:"mobile_number"`
+		AlternateMobile *string `json:"alt_mobile_number"` // Frontend uses alt_mobile_number
+		PersonalEmail   *string `json:"personal_email"`
+		LinkedinURL     *string `json:"linkedin_url"`
+		GithubURL       *string `json:"github_url"`
+		PortfolioURL    *string `json:"portfolio_url"`
+		AadhaarNumber   *string `json:"aadhaar_no"` // Frontend uses aadhaar_no
+		Address         *string `json:"address"`
+		City            *string `json:"city"`
+		State           *string `json:"state"`
+		Pincode         *string `json:"pincode"`
+		ResidenceType   *string `json:"residence_type"`
+	}
+
 	if err := app.readJSON(w, r, &input); err != nil {
 		app.badRequestResponse(w, r, err)
 		return
 	}
-
-	input.StudentID = claims.UserID
 
 	tx, err := app.models.DB.Begin()
 	if err != nil {
@@ -123,7 +145,53 @@ func (app *application) updatePersonalDetails(w http.ResponseWriter, r *http.Req
 	}
 	defer tx.Rollback()
 
-	if err := app.models.Students.UpsertPersonalDetails(tx, &input); err != nil {
+	// Update Student basic info if provided
+	student, err := app.models.Students.GetByID(claims.UserID)
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+		return
+	}
+
+	if input.Name != "" {
+		student.Name = input.Name
+	}
+	if input.RollNo != nil {
+		student.RollNo = input.RollNo
+	}
+	if input.BatchYear != nil {
+		// Need to find batch ID from year
+		batchID, err := app.models.Students.GetBatchIDByYear(*input.BatchYear)
+		if err == nil && batchID > 0 {
+			student.BatchID = &batchID
+		}
+	}
+
+	if err := app.models.Students.UpdateBasicInfo(student); err != nil {
+		app.serverErrorResponse(w, r, err)
+		return
+	}
+
+	// Update personal details
+	personalDetails := &models.StudentPersonalDetails{
+		StudentID:       claims.UserID,
+		DateOfBirth:     input.DateOfBirth,
+		Gender:          input.Gender,
+		BloodGroup:      input.BloodGroup,
+		MobileNumber:    input.MobileNumber,
+		AlternateMobile: input.AlternateMobile,
+		PersonalEmail:   input.PersonalEmail,
+		LinkedinURL:     input.LinkedinURL,
+		GithubURL:       input.GithubURL,
+		PortfolioURL:    input.PortfolioURL,
+		AadhaarNumber:   input.AadhaarNumber,
+		Address:         input.Address,
+		City:            input.City,
+		State:           input.State,
+		Pincode:         input.Pincode,
+		ResidenceType:   input.ResidenceType,
+	}
+
+	if err := app.models.Students.UpsertPersonalDetails(tx, personalDetails); err != nil {
 		app.serverErrorResponse(w, r, err)
 		return
 	}
@@ -133,7 +201,7 @@ func (app *application) updatePersonalDetails(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	app.writeJSON(w, http.StatusOK, envelope{"message": "Personal details saved", "data": input}, nil)
+	app.writeJSON(w, http.StatusOK, envelope{"message": "Personal details saved"}, nil)
 }
 
 // updateFamilyDetails updates student family details
@@ -144,13 +212,29 @@ func (app *application) updateFamilyDetails(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
-	var input models.StudentFamilyDetails
+	// Custom input struct with frontend field aliases
+	var input struct {
+		FatherName         *string `json:"father_name"`
+		FatherMobile       *string `json:"father_mobile"`
+		FatherEmail        *string `json:"father_email"`
+		FatherOccupation   *string `json:"father_occupation"`
+		FatherCompany      *string `json:"father_company_details"` // Frontend uses father_company_details
+		FatherAnnualIncome *string `json:"annual_income"`          // Frontend uses annual_income
+		MotherName         *string `json:"mother_name"`
+		MotherMobile       *string `json:"mother_mobile"`
+		MotherEmail        *string `json:"mother_email"`
+		MotherOccupation   *string `json:"mother_occupation"`
+		MotherCompany      *string `json:"mother_company"`
+		GuardianName       *string `json:"guardian_name"`
+		GuardianMobile     *string `json:"guardian_mobile"`
+		GuardianRelation   *string `json:"guardian_relation"`
+		ResidenceType      *string `json:"residence_type"` // This goes to personal details
+	}
+
 	if err := app.readJSON(w, r, &input); err != nil {
 		app.badRequestResponse(w, r, err)
 		return
 	}
-
-	input.StudentID = claims.UserID
 
 	tx, err := app.models.DB.Begin()
 	if err != nil {
@@ -159,7 +243,25 @@ func (app *application) updateFamilyDetails(w http.ResponseWriter, r *http.Reque
 	}
 	defer tx.Rollback()
 
-	if err := app.models.Students.UpsertFamilyDetails(tx, &input); err != nil {
+	familyDetails := &models.StudentFamilyDetails{
+		StudentID:          claims.UserID,
+		FatherName:         input.FatherName,
+		FatherMobile:       input.FatherMobile,
+		FatherEmail:        input.FatherEmail,
+		FatherOccupation:   input.FatherOccupation,
+		FatherCompany:      input.FatherCompany,
+		FatherAnnualIncome: input.FatherAnnualIncome,
+		MotherName:         input.MotherName,
+		MotherMobile:       input.MotherMobile,
+		MotherEmail:        input.MotherEmail,
+		MotherOccupation:   input.MotherOccupation,
+		MotherCompany:      input.MotherCompany,
+		GuardianName:       input.GuardianName,
+		GuardianMobile:     input.GuardianMobile,
+		GuardianRelation:   input.GuardianRelation,
+	}
+
+	if err := app.models.Students.UpsertFamilyDetails(tx, familyDetails); err != nil {
 		app.serverErrorResponse(w, r, err)
 		return
 	}
@@ -169,7 +271,7 @@ func (app *application) updateFamilyDetails(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
-	app.writeJSON(w, http.StatusOK, envelope{"message": "Family details saved", "data": input}, nil)
+	app.writeJSON(w, http.StatusOK, envelope{"message": "Family details saved"}, nil)
 }
 
 // updateAcademics updates student academic details
@@ -180,13 +282,40 @@ func (app *application) updateAcademics(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	var input models.StudentAcademics
+	// Custom input struct with frontend field aliases
+	var input struct {
+		TenthPercentage   *float64 `json:"tenth_percentage"`
+		TenthBoard        *string  `json:"tenth_board"`
+		TenthYear         *int     `json:"tenth_year"`
+		TenthSchool       *string  `json:"tenth_school"`
+		TwelfthPercentage *float64 `json:"twelfth_percentage"`
+		TwelfthBoard      *string  `json:"twelfth_board"`
+		TwelfthYear       *int     `json:"twelfth_year"`
+		TwelfthSchool     *string  `json:"twelfth_school"`
+		HasDiploma        bool     `json:"has_diploma"`
+		DiplomaPercentage *float64 `json:"diploma_percentage"`
+		DiplomaBranch     *string  `json:"diploma_branch"`
+		DiplomaCollege    *string  `json:"diploma_college"`
+		CGPASem1          *float64 `json:"cgpa_sem1"`
+		CGPASem2          *float64 `json:"cgpa_sem2"`
+		CGPASem3          *float64 `json:"cgpa_sem3"`
+		CGPASem4          *float64 `json:"cgpa_sem4"`
+		CGPASem5          *float64 `json:"cgpa_sem5"`
+		CGPASem6          *float64 `json:"cgpa_sem6"`
+		CGPASem7          *float64 `json:"cgpa_sem7"`
+		CGPASem8          *float64 `json:"cgpa_sem8"`
+		CGPAOverall       *float64 `json:"cgpa_overall"`
+		CurrentBacklogs   int      `json:"current_backlogs"`
+		HistoryOfBacklogs bool     `json:"has_backlog_history"` // Frontend uses has_backlog_history
+		BacklogDetails    *string  `json:"backlog_details"`
+		HasGapYear        bool     `json:"has_gap_year"`
+		GapYearReason     *string  `json:"gap_year_reason"`
+	}
+
 	if err := app.readJSON(w, r, &input); err != nil {
 		app.badRequestResponse(w, r, err)
 		return
 	}
-
-	input.StudentID = claims.UserID
 
 	tx, err := app.models.DB.Begin()
 	if err != nil {
@@ -195,7 +324,37 @@ func (app *application) updateAcademics(w http.ResponseWriter, r *http.Request) 
 	}
 	defer tx.Rollback()
 
-	if err := app.models.Students.UpsertAcademics(tx, &input); err != nil {
+	academics := &models.StudentAcademics{
+		StudentID:         claims.UserID,
+		TenthPercentage:   input.TenthPercentage,
+		TenthBoard:        input.TenthBoard,
+		TenthYear:         input.TenthYear,
+		TenthSchool:       input.TenthSchool,
+		TwelfthPercentage: input.TwelfthPercentage,
+		TwelfthBoard:      input.TwelfthBoard,
+		TwelfthYear:       input.TwelfthYear,
+		TwelfthSchool:     input.TwelfthSchool,
+		HasDiploma:        input.HasDiploma,
+		DiplomaPercentage: input.DiplomaPercentage,
+		DiplomaBranch:     input.DiplomaBranch,
+		DiplomaCollege:    input.DiplomaCollege,
+		CGPASem1:          input.CGPASem1,
+		CGPASem2:          input.CGPASem2,
+		CGPASem3:          input.CGPASem3,
+		CGPASem4:          input.CGPASem4,
+		CGPASem5:          input.CGPASem5,
+		CGPASem6:          input.CGPASem6,
+		CGPASem7:          input.CGPASem7,
+		CGPASem8:          input.CGPASem8,
+		CGPAOverall:       input.CGPAOverall,
+		CurrentBacklogs:   input.CurrentBacklogs,
+		HistoryOfBacklogs: input.HistoryOfBacklogs,
+		BacklogDetails:    input.BacklogDetails,
+		HasGapYear:        input.HasGapYear,
+		GapYearReason:     input.GapYearReason,
+	}
+
+	if err := app.models.Students.UpsertAcademics(tx, academics); err != nil {
 		app.serverErrorResponse(w, r, err)
 		return
 	}
@@ -205,7 +364,7 @@ func (app *application) updateAcademics(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	app.writeJSON(w, http.StatusOK, envelope{"message": "Academic details saved", "data": input}, nil)
+	app.writeJSON(w, http.StatusOK, envelope{"message": "Academic details saved"}, nil)
 }
 
 // updateAchievements updates student achievements
@@ -216,13 +375,32 @@ func (app *application) updateAchievements(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	var input models.StudentAchievements
+	// Custom input struct with frontend field aliases
+	var input struct {
+		Certifications         *string `json:"certifications"`
+		Awards                 *string `json:"awards"`
+		Workshops              *string `json:"workshops"`
+		Internships            *string `json:"internships"`
+		Projects               *string `json:"projects"`
+		LeetcodeProfile        *string `json:"leetcode_profile"`
+		HackerrankProfile      *string `json:"hackerrank_profile"`
+		CodeforcesProfile      *string `json:"codeforces_profile"`
+		CodechefProfile        *string `json:"codechef_profile"`
+		LeetcodeRating         *int    `json:"leetcode_rating"`
+		ProblemsSolved         *int    `json:"problems_solved"`
+		HackathonsParticipated int     `json:"hackathons_participated"`
+		HackathonsWon          int     `json:"hackathons_won"`
+		HackathonDetails       *string `json:"hackathon_details"`
+		Extracurriculars       *string `json:"extra_curriculars"` // Frontend uses extra_curriculars
+		ClubMemberships        *string `json:"club_memberships"`
+		Sports                 *string `json:"sports"`
+		VolunteerWork          *string `json:"volunteer_work"`
+	}
+
 	if err := app.readJSON(w, r, &input); err != nil {
 		app.badRequestResponse(w, r, err)
 		return
 	}
-
-	input.StudentID = claims.UserID
 
 	tx, err := app.models.DB.Begin()
 	if err != nil {
@@ -231,7 +409,29 @@ func (app *application) updateAchievements(w http.ResponseWriter, r *http.Reques
 	}
 	defer tx.Rollback()
 
-	if err := app.models.Students.UpsertAchievements(tx, &input); err != nil {
+	achievements := &models.StudentAchievements{
+		StudentID:              claims.UserID,
+		Certifications:         input.Certifications,
+		Awards:                 input.Awards,
+		Workshops:              input.Workshops,
+		Internships:            input.Internships,
+		Projects:               input.Projects,
+		LeetcodeProfile:        input.LeetcodeProfile,
+		HackerrankProfile:      input.HackerrankProfile,
+		CodeforcesProfile:      input.CodeforcesProfile,
+		CodechefProfile:        input.CodechefProfile,
+		LeetcodeRating:         input.LeetcodeRating,
+		ProblemsSolved:         input.ProblemsSolved,
+		HackathonsParticipated: input.HackathonsParticipated,
+		HackathonsWon:          input.HackathonsWon,
+		HackathonDetails:       input.HackathonDetails,
+		Extracurriculars:       input.Extracurriculars,
+		ClubMemberships:        input.ClubMemberships,
+		Sports:                 input.Sports,
+		VolunteerWork:          input.VolunteerWork,
+	}
+
+	if err := app.models.Students.UpsertAchievements(tx, achievements); err != nil {
 		app.serverErrorResponse(w, r, err)
 		return
 	}
@@ -241,7 +441,7 @@ func (app *application) updateAchievements(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	app.writeJSON(w, http.StatusOK, envelope{"message": "Achievements saved", "data": input}, nil)
+	app.writeJSON(w, http.StatusOK, envelope{"message": "Achievements saved"}, nil)
 }
 
 // updateAspirations updates student aspirations
@@ -252,13 +452,27 @@ func (app *application) updateAspirations(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	var input models.StudentAspirations
+	// Custom input struct with frontend field aliases
+	var input struct {
+		DreamCompanies     *string `json:"dream_company"` // Frontend uses dream_company (singular)
+		PreferredRoles     *string `json:"preferred_roles"`
+		PreferredLocations *string `json:"preferred_locations"`
+		ExpectedSalary     *string `json:"expected_package"` // Frontend uses expected_package
+		WillingToRelocate  bool    `json:"willing_to_relocate"`
+		CareerObjective    *string `json:"career_goals"` // Frontend uses career_goals
+		ShortTermGoals     *string `json:"short_term_goals"`
+		LongTermGoals      *string `json:"long_term_goals"`
+		HigherStudies      *string `json:"higher_studies"` // Extra field from frontend
+		Strengths          *string `json:"strengths"`
+		Weaknesses         *string `json:"weaknesses"`
+		Hobbies            *string `json:"hobbies"`
+		LanguagesKnown     *string `json:"languages_known"`
+	}
+
 	if err := app.readJSON(w, r, &input); err != nil {
 		app.badRequestResponse(w, r, err)
 		return
 	}
-
-	input.StudentID = claims.UserID
 
 	tx, err := app.models.DB.Begin()
 	if err != nil {
@@ -267,7 +481,24 @@ func (app *application) updateAspirations(w http.ResponseWriter, r *http.Request
 	}
 	defer tx.Rollback()
 
-	if err := app.models.Students.UpsertAspirations(tx, &input); err != nil {
+	// Convert expected_package (number) to string for expected_salary
+	aspirations := &models.StudentAspirations{
+		StudentID:          claims.UserID,
+		DreamCompanies:     input.DreamCompanies,
+		PreferredRoles:     input.PreferredRoles,
+		PreferredLocations: input.PreferredLocations,
+		ExpectedSalary:     input.ExpectedSalary,
+		WillingToRelocate:  input.WillingToRelocate,
+		CareerObjective:    input.CareerObjective,
+		ShortTermGoals:     input.ShortTermGoals,
+		LongTermGoals:      input.LongTermGoals,
+		Strengths:          input.Strengths,
+		Weaknesses:         input.Weaknesses,
+		Hobbies:            input.Hobbies,
+		LanguagesKnown:     input.LanguagesKnown,
+	}
+
+	if err := app.models.Students.UpsertAspirations(tx, aspirations); err != nil {
 		app.serverErrorResponse(w, r, err)
 		return
 	}
@@ -277,7 +508,7 @@ func (app *application) updateAspirations(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	app.writeJSON(w, http.StatusOK, envelope{"message": "Aspirations saved", "data": input}, nil)
+	app.writeJSON(w, http.StatusOK, envelope{"message": "Aspirations saved"}, nil)
 }
 
 // updateSkills updates student skills

@@ -331,6 +331,23 @@ func (m StudentModel) UpdateLastLogin(id int64) error {
 	return err
 }
 
+// GetBatchIDByYear retrieves batch ID by year
+func (m StudentModel) GetBatchIDByYear(year int) (int, error) {
+	query := `SELECT id FROM batches WHERE year = $1`
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	var id int
+	err := m.DB.QueryRowContext(ctx, query, year).Scan(&id)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return 0, ErrRecordNotFound
+		}
+		return 0, err
+	}
+	return id, nil
+}
+
 // ============================================
 // PERSONAL DETAILS
 // ============================================
