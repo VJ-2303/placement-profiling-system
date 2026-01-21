@@ -686,8 +686,8 @@
         // Populate profile data
         function populateProfile() {
             const s = profileData.student || {};
-            const p = profileData.personal_details || {};
-            const f = profileData.family_details || {};
+            const p = profileData.personal || {}; // Backend returns 'personal' not 'personal_details'
+            const f = profileData.family || {}; // Backend returns 'family' not 'family_details'
             const a = profileData.academics || {};
             const ach = profileData.achievements || {};
             const asp = profileData.aspirations || {};
@@ -721,7 +721,7 @@
             // Progress
             updateProgress();
 
-            // Form: Personal
+            // Form: Personal - map backend field names to form field names
             setFormValues('form-personal', {
                 roll_no: s.roll_no,
                 name: s.name,
@@ -729,30 +729,31 @@
                 date_of_birth: p.date_of_birth,
                 gender: p.gender,
                 mobile_number: p.mobile_number,
-                alt_mobile_number: p.alt_mobile_number,
+                alt_mobile_number: p.alternate_mobile, // Backend uses alternate_mobile
                 personal_email: p.personal_email,
                 linkedin_url: p.linkedin_url,
                 github_url: p.github_url,
                 portfolio_url: p.portfolio_url,
-                aadhaar_no: p.aadhaar_no,
+                aadhaar_no: p.aadhaar_number, // Backend uses aadhaar_number
                 address: p.address,
                 city: p.city,
-                pincode: p.pincode
+                pincode: p.pincode,
+                residence_type: p.residence_type
             });
 
-            // Form: Family
+            // Form: Family - map backend field names to form field names
             setFormValues('form-family', {
                 father_name: f.father_name,
                 father_mobile: f.father_mobile,
                 father_occupation: f.father_occupation,
                 father_email: f.father_email,
-                father_company_details: f.father_company_details,
+                father_company_details: f.father_company, // Backend uses father_company
                 mother_name: f.mother_name,
                 mother_mobile: f.mother_mobile,
                 mother_occupation: f.mother_occupation,
                 mother_email: f.mother_email,
-                residence_type: f.residence_type,
-                annual_income: f.annual_income
+                residence_type: p.residence_type, // Residence type is in personal details
+                annual_income: f.father_annual_income // Backend uses father_annual_income
             });
 
             // Form: Academics
@@ -773,27 +774,27 @@
                 cgpa_sem8: a.cgpa_sem8,
                 cgpa_overall: a.cgpa_overall,
                 current_backlogs: a.current_backlogs,
-                has_backlog_history: a.has_backlog_history ? 'true' : 'false'
+                has_backlog_history: a.history_of_backlogs ? 'true' : 'false' // Backend uses history_of_backlogs
             });
 
-            // Form: Achievements
+            // Form: Achievements - map backend field names to form field names
             setFormValues('form-achievements', {
                 certifications: ach.certifications,
                 awards: ach.awards,
                 workshops: ach.workshops,
                 internships: ach.internships,
                 projects: ach.projects,
-                extra_curriculars: ach.extra_curriculars
+                extra_curriculars: ach.extracurriculars // Backend uses extracurriculars
             });
 
-            // Form: Career
+            // Form: Career - map backend field names to form field names
             setFormValues('form-career', {
-                dream_company: asp.dream_company,
+                dream_company: asp.dream_companies, // Backend uses dream_companies
                 preferred_roles: asp.preferred_roles,
-                expected_package: asp.expected_package,
+                expected_package: asp.expected_salary ? parseFloat(asp.expected_salary) : '', // Backend uses expected_salary (string)
                 preferred_locations: asp.preferred_locations,
                 higher_studies: asp.higher_studies,
-                career_goals: asp.career_goals,
+                career_goals: asp.career_objective, // Backend uses career_objective
                 willing_to_relocate: asp.willing_to_relocate ? 'true' : ''
             });
 
@@ -856,7 +857,7 @@
 
         function updateProgress() {
             const s = profileData.student || {};
-            const p = profileData.personal_details || {};
+            const p = profileData.personal || {}; // Backend returns 'personal' not 'personal_details'
             const a = profileData.academics || {};
 
             let filled = 0, total = 10;
@@ -869,7 +870,7 @@
             if (a.twelfth_percentage) filled++;
             if ((profileData.skills || []).length > 0) filled++;
             if (profileData.achievements?.certifications || profileData.achievements?.projects) filled++;
-            if (profileData.aspirations?.dream_company) filled++;
+            if (profileData.aspirations?.dream_companies) filled++; // Backend uses dream_companies
 
             const percent = Math.round((filled / total) * 100);
             const offset = 301.59 - (301.59 * percent / 100);
